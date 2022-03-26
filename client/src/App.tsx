@@ -4,15 +4,13 @@ import Footer from './components/footer/Footer'
 import HomeScreen from './screens/HomeScreen'
 
 const App: React.FC = () => {
-  console.log('text')
-
   return (
     <BrowserRouter>
       <Header />
 
       <Routes>
-        <Route path='/' element={<HomeScreen />} />
-        <Route path='*' element={<div className='screen'>404</div>} />
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="*" element={<div className="screen">404</div>} />
       </Routes>
 
       <Footer />

@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 /*-----CONFIG-----*/
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   @apply box-border;
 }
 html {
@@ -23,9 +23,17 @@ html::-webkit-scrollbar-thumb {
 }
 
 /*-----ELEMENTS-----*/
-/*Screens*/
 .screen {
-  min-height: calc(100vh - 56px);
+  background: url('./assets/background.png') no-repeat center center/cover;
+  /*min-height: calc(100vh - 56px);*/
+  @apply min-h-screen;
+}
+.hero {
+  background: url('./assets/background.png') no-repeat center center/cover;
+  @apply h-screen pt-24;
+}
+.screen-container {
+  @apply mx-auto xl:container;
 }
 
 /*-----BREAKPOINTS-----*/
