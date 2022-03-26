@@ -1,4 +1,4 @@
-const HomeScreen = () => {
+const HomeScreen: React.FC = () => {
   return <div className='screen'>HomeScreen</div>
 }
 

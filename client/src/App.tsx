@@ -3,7 +3,9 @@ import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
 import HomeScreen from './screens/HomeScreen'
 
-const App = () => {
+const App: React.FC = () => {
+  console.log('text')
+
   return (
     <BrowserRouter>
       <Header />

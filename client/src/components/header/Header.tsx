@@ -1,4 +1,4 @@
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <div className='flex justify-between bg-blue-200 drop-shadow-md'>
       <div className='ml-2 p-3 text-2xl font-bold'>PercPASS</div>
