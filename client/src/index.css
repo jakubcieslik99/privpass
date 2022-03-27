@@ -10,6 +10,7 @@
   @apply box-border;
 }
 html {
+  -webkit-tap-highlight-color: transparent;
   @apply overflow-x-hidden overflow-y-scroll scroll-pt-20 scroll-smooth;
 }
 html::-webkit-scrollbar {
@@ -23,16 +24,12 @@ html::-webkit-scrollbar-thumb {
 }
 
 /*-----ELEMENTS-----*/
-.screen {
-  background: url('./assets/background.png') no-repeat center center/cover;
+.app-screen {
+  background: url('./assets/background.png') no-repeat center/cover;
   /*min-height: calc(100vh - 56px);*/
   @apply min-h-screen;
 }
-.hero {
-  background: url('./assets/background.png') no-repeat center center/cover;
-  @apply h-screen pt-24;
-}
-.screen-container {
+.app-container {
   @apply mx-auto xl:container;
 }
 
