@@ -7,20 +7,27 @@
 /*-----CONFIG-----*/
 * {
   font-family: 'Poppins', sans-serif;
+  -webkit-tap-highlight-color: transparent;
   @apply box-border;
 }
-html {
-  -webkit-tap-highlight-color: transparent;
-  @apply overflow-x-hidden overflow-y-scroll scroll-pt-20 scroll-smooth;
+*::-webkit-scrollbar {
+  @apply w-2 h-2;
 }
-html::-webkit-scrollbar {
-  @apply w-2;
-}
-html::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
   @apply bg-transparent;
 }
-html::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 hover:bg-gray-400;
+*::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 hover:bg-gray-400 rounded-full;
+}
+
+body {
+  overflow: overlay;
+  /*overflow-y: scroll;*/
+  @apply bg-gray-600 scroll-smooth;
+}
+.noscroll {
+  overflow: hidden;
 }
 
 /*-----ELEMENTS-----*/
