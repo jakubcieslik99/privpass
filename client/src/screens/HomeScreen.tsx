@@ -9,7 +9,7 @@ const HomeScreen: React.FC = () => {
             <div className="flex flex-col items-center text-white">
               <p className="text-3xl">Twój bezpieczny</p>
               <p className="mb-4 text-3xl">menedżer haseł</p>
-              <button className="px-4 py-3 text-xl transition-colors border rounded-full border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100">
+              <button className="px-4 py-3 text-xl transition border rounded-full border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95">
                 DOWIEDZ SIĘ WIĘCEJ
               </button>
             </div>

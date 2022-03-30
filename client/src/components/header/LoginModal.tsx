@@ -43,7 +43,7 @@ const LoginModal = (props: LoginModalProps) => {
         leaveTo="opacity-0"
       >
         <FaTimes
-          className="fixed hidden text-3xl text-gray-400 transition cursor-pointer hover:text-gray-300 md:block right-3 top-3 active:scale-95"
+          className={`fixed hidden text-3xl text-gray-400 transition cursor-pointer right-3 top-3 hover:text-gray-300 active:scale-95 ${'md:hidden'}`}
           onClick={() => closeHandler()}
         />
       </Transition.Child>
@@ -54,7 +54,7 @@ const LoginModal = (props: LoginModalProps) => {
       >
         <Transition.Child
           as="form"
-          className="flex flex-col w-full max-w-xl max-h-full px-4 py-3 bg-white rounded-lg shadow-md"
+          className="flex flex-col w-full max-w-xl max-h-full px-5 py-4 bg-gray-100 rounded-lg shadow-md"
           onSubmit={submitHandler}
           enter="ease-out duration-300"
           enterFrom="opacity-0 scale-95"
@@ -64,7 +64,7 @@ const LoginModal = (props: LoginModalProps) => {
           leaveTo="opacity-0 scale-95"
         >
           <div className="flex items-center justify-between w-full text-2xl text-gray-800">
-            <h2>Logowanie</h2>
+            <h2 className="font-semibold">Logowanie</h2>
             <FaTimes
               className="transition cursor-pointer hover:text-gray-700 active:scale-95"
               onClick={() => closeHandler()}
@@ -81,14 +81,25 @@ const LoginModal = (props: LoginModalProps) => {
                 className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
               />
             </div>
+
+            <div className="flex flex-col items-center md:mx-6">
+              <label className="mb-1 w-36">Kod logowania:</label>
+              <input
+                name="loginNumberOne"
+                type="text"
+                placeholder="0000"
+                className="pl-[1.22rem] pr-2 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 login-number-input pl-"
+              />
+            </div>
           </div>
 
           <div className="flex justify-center w-full mb-1">
             <button
+              disabled={false}
               type="submit"
-              className="px-4 py-2 text-lg text-white transition rounded-full bg-percpass-500 hover:bg-percpass-400 active:scale-95 disabled:opacity-60"
+              className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:bg-percpass-400 active:scale-95 disabled:opacity-90 disabled:bg-percpass-400"
             >
-              Zaloguj
+              Zaloguj się
             </button>
           </div>
         </Transition.Child>

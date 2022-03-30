@@ -39,6 +39,9 @@ body {
 .app-container {
   @apply mx-auto xl:container;
 }
+.login-number-input {
+  font-family: 'consolas';
+}
 
 /*-----BREAKPOINTS-----*/
 /*from sm*/
