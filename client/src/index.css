@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 
 /*-----CONFIG-----*/
 * {
@@ -32,15 +33,34 @@ body {
 
 /*-----ELEMENTS-----*/
 .app-screen {
-  background: url('./assets/background.png') no-repeat center/cover;
-  /*min-height: calc(100vh - 56px);*/
-  @apply min-h-screen;
+  background: rgb(35, 17, 105);
+  background: linear-gradient(
+    185deg,
+    rgba(35, 17, 105, 1) 0%,
+    rgba(35, 17, 105, 1) 50%,
+    rgba(52, 38, 132, 1) 85%,
+    rgba(54, 67, 146, 1) 100%
+  );
+  min-height: calc(100vh - 64px - 116px);
+  @apply mt-16 text-white md:mt-24;
+}
+.app-hero-screen {
+  background: rgb(35, 17, 105);
+  background: linear-gradient(
+    185deg,
+    rgba(35, 17, 105, 1) 0%,
+    rgba(35, 17, 105, 1) 50%,
+    rgba(52, 38, 132, 1) 85%,
+    rgba(54, 67, 146, 1) 100%
+  );
+  @apply h-screen text-white;
 }
 .app-container {
   @apply mx-auto xl:container;
 }
-.login-number-input {
-  font-family: 'consolas';
+
+.confirmation-number-input {
+  font-family: 'Inconsolata', monospace;
 }
 
 /*-----BREAKPOINTS-----*/
@@ -49,6 +69,9 @@ body {
 }
 /*from md*/
 @media (min-width: 768px) {
+  .app-screen {
+    min-height: calc(100vh - 96px - 56px);
+  }
 }
 /*from lg*/
 @media (min-width: 1024px) {

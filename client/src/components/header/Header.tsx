@@ -2,15 +2,16 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaUserShield, FaBars } from 'react-icons/fa'
 import LoginModal from './LoginModal'
+import RegisterModal from './RegisterModal'
 
 const Header: React.FC = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false)
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false)
-  //const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false)
+  const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false)
 
   return (
     <header id="header" className="fixed top-0 z-10 w-full h-auto">
-      <nav className="flex flex-col justify-between md:flex-row md:bg-percpass-500">
+      <nav className="flex flex-col justify-between md:flex-row md:bg-percpass-500 md:shadow-lg">
         <div className="z-20 flex items-center justify-between h-16 md:h-24 bg-percpass-500">
           <Link className="flex items-center ml-3 text-2xl font-bold text-white md:text-3xl md:ml-7" to="/">
             PercPASS <FaUserShield className="ml-2" />
@@ -31,7 +32,10 @@ const Header: React.FC = () => {
           <li className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95">
             Kontakt
           </li>
-          <li className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95">
+          <li
+            className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
+            onClick={() => setRegisterModalIsOpen(true)}
+          >
             Rejestracja
           </li>
           <li className="flex">
@@ -45,7 +49,7 @@ const Header: React.FC = () => {
         </ul>
 
         <ul
-          className={`absolute w-full md:hidden flex flex-col transition-transform top-16 ${
+          className={`absolute w-full md:hidden flex flex-col transition-transform top-16 shadow-lg ${
             !menuIsOpen ? '-translate-y-full' : 'translate-y-0'
           } bg-percpass-500`}
         >
@@ -55,7 +59,10 @@ const Header: React.FC = () => {
           <li className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent">
             Kontakt
           </li>
-          <li className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent">
+          <li
+            className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
+            onClick={() => setRegisterModalIsOpen(true)}
+          >
             Rejestracja
           </li>
           <li className="flex">
@@ -70,6 +77,7 @@ const Header: React.FC = () => {
       </nav>
 
       <LoginModal isOpen={loginModalIsOpen} setIsOpen={setLoginModalIsOpen} />
+      <RegisterModal isOpen={registerModalIsOpen} setIsOpen={setRegisterModalIsOpen} />
     </header>
   )
 }

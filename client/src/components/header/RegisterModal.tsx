@@ -2,25 +2,19 @@ import { useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 
-interface LoginModalProps {
+interface RegisterModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const LoginModal = (props: LoginModalProps) => {
+const RegisterModal = (props: RegisterModalProps) => {
   useEffect(() => {
-    if (props.isOpen) {
-      //const topScroll = window.pageYOffset || document.documentElement.scrollTop
-      //const leftScroll = window.pageXOffset || document.documentElement.scrollLeft
-      //window.onscroll = () => window.scrollTo(leftScroll, topScroll)
-      document.body.classList.add('noscroll')
-    }
+    if (props.isOpen) document.body.classList.add('noscroll')
     return () => {}
   }, [props.isOpen])
 
   const closeHandler = () => {
     props.setIsOpen(false)
-    //window.onscroll = () => null
     document.body.classList.remove('noscroll')
   }
 
@@ -62,7 +56,7 @@ const LoginModal = (props: LoginModalProps) => {
           leaveTo="opacity-0 scale-95"
         >
           <div className="flex items-center justify-between w-full text-2xl text-gray-800">
-            <h2 className="font-semibold">Logowanie</h2>
+            <h2 className="font-semibold">Rejestracja</h2>
             <FaTimes
               className="transition cursor-pointer hover:text-gray-700 active:scale-95"
               onClick={() => closeHandler()}
@@ -71,9 +65,9 @@ const LoginModal = (props: LoginModalProps) => {
 
           <div className="flex flex-col w-full my-4 overflow-y-auto">
             <div className="flex flex-col text-gray-800 md:mx-6">
-              <label htmlFor="loginEmail">Email:</label>
+              <label htmlFor="registerEmail">Email:</label>
               <input
-                name="loginEmail"
+                name="registerEmail"
                 type="text"
                 placeholder="Podaj email"
                 className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
@@ -81,17 +75,17 @@ const LoginModal = (props: LoginModalProps) => {
             </div>
 
             <div className="flex flex-col items-center text-gray-800 md:mx-6">
-              <label className="mb-1 w-36">Kod logowania:</label>
+              <label className="mb-1 w-36">Kod rejestracji:</label>
               <input
-                name="loginNumberOne"
+                name="registerNumberOne"
                 type="text"
                 placeholder="0000"
                 className="pl-[1.37rem] pr-1 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 confirmation-number-input"
               />
 
               <div className="mt-4 text-xs text-center text-gray-700">
-                Kod logowania jest ważny przez <span className="font-semibold">15 minut</span>. Zaloguj się na swoje konto w
-                przeciągu tego czasu.
+                Kod rejestracji jest ważny przez <span className="font-semibold">15 minut</span>. Wejdź na swoje konto w
+                przeciągu tego czasu, aby potwierdzić rejestrację.
               </div>
             </div>
           </div>
@@ -102,7 +96,7 @@ const LoginModal = (props: LoginModalProps) => {
               type="submit"
               className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:bg-percpass-400 active:scale-95 disabled:opacity-90 disabled:bg-percpass-400"
             >
-              Zaloguj się
+              Zarejestruj się
             </button>
           </div>
         </Transition.Child>
@@ -111,4 +105,4 @@ const LoginModal = (props: LoginModalProps) => {
   )
 }
 
-export default LoginModal
+export default RegisterModal
