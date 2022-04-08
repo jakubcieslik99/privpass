@@ -1,4 +1,4 @@
-const AddPasswordModal: React.FC = () => {
+const AddPasswordModal = () => {
   return <main className="">AddPasswordModal</main>
 }
 

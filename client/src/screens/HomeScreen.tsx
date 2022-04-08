@@ -30,11 +30,11 @@ const HomeScreen: React.FC = () => {
       </div>
 
       <div className="h-screen bg-red-100">
-        <div className="app-container">Content 1</div>
+        <div className="app-container">Produkt</div>
       </div>
 
       <div className="h-screen bg-green-100">
-        <div className="app-container">Content 2</div>
+        <div className="app-container">Kontakt</div>
       </div>
     </main>
   )
