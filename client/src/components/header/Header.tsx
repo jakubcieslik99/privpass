@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
@@ -8,16 +8,14 @@ const Header: React.FC = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false)
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false)
   const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false)
-
   //temporary
   const [isLogged] = useState({
     status: true,
     email: 'dev@jakubcieslik.com',
   })
 
-  const redirectHandler = () => {
-    console.log('redirect')
-  }
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const logoutHandler = () => {
     console.log('logout')
@@ -43,8 +41,11 @@ const Header: React.FC = () => {
           {isLogged.status ? (
             <>
               <li
-                className="flex items-center px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
-                onClick={redirectHandler}
+                className={`flex items-center px-5 py-3 transition md:py-2 md:px-3 md:mr-1 text-percpass-300 ${
+                  pathname !== '/profile' &&
+                  'cursor-pointer hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95'
+                }`}
+                onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
               >
                 <FaUser className="mr-1" />
                 {isLogged.email}
@@ -92,8 +93,10 @@ const Header: React.FC = () => {
           {isLogged.status ? (
             <>
               <li
-                className="flex items-center px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
-                onClick={redirectHandler}
+                className={`flex items-center px-5 py-3 transition-colors md:py-2 md:px-3 md:mr-2 text-percpass-300 ${
+                  pathname !== '/profile' && 'cursor-pointer hover:text-white hover:bg-percpass-400 md:hover:bg-transparent'
+                } `}
+                onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
               >
                 <FaUser className="mr-1" />
                 {isLogged.email}

@@ -24,7 +24,6 @@
 
 body {
   overflow: overlay;
-  /*overflow-y: scroll;*/
   @apply bg-gray-600 scroll-smooth;
 }
 .noscroll {
@@ -42,7 +41,7 @@ body {
     rgba(54, 67, 146, 1) 100%
   );
   min-height: calc(100vh - 64px - 116px);
-  @apply mt-16 text-white md:mt-24;
+  @apply mt-16 overflow-hidden text-white md:mt-24;
 }
 .app-hero-screen {
   background: rgb(35, 17, 105);
@@ -56,7 +55,7 @@ body {
   @apply h-screen text-white;
 }
 .app-container {
-  @apply mx-auto xl:container;
+  @apply xl:container;
 }
 
 .confirmation-number-input {

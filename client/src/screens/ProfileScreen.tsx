@@ -1,12 +1,16 @@
+//import { useState } from 'react'
 import { FaTools, FaShareAlt, FaSearch, FaPlus } from 'react-icons/fa'
 import ListedPassword from '../components/profileScreen/ListedPassword'
 
 const ProfileScreen: React.FC = () => {
+  //const [editModalIsOpen, setEditModalIsOpen] = useState(false)
+  //const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false)
+
   return (
     <main className="app-screen">
-      <div className="grid gap-3 px-3 py-9 app-container md:grid-cols-7">
-        <div className="md:col-span-2 md:order-2">
-          <div className="px-4 pt-3 pb-5 rounded-md shadow-lg bg-percpass-500">
+      <div className="grid gap-3 px-3 py-9 app-container md:grid-cols-3 lg:grid-cols-4">
+        <div className="md:order-2">
+          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-percpass-500">
             <h2 className="flex items-center mb-4 text-xl">
               <FaTools className="mr-2 text-2xl" />
               Narzędzia:
@@ -14,7 +18,6 @@ const ProfileScreen: React.FC = () => {
 
             <div className="mb-4">
               <div className="mb-1 ml-3 text-xs">Wyszukiwanie:</div>
-
               <div className="flex">
                 <input
                   type="text"
@@ -29,7 +32,6 @@ const ProfileScreen: React.FC = () => {
 
             <div className="mb-4">
               <div className="mb-1 ml-3 text-xs">Sortowanie:</div>
-
               <select
                 className="w-full px-3 py-2 text-gray-800 transition border-none rounded-full cursor-pointer focus:outline-none"
                 defaultValue="1"
@@ -41,9 +43,8 @@ const ProfileScreen: React.FC = () => {
               </select>
             </div>
 
-            <div className="">
+            <div>
               <div className="mb-1 ml-3 text-xs">Dodawanie:</div>
-
               <button className="flex items-center px-3 py-2 transition border rounded-full border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 text-md">
                 <FaPlus className="mr-2" />
                 Dodaj nowe hasło
@@ -52,8 +53,8 @@ const ProfileScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className="md:col-span-5 md:order-1">
-          <div className="px-4 pt-3 pb-5 rounded-md shadow-lg bg-percpass-500">
+        <div className="block overflow-hidden md:col-span-2 lg:col-span-3 md:order-1">
+          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-percpass-500">
             <h2 className="flex items-center mb-5 text-xl">
               <FaShareAlt className="mr-2 text-2xl" />
               Twoje hasła:
