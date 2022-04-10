@@ -58,7 +58,8 @@ body {
   @apply xl:container;
 }
 
-.confirmation-number-input {
+.confirmation-number-input,
+.password-label {
   font-family: 'Inconsolata', monospace;
 }
 

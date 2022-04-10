@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false)
   //temporary
   const [isLogged] = useState({
-    status: true,
+    status: false,
     email: 'dev@jakubcieslik.com',
   })
 

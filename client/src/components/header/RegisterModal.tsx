@@ -1,11 +1,16 @@
 import { useEffect } from 'react'
+//import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
+//import { registerFirstErrors, registerSecondErrors } from '../../validations/signinValidations'
 
 interface RegisterModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+//interface RegisterFirstFormValues { registerEmail: string }
+//interface RegisterSecondFormValues { registerCode: string }
 
 const RegisterModal = (props: RegisterModalProps) => {
   useEffect(() => {
@@ -68,6 +73,7 @@ const RegisterModal = (props: RegisterModalProps) => {
               <label htmlFor="registerEmail">Email:</label>
               <input
                 name="registerEmail"
+                id="registerEmail"
                 type="text"
                 placeholder="Podaj email"
                 className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
@@ -75,9 +81,12 @@ const RegisterModal = (props: RegisterModalProps) => {
             </div>
 
             <div className="flex flex-col items-center text-gray-800 md:mx-6">
-              <label className="mb-1 w-36">Kod rejestracji:</label>
+              <label htmlFor="registerCode" className="mb-1 w-36">
+                Kod rejestracji:
+              </label>
               <input
-                name="registerNumberOne"
+                name="registerCode"
+                id="registerCode"
                 type="text"
                 placeholder="0000"
                 className="pl-[1.37rem] pr-1 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 confirmation-number-input"
@@ -94,7 +103,7 @@ const RegisterModal = (props: RegisterModalProps) => {
             <button
               disabled={false}
               type="submit"
-              className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:bg-percpass-400 active:scale-95 disabled:opacity-90 disabled:bg-percpass-400"
+              className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
             >
               Zarejestruj się
             </button>
