@@ -1,4 +1,4 @@
-const registerFirstErrors = {
+const registerErrors = {
   registerEmail: {
     required: 'Pole wymagane.',
     maxLength: {
@@ -6,8 +6,6 @@ const registerFirstErrors = {
       message: 'Maksymalna długość adresu email to 50 znaków.',
     },
   },
-}
-const registerSecondErrors = {
   registerCode: {
     required: 'Pole wymagane.',
     maxLength: {
@@ -17,7 +15,7 @@ const registerSecondErrors = {
   },
 }
 
-const loginFirstErrors = {
+const loginErrors = {
   loginEmail: {
     required: 'Pole wymagane.',
     maxLength: {
@@ -25,8 +23,6 @@ const loginFirstErrors = {
       message: 'Maksymalna długość adresu email to 50 znaków.',
     },
   },
-}
-const loginSecondErrors = {
   loginCode: {
     required: 'Pole wymagane.',
     maxLength: {
@@ -36,4 +32,4 @@ const loginSecondErrors = {
   },
 }
 
-export { registerFirstErrors, registerSecondErrors, loginFirstErrors, loginSecondErrors }
+export { registerErrors, loginErrors }

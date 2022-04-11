@@ -63,6 +63,11 @@ body {
   font-family: 'Inconsolata', monospace;
 }
 
+#product-section,
+#contact-section {
+  min-height: calc(100vh - 64px);
+}
+
 /*-----BREAKPOINTS-----*/
 /*from sm*/
 @media (min-width: 640px) {
@@ -71,6 +76,11 @@ body {
 @media (min-width: 768px) {
   .app-screen {
     min-height: calc(100vh - 96px - 56px);
+  }
+
+  #product-section,
+  #contact-section {
+    min-height: calc(100vh - 96px);
   }
 }
 /*from lg*/

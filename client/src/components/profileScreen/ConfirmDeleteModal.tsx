@@ -86,6 +86,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
               Usuń
             </button>
             <button
+              type="button"
               className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95"
               onClick={() => closeHandler()}
             >
