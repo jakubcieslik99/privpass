@@ -12,13 +12,14 @@ const RegisterModal = (props: RegisterModalProps) => {
   const [registerFormSwitch, setRegisterFormSwitch] = useState(true)
 
   useEffect(() => {
-    if (props.isOpen) document.body.classList.add('noscroll')
+    if (props.isOpen) document.body.classList.add('no-scroll')
     return () => {}
   }, [props.isOpen])
 
   const closeHandler = () => {
     props.setIsOpen(false)
-    document.body.classList.remove('noscroll')
+    document.body.classList.remove('no-scroll')
+    setTimeout(() => setRegisterFormSwitch(true), 200)
   }
 
   return (

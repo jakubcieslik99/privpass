@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition } from '@headlessui/react'
 import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'
 import { editPasswordErrors } from '../../validations/passwordValidations'
+import Error from '../universal/Error'
 
 interface EditPasswordModalProps {
   isOpen: boolean
@@ -21,6 +23,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
 
   const {
     register,
+    watch,
     setValue,
     formState: { errors },
     handleSubmit,
@@ -30,10 +33,11 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
       editPassword: '',
     },
   })
+  const watchEditPassword = watch('editPassword')
 
   useEffect(() => {
     if (props.isOpen) {
-      document.body.classList.add('noscroll')
+      document.body.classList.add('no-scroll')
       console.log('fetch ' + props.passwordToEdit + ' password data')
     }
     return () => {}
@@ -45,24 +49,16 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
     return () => {}
   }, [setValue])
 
-  //temporary
-  useEffect(() => {
-    if (Object.keys(errors).length !== 0 && errors.constructor === Object) {
-      console.log(errors.editName)
-      console.log(errors.editPassword)
-    }
-  }, [errors])
-
   const closeHandler = () => {
     console.log('reset fetched password')
 
     props.setIsOpen(false)
+    document.body.classList.remove('no-scroll')
     setTimeout(() => {
       setValue('editName', '')
       setValue('editPassword', '')
       setPasswordToShow(false)
     }, 200)
-    document.body.classList.remove('noscroll')
   }
 
   const submitHandler: SubmitHandler<EditPasswordFormValues> = data => {
@@ -120,6 +116,19 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                 placeholder="Podaj nazwę"
                 className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
               />
+
+              <div className="grid">
+                <Error
+                  isOpen={errors.editName?.type === 'required' ? true : false}
+                  message={editPasswordErrors.editName.required.message}
+                  styling="mt-1"
+                />
+                <Error
+                  isOpen={errors.editName?.type === 'maxLength' ? true : false}
+                  message={editPasswordErrors.editName.maxLength.message}
+                  styling="mt-1"
+                />
+              </div>
             </div>
 
             <div className="relative flex flex-col mt-3 text-gray-800 md:mx-6">
@@ -148,6 +157,27 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                     }`}
                   />
                 </button>
+              </div>
+
+              <PasswordStrengthBar
+                className="mt-[3px] mr-11"
+                password={watchEditPassword}
+                minLength={1}
+                scoreWords={['bardzo słabe', 'słabe', 'przeciętne', 'silne', 'bardzo silne']}
+                shortScoreWord={'za krótkie'}
+              />
+
+              <div className="grid">
+                <Error
+                  isOpen={errors.editPassword?.type === 'required' ? true : false}
+                  message={editPasswordErrors.editPassword.required.message}
+                  styling="mt-1"
+                />
+                <Error
+                  isOpen={errors.editPassword?.type === 'maxLength' ? true : false}
+                  message={editPasswordErrors.editPassword.maxLength.message}
+                  styling="mt-1"
+                />
               </div>
             </div>
           </div>

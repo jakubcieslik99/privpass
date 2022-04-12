@@ -13,7 +13,7 @@ const ProfileScreen: React.FC = () => {
   const [passwordToDelete, setPasswordToDelete] = useState({ id: '', name: '' })
 
   return (
-    <main className="app-screen">
+    <main className="gradient-primary app-screen">
       <div className="grid gap-3 px-3 py-9 app-container md:grid-cols-3 lg:grid-cols-4">
         <div className="md:order-2">
           <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-percpass-500">

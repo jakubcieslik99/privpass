@@ -73,7 +73,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
                 {'**************************************************'}
               </Transition>
               <Transition
-                className="absolute top-0 left-0 h-14 pt-[14px] pb-[6px] select-all tracking-widest password-label"
+                className="absolute top-0 left-0 h-14 pt-[14px] pb-[6px] select-all tracking-widest monospace-font"
                 show={passwordToShow}
                 enter="ease-out duration-200"
                 enterFrom="opacity-0"

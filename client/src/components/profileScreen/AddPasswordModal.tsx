@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition } from '@headlessui/react'
 import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'
 import { addPasswordErrors } from '../../validations/passwordValidations'
+import Error from '../universal/Error'
 
 interface AddPasswordModalProps {
   isOpen: boolean
@@ -19,6 +21,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
 
   const {
     register,
+    watch,
     setValue,
     formState: { errors },
     handleSubmit,
@@ -28,28 +31,21 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
       addPassword: '',
     },
   })
+  const watchAddPassword = watch('addPassword')
 
   useEffect(() => {
-    if (props.isOpen) document.body.classList.add('noscroll')
+    if (props.isOpen) document.body.classList.add('no-scroll')
     return () => {}
   }, [props.isOpen])
 
-  //temporary
-  useEffect(() => {
-    if (Object.keys(errors).length !== 0 && errors.constructor === Object) {
-      console.log(errors.addName)
-      console.log(errors.addPassword)
-    }
-  }, [errors])
-
   const closeHandler = () => {
     props.setIsOpen(false)
+    document.body.classList.remove('no-scroll')
     setTimeout(() => {
       setValue('addName', '')
       setValue('addPassword', '')
       setPasswordToShow(false)
     }, 200)
-    document.body.classList.remove('noscroll')
   }
 
   const submitHandler: SubmitHandler<AddPasswordFormValues> = data => {
@@ -107,6 +103,19 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                 placeholder="Podaj nazwę"
                 className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
               />
+
+              <div className="grid">
+                <Error
+                  isOpen={errors.addName?.type === 'required' ? true : false}
+                  message={addPasswordErrors.addName.required.message}
+                  styling="mt-1"
+                />
+                <Error
+                  isOpen={errors.addName?.type === 'maxLength' ? true : false}
+                  message={addPasswordErrors.addName.maxLength.message}
+                  styling="mt-1"
+                />
+              </div>
             </div>
 
             <div className="relative flex flex-col mt-3 text-gray-800 md:mx-6">
@@ -135,6 +144,27 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                     }`}
                   />
                 </button>
+              </div>
+
+              <PasswordStrengthBar
+                className="mt-[3px] mr-11"
+                password={watchAddPassword}
+                minLength={1}
+                scoreWords={['bardzo słabe', 'słabe', 'przeciętne', 'silne', 'bardzo silne']}
+                shortScoreWord={'za krótkie'}
+              />
+
+              <div className="grid">
+                <Error
+                  isOpen={errors.addPassword?.type === 'required' ? true : false}
+                  message={addPasswordErrors.addPassword.required.message}
+                  styling="mt-1"
+                />
+                <Error
+                  isOpen={errors.addPassword?.type === 'maxLength' ? true : false}
+                  message={addPasswordErrors.addPassword.maxLength.message}
+                  styling="mt-1"
+                />
               </div>
             </div>
           </div>

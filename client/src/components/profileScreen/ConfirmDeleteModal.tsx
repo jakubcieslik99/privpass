@@ -11,14 +11,14 @@ interface ConfirmDeleteModalProps {
 
 const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
   useEffect(() => {
-    if (props.isOpen) document.body.classList.add('noscroll')
+    if (props.isOpen) document.body.classList.add('no-scroll')
     return () => {}
   }, [props.isOpen])
 
   const closeHandler = () => {
     props.setIsOpen(false)
     setTimeout(() => props.setPasswordToDelete({ id: '', name: '' }), 200)
-    document.body.classList.remove('noscroll')
+    document.body.classList.remove('no-scroll')
   }
 
   const submitHandler = (event: React.SyntheticEvent<HTMLElement>) => {

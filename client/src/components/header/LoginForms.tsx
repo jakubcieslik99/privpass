@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { loginErrors } from '../../validations/signinValidations'
+import Error from '../universal/Error'
 
 interface LoginEmailFormProps {
   formSwitch: boolean
@@ -17,14 +18,15 @@ interface LoginEmailFormValues {
 const LoginEmailForm = (props: LoginEmailFormProps) => {
   const {
     register,
-    setValue,
-    formState: { errors },
     handleSubmit,
+    reset,
+    formState: { errors },
   } = useForm<LoginEmailFormValues>({ defaultValues: { loginEmail: '' } })
 
   const submitHandler: SubmitHandler<LoginEmailFormValues> = data => {
     console.log(data)
     props.setFormSwitch(!props.formSwitch)
+    setTimeout(() => reset(), 200)
   }
 
   return (
@@ -58,6 +60,24 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
             placeholder="Podaj email"
             className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
           />
+
+          <div className="grid">
+            <Error
+              isOpen={errors.loginEmail?.type === 'required' ? true : false}
+              message={loginErrors.loginEmail.required.message}
+              styling="mt-1"
+            />
+            <Error
+              isOpen={errors.loginEmail?.type === 'maxLength' ? true : false}
+              message={loginErrors.loginEmail.maxLength.message}
+              styling="mt-1"
+            />
+            <Error
+              isOpen={errors.loginEmail?.type === 'pattern' ? true : false}
+              message={loginErrors.loginEmail.pattern.message}
+              styling="mt-1"
+            />
+          </div>
         </div>
       </div>
 
@@ -87,14 +107,15 @@ interface LoginCodeFormValues {
 const LoginCodeForm = (props: LoginCodeFormProps) => {
   const {
     register,
-    setValue,
-    formState: { errors },
     handleSubmit,
+    reset,
+    formState: { errors },
   } = useForm<LoginCodeFormValues>({ defaultValues: { loginCode: '' } })
 
   const submitHandler: SubmitHandler<LoginCodeFormValues> = data => {
     console.log(data)
     props.setFormSwitch(!props.formSwitch)
+    setTimeout(() => reset(), 200)
   }
 
   return (
@@ -128,8 +149,21 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
             id="loginCode"
             type="text"
             placeholder="0000"
-            className="pl-[1.37rem] pr-1 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 confirmation-number-input"
+            className="pl-[1.37rem] pr-1 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 monospace-font"
           />
+
+          <div className="grid">
+            <Error
+              isOpen={errors.loginCode?.type === 'required' ? true : false}
+              message={loginErrors.loginCode.required.message}
+              styling="mt-1"
+            />
+            <Error
+              isOpen={errors.loginCode?.type === 'pattern' ? true : false}
+              message={loginErrors.loginCode.pattern.message}
+              styling="mt-1"
+            />
+          </div>
 
           <div className="mt-4 text-xs text-center text-gray-700">
             Kod logowania jest ważny przez <span className="font-semibold">15 minut</span>. Zaloguj się na swoje konto w

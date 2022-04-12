@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { registerErrors } from '../../validations/signinValidations'
+import Error from '../universal/Error'
 
 interface RegisterEmailFormProps {
   formSwitch: boolean
@@ -17,14 +18,15 @@ interface RegisterEmailFormValues {
 const RegisterEmailForm = (props: RegisterEmailFormProps) => {
   const {
     register,
-    setValue,
-    formState: { errors },
     handleSubmit,
+    reset,
+    formState: { errors },
   } = useForm<RegisterEmailFormValues>({ defaultValues: { registerEmail: '' } })
 
   const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
     console.log(data)
     props.setFormSwitch(!props.formSwitch)
+    setTimeout(() => reset(), 200)
   }
 
   return (
@@ -58,6 +60,24 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
             placeholder="Podaj email"
             className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
           />
+
+          <div className="grid">
+            <Error
+              isOpen={errors.registerEmail?.type === 'required' ? true : false}
+              message={registerErrors.registerEmail.required.message}
+              styling="mt-1"
+            />
+            <Error
+              isOpen={errors.registerEmail?.type === 'maxLength' ? true : false}
+              message={registerErrors.registerEmail.maxLength.message}
+              styling="mt-1"
+            />
+            <Error
+              isOpen={errors.registerEmail?.type === 'pattern' ? true : false}
+              message={registerErrors.registerEmail.pattern.message}
+              styling="mt-1"
+            />
+          </div>
         </div>
       </div>
 
@@ -87,14 +107,15 @@ interface RegisterCodeFormValues {
 const RegisterCodeForm = (props: RegisterCodeFormProps) => {
   const {
     register,
-    setValue,
-    formState: { errors },
     handleSubmit,
+    reset,
+    formState: { errors },
   } = useForm<RegisterCodeFormValues>({ defaultValues: { registerCode: '' } })
 
   const submitHandler: SubmitHandler<RegisterCodeFormValues> = data => {
     console.log(data)
     props.setFormSwitch(!props.formSwitch)
+    setTimeout(() => reset(), 200)
   }
 
   return (
@@ -128,8 +149,21 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
             id="registerCode"
             type="text"
             placeholder="0000"
-            className="pl-[1.37rem] pr-1 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 confirmation-number-input"
+            className="pl-[1.37rem] pr-1 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 monospace-font"
           />
+
+          <div className="grid">
+            <Error
+              isOpen={errors.registerCode?.type === 'required' ? true : false}
+              message={registerErrors.registerCode.required.message}
+              styling="mt-1"
+            />
+            <Error
+              isOpen={errors.registerCode?.type === 'pattern' ? true : false}
+              message={registerErrors.registerCode.pattern.message}
+              styling="mt-1"
+            />
+          </div>
 
           <div className="mt-4 text-xs text-center text-gray-700">
             Kod rejestracji jest ważny przez <span className="font-semibold">15 minut</span>. Wejdź na swoje konto w

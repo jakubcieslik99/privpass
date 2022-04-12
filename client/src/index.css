@@ -26,41 +26,43 @@ body {
   overflow: overlay;
   @apply bg-gray-600 scroll-smooth;
 }
-.noscroll {
+.gradient-primary {
+  background: rgb(35, 17, 105);
+  background: linear-gradient(
+    185deg,
+    rgba(35, 17, 105, 1) 0%,
+    rgba(35, 17, 105, 1) 50%,
+    rgba(52, 38, 132, 1) 85%,
+    rgba(54, 67, 146, 1) 100%
+  );
+}
+.no-scroll {
   overflow: hidden;
+}
+.monospace-font {
+  font-family: 'Inconsolata', monospace;
+}
+
+/*-----COMPONENTS-----*/
+#error {
+  grid-area: 1 / 1;
+  @apply px-[11px] py-[5px] text-red-400 bg-red-200 border-2 border-red-400 rounded-lg text-sm;
+}
+#success {
+  grid-area: 1 / 1;
+  @apply px-[11px] py-[5px] text-green-400 bg-green-200 border-2 border-green-400 rounded-lg text-sm;
 }
 
 /*-----ELEMENTS-----*/
 .app-screen {
-  background: rgb(35, 17, 105);
-  background: linear-gradient(
-    185deg,
-    rgba(35, 17, 105, 1) 0%,
-    rgba(35, 17, 105, 1) 50%,
-    rgba(52, 38, 132, 1) 85%,
-    rgba(54, 67, 146, 1) 100%
-  );
   min-height: calc(100vh - 64px - 116px);
   @apply mt-16 overflow-hidden text-white md:mt-24;
 }
 .app-hero-screen {
-  background: rgb(35, 17, 105);
-  background: linear-gradient(
-    185deg,
-    rgba(35, 17, 105, 1) 0%,
-    rgba(35, 17, 105, 1) 50%,
-    rgba(52, 38, 132, 1) 85%,
-    rgba(54, 67, 146, 1) 100%
-  );
   @apply h-screen text-white;
 }
 .app-container {
   @apply xl:container;
-}
-
-.confirmation-number-input,
-.password-label {
-  font-family: 'Inconsolata', monospace;
 }
 
 #product-section,

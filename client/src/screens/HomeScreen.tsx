@@ -13,7 +13,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <main>
-      <div id="hero-section" className="h-screen pt-16 md:pt-24 app-hero-screen">
+      <div id="hero-section" className="h-screen pt-16 md:pt-24 gradient-primary app-hero-screen">
         <div className="grid h-full grid-flow-col grid-rows-6 app-container md:grid-flow-row md:grid-cols-12 md:grid-rows-1">
           <div className="flex items-center justify-center row-span-2 md:col-span-5">
             <div className="flex flex-col items-center text-white">
@@ -42,12 +42,29 @@ const HomeScreen: React.FC = () => {
         </div>
       </div>
 
-      <div id="product-section" className="bg-red-100">
-        <div className="app-container">Produkt</div>
+      <div id="product-section" className="bg-indigo-100">
+        <div className="app-container">
+          <p className="pt-6">PercPASS to bezpieczny menedżer Twoich haseł.</p>
+          <p>Od teraz nie musisz pamiętać wszystkich z nich.</p>
+          <p>Popraw swoje bezpieczeństwo w sieci z PercPASS!</p>
+          <p>
+            Logowanie do serwisu odbywa się za pomocą kodu uwierzytelniającego wysyłanego na maila podanego podczas
+            rejestracji.
+          </p>
+          <p>
+            Po zalogowaniu otrzymujesz listę swoich wszystkich zapisanych haseł w ukrytej formie, dla zwiększenia
+            bezpieczeństwa.
+          </p>
+          <p>Przechowywane przez nas hasła są zaszyfrowane metodą AES-256</p>
+        </div>
       </div>
 
-      <div id="contact-section" className="bg-green-100">
-        <div className="app-container">Kontakt</div>
+      <div id="contact-section" className="bg-indigo-200">
+        <div className="app-container">
+          <p className="pt-6">Masz pytania? Skontaktuj się z nami!</p>
+          <p>email kontaktowy:</p>
+          <p>contact@jakubcieslik.com</p>
+        </div>
       </div>
     </main>
   )

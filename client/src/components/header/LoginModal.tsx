@@ -16,7 +16,7 @@ const LoginModal = (props: LoginModalProps) => {
       //const topScroll = window.pageYOffset || document.documentElement.scrollTop
       //const leftScroll = window.pageXOffset || document.documentElement.scrollLeft
       //window.onscroll = () => window.scrollTo(leftScroll, topScroll)
-      document.body.classList.add('noscroll')
+      document.body.classList.add('no-scroll')
     }
     return () => {}
   }, [props.isOpen])
@@ -24,7 +24,8 @@ const LoginModal = (props: LoginModalProps) => {
   const closeHandler = () => {
     props.setIsOpen(false)
     //window.onscroll = () => null
-    document.body.classList.remove('noscroll')
+    document.body.classList.remove('no-scroll')
+    setTimeout(() => setLoginFormSwitch(true), 200)
   }
 
   return (
