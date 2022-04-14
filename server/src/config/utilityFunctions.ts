@@ -13,8 +13,10 @@ const config = {
 
   MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/percpass',
 
-  JWT_SECRET: process.env.JWT_SECRET || 'jwt_secret_jwt_secret_jwt_secret',
-  CRYPTO_SECRET: process.env.CRYPTO_SECRET || 'crypto_secret_crypto_secret_crypto_secret',
+  JWT_ACCESS_TOKEN_SECRET: process.env.JWT_ACCESS_TOKEN_SECRET || 'JWT_ACCESS_TOKEN_SECRET',
+  JWT_REFRESH_TOKEN_SECRET: process.env.JWT_REFRESH_TOKEN_SECRET || 'JWT_REFRESH_TOKEN_SECRET',
+
+  CRYPTO_SECRET: process.env.CRYPTO_SECRET || 'CRYPTO_SECRET',
 }
 
 const log = logger({
