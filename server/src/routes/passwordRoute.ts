@@ -1,14 +1,21 @@
 import express from 'express'
-import createError from 'http-errors'
+import { isValidId } from '../middlewares/validityMiddleware'
+import { isAuth } from '../middlewares/authMiddleware'
+import {
+  getUserPasswords,
+  getUserPassword,
+  createUserPassword,
+  updateUserPassword,
+  deleteUserPassword,
+} from '../controllers/passwordController'
 
 const router = express.Router()
 
-router.get('/', async (req, res, next) => {
-  try {
-    return res.status(200).send({ message: 'Hello World!' })
-  } catch (error) {
-    return next(error)
-  }
-})
+router
+  .get('/getUserPasswords', isAuth, getUserPasswords)
+  .get('/getUserPassword/:id', isValidId('id', null), isAuth, getUserPassword)
+  .post('/createUserPassword', isAuth, createUserPassword)
+  .put('/updateUserPassword/:id', isValidId('id', null), isAuth, updateUserPassword)
+  .delete('/deleteUserPassword/:id', isValidId('id', null), isAuth, deleteUserPassword)
 
 export default router

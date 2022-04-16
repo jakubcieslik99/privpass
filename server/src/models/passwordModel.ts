@@ -1,13 +1,4 @@
-import mongoose, { ObjectId } from 'mongoose'
-
-/*export interface PasswordValues {
-  addedBy: ObjectId
-  name: string
-  encryption: string
-  vi: string
-  createdAt: Date
-  updatedAt: Date
-}*/
+import mongoose from 'mongoose'
 
 const passwordSchema = new mongoose.Schema(
   {

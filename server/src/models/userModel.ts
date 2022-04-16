@@ -1,20 +1,10 @@
-import mongoose, { ObjectId } from 'mongoose'
-
-export interface UserValues {
-  _id: ObjectId
-  email: string
-  code: string | null
-  refreshToken: string | null
-  confirmed: boolean
-  createdAt: Date
-  updatedAt: Date
-}
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, lowercase: true, unique: true, dropDups: true },
     code: { type: String },
-    refreshToken: { type: String },
+    refreshToken: { type: String, default: null },
     confirmed: { type: Boolean, default: false },
   },
   {
