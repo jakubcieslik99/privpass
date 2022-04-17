@@ -5,6 +5,7 @@ import cors from 'cors'
 import createError from 'http-errors'
 import { config, log } from './config/utilityFunctions'
 import databaseConnect from './config/databaseConnect'
+import corsOptions from './config/corsOptions'
 import isError from './middlewares/errorMiddleware'
 import userRoute from './routes/userRoute'
 import passwordRoute from './routes/passwordRoute'
@@ -16,13 +17,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cookieParser())
 app.use(helmet())
-app.use(
-  cors({
-    origin: config.WEBAPP_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  })
-)
+app.use(cors(corsOptions))
 
 //routes
 app.use('/users', userRoute)

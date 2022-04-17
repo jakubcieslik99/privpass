@@ -4,7 +4,12 @@ import createError from 'http-errors'
 import jwt from 'jsonwebtoken'
 import User from '../models/userModel'
 import { config } from '../config/utilityFunctions'
-import { registerEmailValidation, registerCodeValidation } from '../validations/userValidation'
+import {
+  registerEmailValidation,
+  registerCodeValidation,
+  loginEmailValidation,
+  loginCodeValidation,
+} from '../validations/userValidation'
 import { getAccessToken, getRefreshToken } from '../functions/generateTokens'
 
 //POST - /users/registerSendCode
@@ -23,7 +28,7 @@ const registerSendCode = async (req: Request, res: Response, next: NextFunction)
 
     return res
       .status(201)
-      .send({ message: 'Zarejestrowano pomyślnie. Teraz potwierdź e-mail otrzymanym kodem aby się zalogować.' })
+      .send({ message: 'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.' })
   } catch (error: any) {
     if (error.isJoi === true) {
       error.status = 422
@@ -50,13 +55,72 @@ const registerConfirmCode = async (req: Request, res: Response, next: NextFuncti
     await confirmUser.save()
 
     return res
+      .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 1000 * 900 })
       .status(200)
-      .cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 1000 * 900 })
       .send({
         message: 'Potwierdzono konto pomyślnie. Nastąpi przekierowanie do profilu.',
         user: {
           id: confirmUser._id,
           email: confirmUser.email,
+          accessToken: accessToken,
+        },
+      })
+  } catch (error: any) {
+    if (error.isJoi === true) {
+      error.status = 422
+      error.message = 'Przesłano błędne dane.'
+    }
+    return next(error)
+  }
+}
+
+//POST - /users/loginSendCode
+const loginSendCode = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const validationResult = await loginEmailValidation.validateAsync(req.body)
+
+    const loginUser = await User.findOne({ email: validationResult.email })
+    if (!loginUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
+
+    if (!loginUser.confirmed) throw createError(401, 'Rejestracja nie została potwierdzona.')
+
+    loginUser.code = '2137'
+
+    await loginUser.save()
+
+    return res.status(200).send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.' })
+  } catch (error: any) {
+    if (error.isJoi === true) {
+      error.status = 422
+      error.message = 'Przesłano błędne dane.'
+    }
+    return next(error)
+  }
+}
+//POST - /users/loginConfirmCode
+const loginConfirmCode = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const validationResult = await loginCodeValidation.validateAsync(req.body)
+
+    //check also email
+    const loginUser = await User.findOne({ code: validationResult.code })
+    if (!loginUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
+
+    const accessToken = await getAccessToken(loginUser._id, loginUser.email)
+    const refreshToken = await getRefreshToken(loginUser._id, loginUser.email)
+
+    loginUser.code = null
+    loginUser.refreshToken = refreshToken
+    await loginUser.save()
+
+    return res
+      .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 1000 * 900 })
+      .status(200)
+      .send({
+        message: 'Potwierdzono logowanie pomyślnie. Nastąpi przekierowanie do profilu.',
+        user: {
+          id: loginUser._id,
+          email: loginUser.email,
           accessToken: accessToken,
         },
       })
@@ -106,6 +170,23 @@ const refreshAccessToken = async (req: Request, res: Response, next: NextFunctio
   })*/
 }
 //GET - /users/logoutUser
-const logoutUser = async (req: Request, res: Response, next: NextFunction) => {}
+const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const cookies = req.cookies
+    if (!cookies?.refreshToken) return res.sendStatus(204)
 
-export { registerSendCode, registerConfirmCode, refreshAccessToken, logoutUser }
+    const checkedUser = await User.findOne({ refreshToken: cookies.refreshToken })
+    if (!checkedUser)
+      return res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: true }).sendStatus(204)
+
+    checkedUser.refreshToken = null
+
+    await checkedUser.save()
+
+    return res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: true }).sendStatus(204)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export { registerSendCode, registerConfirmCode, loginSendCode, loginConfirmCode, refreshAccessToken, logoutUser }
