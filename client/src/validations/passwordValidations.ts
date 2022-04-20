@@ -15,8 +15,8 @@ const addPasswordErrors = {
       message: 'Pole wymagane.',
     },
     maxLength: {
-      value: 50,
-      message: 'Maksymalna długość hasła to 50 znaków.',
+      value: 60,
+      message: 'Maksymalna długość hasła to 60 znaków.',
     },
   },
 }
@@ -38,8 +38,8 @@ const editPasswordErrors = {
       message: 'Pole wymagane.',
     },
     maxLength: {
-      value: 50,
-      message: 'Maksymalna długość hasła to 50 znaków.',
+      value: 60,
+      message: 'Maksymalna długość hasła to 60 znaków.',
     },
   },
 }
