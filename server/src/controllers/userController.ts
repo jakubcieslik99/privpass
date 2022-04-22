@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 import createError from 'http-errors'
-//import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
+import voucher_codes from 'voucher-code-generator'
 import User from '../models/userModel'
-import { config } from '../config/utilityFunctions'
+import { config } from '../config/utilities'
 import {
   registerEmailValidation,
   registerCodeValidation,
@@ -11,6 +11,9 @@ import {
   loginCodeValidation,
 } from '../validations/userValidation'
 import { getAccessToken, getRefreshToken } from '../functions/generateTokens'
+import sendEmail from '../functions/sendEmail'
+import { registerSendCodeMessage } from '../messages/registerMessages'
+import { loginSendCodeMessage } from '../messages/loginMessages'
 
 //POST - /users/registerSendCode
 const registerSendCode = async (req: Request, res: Response, next: NextFunction) => {
@@ -20,11 +23,15 @@ const registerSendCode = async (req: Request, res: Response, next: NextFunction)
     const conflictUserEmail = await User.findOne({ email: validationResult.email })
     if (conflictUserEmail) throw createError(409, 'Istnieje już użytkownik o podanym adresie e-mail.')
 
+    const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
+
     const createUser = new User({
       email: validationResult.email,
-      code: '2137',
+      code: code,
     })
     await createUser.save()
+
+    await sendEmail(registerSendCodeMessage(validationResult.email, code))
 
     return res
       .status(201)
@@ -42,8 +49,7 @@ const registerConfirmCode = async (req: Request, res: Response, next: NextFuncti
   try {
     const validationResult = await registerCodeValidation.validateAsync(req.body)
 
-    //check also email
-    const confirmUser = await User.findOne({ code: validationResult.code })
+    const confirmUser = await User.findOne({ code: validationResult.code, email: validationResult.email })
     if (!confirmUser) throw createError(406, 'Błąd weryfikacji. Konto mogło zostać już potwierdzone.')
 
     const accessToken = await getAccessToken(confirmUser._id, confirmUser.email)
@@ -84,9 +90,13 @@ const loginSendCode = async (req: Request, res: Response, next: NextFunction) =>
 
     if (!loginUser.confirmed) throw createError(401, 'Rejestracja nie została potwierdzona.')
 
-    loginUser.code = '2137'
+    const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
+
+    loginUser.code = code
 
     await loginUser.save()
+
+    await sendEmail(loginSendCodeMessage(validationResult.email, code))
 
     return res.status(200).send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.' })
   } catch (error: any) {
@@ -102,8 +112,7 @@ const loginConfirmCode = async (req: Request, res: Response, next: NextFunction)
   try {
     const validationResult = await loginCodeValidation.validateAsync(req.body)
 
-    //check also email
-    const loginUser = await User.findOne({ code: validationResult.code })
+    const loginUser = await User.findOne({ code: validationResult.code, email: validationResult.email })
     if (!loginUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
 
     const accessToken = await getAccessToken(loginUser._id, loginUser.email)

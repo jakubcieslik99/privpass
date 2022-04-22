@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { HttpError } from 'http-errors'
-import { log } from '../config/utilityFunctions'
+import { log } from '../config/utilities'
 
 const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunction) => {
   log.error(`HTTP (${error.status || 500}): ${error.message || 'Błąd serwera.'}`)

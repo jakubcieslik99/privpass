@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import createError from 'http-errors'
 import User from '../models/userModel'
-import { config } from '../config/utilityFunctions'
+import { config } from '../config/utilities'
 
 const isAuth = (req: Request, res: Response, next: NextFunction) => {
   if (!req.headers.authorization) return next(createError(401, 'Błąd autoryzacji.'))

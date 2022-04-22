@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { config } from '../config/utilityFunctions'
+import { config } from '../config/utilities'
 
 const encryptPassword = (password: string) => {
   const iv = Buffer.from(crypto.randomBytes(16))

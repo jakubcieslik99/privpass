@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import createError from 'http-errors'
-import { config, log } from '../config/utilityFunctions'
+import { config, log } from '../config/utilities'
 
 const getAccessToken = (userId: string, userEmail: string) => {
   return new Promise((resolve, reject) => {
