@@ -4,6 +4,8 @@ import logger from 'pino'
 dotenv.config()
 
 const config = {
+  ENV: process.env.ENV || 'dev',
+  /*------------------------------------------------------------------------------------------*/
   PORT: process.env.PORT || 3001,
   IP: process.env.IP || '127.0.0.1',
   API_URL: process.env.API_URL || 'http://localhost:3001',

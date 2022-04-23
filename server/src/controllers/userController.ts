@@ -61,7 +61,12 @@ const registerConfirmCode = async (req: Request, res: Response, next: NextFuncti
     await confirmUser.save()
 
     return res
-      .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 1000 * 900 })
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: config.ENV === 'prod' ? true : false,
+        maxAge: 1000 * 900,
+      })
       .status(200)
       .send({
         message: 'Potwierdzono konto pomyślnie. Nastąpi przekierowanie do profilu.',
@@ -123,7 +128,12 @@ const loginConfirmCode = async (req: Request, res: Response, next: NextFunction)
     await loginUser.save()
 
     return res
-      .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 1000 * 900 })
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: config.ENV === 'prod' ? true : false,
+        maxAge: 1000 * 900,
+      })
       .status(200)
       .send({
         message: 'Potwierdzono logowanie pomyślnie. Nastąpi przekierowanie do profilu.',
@@ -155,28 +165,12 @@ const refreshAccessToken = async (req: Request, res: Response, next: NextFunctio
       if (error || checkedUser._id.toString() !== decode.id) throw createError(401, 'Błąd autoryzacji.')
 
       const accessToken = await getAccessToken(decode.id, decode.email)
-      //const accessToken = jwt.sign({ id: decode.id }, config.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '300s' })
 
       return res.status(201).send({ accessToken })
     })
   } catch (error) {
     return next(error)
   }
-
-  /*const cookies = req.cookies
-  if (!cookies?.refreshToken) return res.sendStatus(401)
-  console.log(cookies.refreshToken)
-
-  const checkedUser = await User.findOne({ refreshToken: cookies.refreshToken })
-  if (!checkedUser) return res.sendStatus(404)
-
-  jwt.verify(cookies.refreshToken, config.JWT_REFRESH_TOKEN_SECRET, async (error: any, decode: any) => {
-    if (error || checkedUser._id !== decode.id) return res.sendStatus(401)
-
-    const accessToken = jwt.sign({ id: decode.id }, config.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '300s' })
-
-    return res.status(201).send({ accessToken })
-  })*/
 }
 //GET - /users/logoutUser
 const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -186,13 +180,17 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
 
     const checkedUser = await User.findOne({ refreshToken: cookies.refreshToken })
     if (!checkedUser)
-      return res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: true }).sendStatus(204)
+      return res
+        .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'prod' ? true : false })
+        .sendStatus(204)
 
     checkedUser.refreshToken = null
 
     await checkedUser.save()
 
-    return res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: true }).sendStatus(204)
+    return res
+      .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'prod' ? true : false })
+      .sendStatus(204)
   } catch (error) {
     return next(error)
   }
