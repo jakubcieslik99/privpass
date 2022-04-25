@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
 import createError from 'http-errors'
 import { config, log } from '../config/utilities'
+import { string } from 'joi'
 
 const getAccessToken = (userId: string, userEmail: string) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<string | undefined>((resolve, reject) => {
     jwt.sign(
       {
         id: userId,
@@ -23,7 +24,7 @@ const getAccessToken = (userId: string, userEmail: string) => {
 }
 
 const getRefreshToken = (userId: string, userEmail: string) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<string | undefined>((resolve, reject) => {
     jwt.sign(
       {
         id: userId,
