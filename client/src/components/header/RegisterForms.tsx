@@ -2,6 +2,8 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
+import { useAppDispatch } from '../../features/store'
+import { registerSendCode } from '../../features/userSlices/listUser'
 import { registerErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
 
@@ -16,17 +18,20 @@ interface RegisterEmailFormValues {
 }
 
 const RegisterEmailForm = (props: RegisterEmailFormProps) => {
+  const dispatch = useAppDispatch()
+
   const {
     register,
     handleSubmit,
-    reset,
+    //reset,
     formState: { errors },
   } = useForm<RegisterEmailFormValues>({ defaultValues: { registerEmail: '' } })
 
   const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
-    console.log(data)
-    props.setFormSwitch(!props.formSwitch)
-    setTimeout(() => reset(), 200)
+    dispatch(registerSendCode({ email: data.registerEmail }))
+
+    //props.setFormSwitch(!props.formSwitch)
+    //setTimeout(() => reset(), 200)
   }
 
   return (
