@@ -28,11 +28,10 @@ const registerSendCode = async (req: Request, res: Response, next: NextFunction)
     })
     await createUser.save()
 
-    await sendEmail(registerSendCodeMessage(validationResult.email, code))
+    //await sendEmail(registerSendCodeMessage(validationResult.email, code))
 
     return res.status(201).send({
-      message:
-        'Zarejestrowano pomyślnie. Teraz potwierdź pierwsze logowanie otrzymanym na podany adres email kodem w ciągu 5 minut.',
+      message: 'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.',
     })
   } catch (error: any) {
     if (error.isJoi === true) {
@@ -59,9 +58,7 @@ const loginSendCode = async (req: Request, res: Response, next: NextFunction) =>
 
     await sendEmail(loginSendCodeMessage(validationResult.email, code))
 
-    return res
-      .status(200)
-      .send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem w ciągu 5 minut.' })
+    return res.status(200).send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.' })
   } catch (error: any) {
     if (error.isJoi === true) {
       error.status = 422
@@ -80,12 +77,12 @@ const confirmCode = async (req: Request, res: Response, next: NextFunction) => {
     const checkedUser = await User.findOne({ email: validationResult.email }).exec()
     if (!checkedUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
 
-    if (checkedUser.code !== validationResult.code) throw createError(406, 'Kod logowania jest niepoprawny.')
+    if (checkedUser.code !== validationResult.code) throw createError(406, 'Kod dostępu jest niepoprawny.')
 
     if (Date.now() - checkedUser.updatedAt > 5 * 60 * 1000) {
       checkedUser.code = null
       await checkedUser.save()
-      throw createError(406, 'Kod logowania stracił ważność.')
+      throw createError(406, 'Kod dostępu stracił ważność.')
     }
 
     const accessToken = await getAccessToken(checkedUser._id, checkedUser.email)
@@ -107,11 +104,11 @@ const confirmCode = async (req: Request, res: Response, next: NextFunction) => {
       })
       .status(200)
       .send({
-        message: 'Zalogowano pomyślnie. Nastąpi przekierowanie do profilu.',
-        accessToken: accessToken,
-        user: {
+        message: 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.',
+        userInfo: {
           id: checkedUser._id,
           email: checkedUser.email,
+          accessToken: accessToken,
         },
       })
   } catch (error: any) {
@@ -136,7 +133,13 @@ const refreshAccessToken = async (req: Request, res: Response, next: NextFunctio
 
       const accessToken = await getAccessToken(decode.id, decode.email)
 
-      return res.status(201).send({ accessToken })
+      return res.status(201).send({
+        userInfo: {
+          id: checkedUser._id,
+          email: checkedUser.email,
+          accessToken: accessToken,
+        },
+      })
     })
   } catch (error) {
     return next(error)

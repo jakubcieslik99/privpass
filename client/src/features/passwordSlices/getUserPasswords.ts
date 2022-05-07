@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (_sendData, thunkAPI) => {
+const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (_, thunkAPI) => {
   try {
     const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/passwords/getUserPasswords`)
     return data

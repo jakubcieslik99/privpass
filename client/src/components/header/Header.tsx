@@ -2,18 +2,18 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { scroller } from 'react-scroll'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
+import { useAppDispatch, useAppSelector } from '../../features/store'
+import { logoutUser, userInfoReset } from '../../features/userSlices/listUser'
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
 
 const Header: React.FC = () => {
+  const { userInfo } = useAppSelector(state => state.listUser)
+  const dispatch = useAppDispatch()
+
   const [menuIsOpen, setMenuIsOpen] = useState(false)
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false)
   const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false)
-  //temporary
-  const [isLogged] = useState({
-    status: false,
-    email: 'dev@jakubcieslik.com',
-  })
 
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -38,7 +38,9 @@ const Header: React.FC = () => {
   }
 
   const logoutHandler = () => {
-    console.log('logout')
+    dispatch(userInfoReset())
+    dispatch(logoutUser())
+    navigate('/')
   }
 
   return (
@@ -62,7 +64,7 @@ const Header: React.FC = () => {
         </div>
 
         <ul className="flex-row items-center hidden md:flex mr-7">
-          {isLogged.status ? (
+          {userInfo ? (
             <>
               <li
                 className={`flex items-center px-5 py-3 transition md:py-2 md:px-3 md:mr-1 text-percpass-300 ${
@@ -72,7 +74,7 @@ const Header: React.FC = () => {
                 onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
               >
                 <FaUser className="mr-1" />
-                {isLogged.email}
+                {userInfo.email}
               </li>
               <li className="flex">
                 <div
@@ -120,7 +122,7 @@ const Header: React.FC = () => {
             !menuIsOpen ? '-translate-y-full' : 'translate-y-0'
           } bg-percpass-500`}
         >
-          {isLogged.status ? (
+          {userInfo ? (
             <>
               <li
                 className={`flex items-center px-5 py-3 transition-colors md:py-2 md:px-3 md:mr-2 text-percpass-300 ${
@@ -129,7 +131,7 @@ const Header: React.FC = () => {
                 onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
               >
                 <FaUser className="mr-1" />
-                {isLogged.email}
+                {userInfo.email}
               </li>
               <li className="flex">
                 <div

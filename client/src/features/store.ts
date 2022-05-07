@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 import listUserReducer from './userSlices/listUser'
+import storeEmailReducer from './userSlices/storeEmail'
 import getUserPasswordsReducer from './passwordSlices/getUserPasswords'
 import getUserPasswordReducer from './passwordSlices/getUserPassword'
 import createUserPasswordReducer from './passwordSlices/createUserPassword'
@@ -10,6 +11,7 @@ import deleteUserPasswordReducer from './passwordSlices/deleteUserPassword'
 const store = configureStore({
   reducer: {
     listUser: listUserReducer,
+    storeEmail: storeEmailReducer,
     getUserPasswords: getUserPasswordsReducer,
     getUserPassword: getUserPasswordReducer,
     createUserPassword: createUserPasswordReducer,

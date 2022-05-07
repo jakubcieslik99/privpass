@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
+import { useAppDispatch } from '../../features/store'
+import { successReset, errorReset, messageReset } from '../../features/userSlices/listUser'
+import { emailReset } from '../../features/userSlices/storeEmail'
 import { RegisterEmailForm, RegisterCodeForm } from './RegisterForms'
 
 interface RegisterModalProps {
@@ -9,6 +12,8 @@ interface RegisterModalProps {
 }
 
 const RegisterModal = (props: RegisterModalProps) => {
+  const dispatch = useAppDispatch()
+
   const [registerFormSwitch, setRegisterFormSwitch] = useState(true)
 
   useEffect(() => {
@@ -19,7 +24,15 @@ const RegisterModal = (props: RegisterModalProps) => {
   const closeHandler = () => {
     props.setIsOpen(false)
     document.body.classList.remove('no-scroll')
-    setTimeout(() => setRegisterFormSwitch(true), 200)
+    setTimeout(() => {
+      dispatch(successReset())
+      dispatch(errorReset())
+      dispatch(messageReset())
+
+      dispatch(emailReset())
+
+      setRegisterFormSwitch(true)
+    }, 200)
   }
 
   return (

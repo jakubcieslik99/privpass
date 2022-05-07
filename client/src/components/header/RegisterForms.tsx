@@ -1,11 +1,14 @@
-//import { useEffect } from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
-import { useAppDispatch } from '../../features/store'
-import { registerSendCode } from '../../features/userSlices/listUser'
+import { useAppDispatch, useAppSelector } from '../../features/store'
+import { registerSendCode, confirmCode, errorReset } from '../../features/userSlices/listUser'
+import { emailSet } from '../../features/userSlices/storeEmail'
 import { registerErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
+import Success from '../universal/Success'
 
 interface RegisterEmailFormProps {
   formSwitch: boolean
@@ -18,20 +21,31 @@ interface RegisterEmailFormValues {
 }
 
 const RegisterEmailForm = (props: RegisterEmailFormProps) => {
+  const { loading, success, error, message } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
   const {
     register,
     handleSubmit,
-    //reset,
+    reset,
     formState: { errors },
   } = useForm<RegisterEmailFormValues>({ defaultValues: { registerEmail: '' } })
 
+  useEffect(() => {
+    if (
+      success &&
+      message === 'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.'
+    ) {
+      dispatch(errorReset())
+      props.setFormSwitch(!props.formSwitch)
+      setTimeout(() => reset(), 200)
+    }
+    return () => {}
+  }, [success, message /*, props, reset*/])
+
   const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
     dispatch(registerSendCode({ email: data.registerEmail }))
-
-    //props.setFormSwitch(!props.formSwitch)
-    //setTimeout(() => reset(), 200)
+    dispatch(emailSet(data.registerEmail))
   }
 
   return (
@@ -56,6 +70,10 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
+        <div className="flex flex-col text-gray-800 md:mx-6">
+          <Error isOpen={error && message !== '' ? true : false} message={message} styling="mb-4" />
+        </div>
+
         <div className="flex flex-col text-gray-800 md:mx-6">
           <label htmlFor="registerEmail">Email:</label>
           <input
@@ -110,17 +128,32 @@ interface RegisterCodeFormValues {
 }
 
 const RegisterCodeForm = (props: RegisterCodeFormProps) => {
+  const { loading, success, error, message } = useAppSelector(state => state.listUser)
+  const { email } = useAppSelector(state => state.storeEmail)
+  const dispatch = useAppDispatch()
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<RegisterCodeFormValues>({ defaultValues: { registerCode: '' } })
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (success && message === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.') {
+      setTimeout(() => {
+        navigate('/profile')
+        props.closeHandler()
+        setTimeout(() => reset(), 200)
+      }, 3000)
+    }
+    return () => {}
+  }, [success, message /*, navigate, props, reset*/])
 
   const submitHandler: SubmitHandler<RegisterCodeFormValues> = data => {
-    console.log(data)
-    props.setFormSwitch(!props.formSwitch)
-    setTimeout(() => reset(), 200)
+    dispatch(confirmCode({ code: data.registerCode, email: email }))
+    //props.setFormSwitch(!props.formSwitch)
   }
 
   return (
@@ -145,6 +178,11 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
+        <div className="flex flex-col text-gray-800 md:mx-6">
+          <Success isOpen={success && message !== '' ? true : false} message={message} styling="mb-4" />
+          <Error isOpen={error && message !== '' ? true : false} message={message} styling="mb-4" />
+        </div>
+
         <div className="flex flex-col items-center text-gray-800 md:mx-6">
           <label htmlFor="registerCode" className="mb-1 w-36">
             Kod rejestracji:
@@ -171,8 +209,8 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
           </div>
 
           <div className="mt-4 text-xs text-center text-gray-700">
-            Kod rejestracji jest ważny przez <span className="font-semibold">15 minut</span>. Wejdź na swoje konto w
-            przeciągu tego czasu, aby potwierdzić rejestrację.
+            Kod rejestracji jest ważny przez <span className="font-semibold">5 minut</span>. Wejdź na swoje konto w przeciągu
+            tego czasu, aby potwierdzić rejestrację.
           </div>
         </div>
       </div>

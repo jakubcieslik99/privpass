@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
+import { useAppDispatch } from '../../features/store'
+import { successReset, errorReset, messageReset } from '../../features/userSlices/listUser'
+import { emailReset } from '../../features/userSlices/storeEmail'
 import { LoginEmailForm, LoginCodeForm } from './LoginForms'
 
 interface LoginModalProps {
@@ -9,6 +12,8 @@ interface LoginModalProps {
 }
 
 const LoginModal = (props: LoginModalProps) => {
+  const dispatch = useAppDispatch()
+
   const [loginFormSwitch, setLoginFormSwitch] = useState(true)
 
   useEffect(() => {
@@ -25,7 +30,15 @@ const LoginModal = (props: LoginModalProps) => {
     props.setIsOpen(false)
     //window.onscroll = () => null
     document.body.classList.remove('no-scroll')
-    setTimeout(() => setLoginFormSwitch(true), 200)
+    setTimeout(() => {
+      dispatch(successReset())
+      dispatch(errorReset())
+      dispatch(messageReset())
+
+      dispatch(emailReset())
+
+      setLoginFormSwitch(true)
+    }, 200)
   }
 
   return (
