@@ -4,6 +4,7 @@ import { scroller } from 'react-scroll'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../features/store'
 import { logoutUser, userInfoReset } from '../../features/userSlices/listUser'
+import { passwordsReset } from '../../features/passwordSlices/getUserPasswords'
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
 
@@ -38,9 +39,10 @@ const Header: React.FC = () => {
   }
 
   const logoutHandler = () => {
+    navigate('/')
+    dispatch(passwordsReset())
     dispatch(userInfoReset())
     dispatch(logoutUser())
-    navigate('/')
   }
 
   return (

@@ -1,9 +1,14 @@
-//import { useEffect } from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
+import { useAppSelector, useAppDispatch } from '../../features/store'
+import { loginSendCode, confirmCode, errorReset } from '../../features/userSlices/listUser'
+import { emailSet } from '../../features/userSlices/storeEmail'
 import { loginErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
+import Success from '../universal/Success'
 
 interface LoginEmailFormProps {
   formSwitch: boolean
@@ -16,6 +21,9 @@ interface LoginEmailFormValues {
 }
 
 const LoginEmailForm = (props: LoginEmailFormProps) => {
+  const { success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
+  const dispatch = useAppDispatch()
+
   const {
     register,
     handleSubmit,
@@ -23,10 +31,19 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
     formState: { errors },
   } = useForm<LoginEmailFormValues>({ defaultValues: { loginEmail: '' } })
 
+  useEffect(() => {
+    if (success && successMessage === 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.') {
+      errorMessage && dispatch(errorReset())
+      props.setFormSwitch(!props.formSwitch)
+      setTimeout(() => reset(), 200)
+    }
+    return () => {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success, successMessage])
+
   const submitHandler: SubmitHandler<LoginEmailFormValues> = data => {
-    console.log(data)
-    props.setFormSwitch(!props.formSwitch)
-    setTimeout(() => reset(), 200)
+    dispatch(loginSendCode({ email: data.loginEmail }))
+    dispatch(emailSet(data.loginEmail))
   }
 
   return (
@@ -51,6 +68,10 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
+        <div className="flex flex-col text-gray-800 md:mx-6">
+          <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
+        </div>
+
         <div className="flex flex-col text-gray-800 md:mx-6">
           <label htmlFor="loginEmail">Email:</label>
           <input
@@ -105,18 +126,32 @@ interface LoginCodeFormValues {
 }
 
 const LoginCodeForm = (props: LoginCodeFormProps) => {
+  const { success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
+  const { email } = useAppSelector(state => state.storeEmail)
+  const dispatch = useAppDispatch()
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<LoginCodeFormValues>({ defaultValues: { loginCode: '' } })
+  const navigate = useNavigate()
 
-  const submitHandler: SubmitHandler<LoginCodeFormValues> = data => {
-    console.log(data)
-    props.setFormSwitch(!props.formSwitch)
-    setTimeout(() => reset(), 200)
-  }
+  useEffect(() => {
+    if (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.') {
+      setTimeout(() => {
+        navigate('/profile')
+        props.closeHandler()
+        setTimeout(() => reset(), 200)
+      }, 3000)
+    }
+    return () => {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success, successMessage])
+
+  const submitHandler: SubmitHandler<LoginCodeFormValues> = data =>
+    dispatch(confirmCode({ code: data.loginCode, email: email }))
 
   return (
     <Transition
@@ -140,6 +175,11 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
+        <div className="flex flex-col text-gray-800 md:mx-6">
+          <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
+          <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
+        </div>
+
         <div className="flex flex-col items-center text-gray-800 md:mx-6">
           <label htmlFor="loginCode" className="mb-1 w-36">
             Kod logowania:

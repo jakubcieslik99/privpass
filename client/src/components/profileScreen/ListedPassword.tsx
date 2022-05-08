@@ -1,9 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import { RiHashtag, RiLockPasswordFill } from 'react-icons/ri'
 import { FaEye, FaEyeSlash, FaEdit, FaTrashAlt } from 'react-icons/fa'
+import { useAppSelector, useAppDispatch } from '../../features/store'
+import { getUserPassword, idPasswordReset } from '../../features/passwordSlices/getUserPassword'
 
+export interface ListedPasswordObject {
+  _id: string
+  name: string
+  password: string
+}
 interface ListedPasswordProps {
+  listedPassword: ListedPasswordObject
   setEditPasswordModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   setConfirmDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   setPasswordToEdit: React.Dispatch<React.SetStateAction<string>>
@@ -11,7 +19,21 @@ interface ListedPasswordProps {
 }
 
 const ListedPassword = (props: ListedPasswordProps) => {
-  const [passwordToShow, setPasswordToShow] = useState(false)
+  const { id, password } = useAppSelector(state => state.getUserPassword)
+  const dispatch = useAppDispatch()
+
+  const [passwordVisible, setPasswordVisible] = useState(false)
+  const [passwordString, setPasswordString] = useState('')
+
+  useEffect(() => {
+    if (id === props.listedPassword._id && password !== '') {
+      setPasswordString(password)
+      setPasswordVisible(true)
+      dispatch(idPasswordReset())
+    }
+    return () => {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, password])
 
   const openEditPasswordModalHandler = () => {
     props.setPasswordToEdit('507f191e810c19729de860ea')
@@ -26,6 +48,14 @@ const ListedPassword = (props: ListedPasswordProps) => {
     props.setConfirmDeleteModalIsOpen(true)
   }
 
+  const showPasswordHandler = () => {
+    if (!passwordVisible) dispatch(getUserPassword({ id: props.listedPassword._id }))
+    else {
+      setPasswordVisible(false)
+      setPasswordString('')
+    }
+  }
+
   return (
     <div className="flex flex-col justify-between px-3 pt-2 pb-3 shadow-md md:pb-2 rounded-2xl bg-percpass-400 md:flex-row">
       <div className="flex-1 min-w-0 mb-2 md:mr-4 md:mb-0">
@@ -34,7 +64,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
             <RiHashtag className="mr-[2px]" />
             Nazwa:
           </div>
-          <div className="text-xl font-semibold truncate">{'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO'}</div>
+          <div className="text-xl font-semibold truncate">{props.listedPassword.name}</div>
         </div>
 
         <div className="md:mb-[-8px]">
@@ -46,23 +76,23 @@ const ListedPassword = (props: ListedPasswordProps) => {
           <div className="flex items-center text-lg">
             <button
               className="relative flex-none w-8 h-8 p-2 mr-2 transition border rounded-full text-percpass-200 border-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95"
-              onClick={() => setPasswordToShow(!passwordToShow)}
+              onClick={showPasswordHandler}
             >
               <FaEye
                 className={`absolute left-[6px] top-[6px] transition-opacity ${
-                  !passwordToShow ? 'opacity-100' : 'opacity-0'
+                  !passwordVisible ? 'opacity-100' : 'opacity-0'
                 }`}
               />
               <FaEyeSlash
                 className={`absolute left-[6px] top-[6px] transition-opacity ${
-                  passwordToShow ? 'opacity-100' : 'opacity-0'
+                  passwordVisible ? 'opacity-100' : 'opacity-0'
                 }`}
               />
             </button>
             <div className="relative w-full overflow-x-scroll overflow-y-hidden h-14">
               <Transition
                 className="absolute top-0 left-0 pt-[17px] text-2xl h-14"
-                show={!passwordToShow}
+                show={!passwordVisible}
                 enter="ease-out duration-200"
                 enterFrom="opacity-0"
                 enterTo="opacity-100"
@@ -70,11 +100,11 @@ const ListedPassword = (props: ListedPasswordProps) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                {'**************************************************'}
+                {'****************'}
               </Transition>
               <Transition
                 className="absolute top-0 left-0 h-14 pt-[14px] pb-[6px] select-all tracking-widest monospace-font"
-                show={passwordToShow}
+                show={passwordVisible}
                 enter="ease-out duration-200"
                 enterFrom="opacity-0"
                 enterTo="opacity-100"
@@ -82,7 +112,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                {'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO'}
+                {passwordString}
               </Transition>
             </div>
           </div>

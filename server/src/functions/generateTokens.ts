@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import createError from 'http-errors'
 import { config, log } from '../config/utilities'
-import { string } from 'joi'
 
 const getAccessToken = (userId: string, userEmail: string) => {
   return new Promise<string | undefined>((resolve, reject) => {
@@ -11,7 +10,7 @@ const getAccessToken = (userId: string, userEmail: string) => {
         email: userEmail,
       },
       config.JWT_ACCESS_TOKEN_SECRET,
-      { expiresIn: '300s' },
+      { expiresIn: '900s' }, //300s
       (error, token) => {
         if (error) {
           log.error(error.message)

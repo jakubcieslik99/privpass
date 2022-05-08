@@ -30,7 +30,7 @@ const getUserPassword = async (req: Request, res: Response, next: NextFunction) 
 
     const decryptedPassword = decryptPassword({ encryptedPassword: foundPassword.encryptedPassword, iv: foundPassword.iv })
 
-    return res.status(200).send({ id: foundPassword._id, password: decryptedPassword })
+    return res.status(200).send({ _id: foundPassword._id, password: decryptedPassword })
   } catch (error) {
     return next(error)
   }

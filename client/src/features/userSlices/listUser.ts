@@ -36,10 +36,14 @@ const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData
 })
 const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: confirmCodeData, thunkAPI) => {
   try {
-    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/users/confirmCode`, {
-      code: sendData.code,
-      email: sendData.email,
-    })
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API_URL}/users/confirmCode`,
+      {
+        code: sendData.code,
+        email: sendData.email,
+      },
+      { withCredentials: true }
+    )
 
     data?.userInfo && localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
 
@@ -52,7 +56,7 @@ const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: co
 
 const refreshAccessToken = createAsyncThunk('listUser/refreshAccessToken', async (_, thunkAPI) => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/refreshAccessToken`)
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/refreshAccessToken`, { withCredentials: true })
 
     data?.userInfo && localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
 
@@ -64,7 +68,7 @@ const refreshAccessToken = createAsyncThunk('listUser/refreshAccessToken', async
 })
 const logoutUser = createAsyncThunk('listUser/logoutUser', async (_, thunkAPI) => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/logoutUser`)
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/logoutUser`, { withCredentials: true })
     return data
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
@@ -80,8 +84,6 @@ interface listUserState {
   successMessage: string
   error: boolean
   errorMessage: string
-
-  message: string
   userInfo: {
     id: string
     email: string
@@ -99,8 +101,6 @@ export const listUserSlice = createSlice({
     successMessage: '',
     error: false,
     errorMessage: '',
-
-    message: '',
     userInfo: userInfo ? JSON.parse(userInfo) : null,
   } as listUserState,
   reducers: {
@@ -111,7 +111,8 @@ export const listUserSlice = createSlice({
       state.error = false
     },
     messageReset: state => {
-      state.message = ''
+      state.successMessage = ''
+      state.errorMessage = ''
     },
     userInfoReset: state => {
       state.userInfo = null
@@ -122,34 +123,30 @@ export const listUserSlice = createSlice({
     //registerSendCode
     builder.addCase(registerSendCode.pending, state => {
       state.loading = true
-      //state.success = false
-      //state.error = false
     })
     builder.addCase(registerSendCode.fulfilled, (state, action) => {
       state.loading = false
       state.success = true
-      state.message = action.payload.message
+      state.successMessage = action.payload.message
     })
     builder.addCase(registerSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       state.error = true
-      state.message = action.payload.message
+      state.errorMessage = action.payload.message
     })
     //loginSendCode
     builder.addCase(loginSendCode.pending, state => {
       state.loading = true
-      //state.success = false
-      //state.error = false
     })
     builder.addCase(loginSendCode.fulfilled, (state, action) => {
       state.loading = false
       state.success = true
-      state.message = action.payload.message
+      state.successMessage = action.payload.message
     })
     builder.addCase(loginSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       state.error = true
-      state.message = action.payload.message
+      state.errorMessage = action.payload.message
     })
     //confirmCode
     builder.addCase(confirmCode.pending, state => {
@@ -160,13 +157,13 @@ export const listUserSlice = createSlice({
     builder.addCase(confirmCode.fulfilled, (state, action) => {
       state.loading = false
       state.success = true
-      state.message = action.payload.message
+      state.successMessage = action.payload.message
       state.userInfo = action.payload.userInfo
     })
     builder.addCase(confirmCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       state.error = true
-      state.message = action.payload
+      state.errorMessage = action.payload
       state.userInfo = null
     })
     //refreshAccessToken
@@ -174,19 +171,22 @@ export const listUserSlice = createSlice({
       state.userInfo = action.payload.userInfo
     })
     builder.addCase(refreshAccessToken.rejected, (state, action: PayloadAction<any>) => {
-      state.message = action.payload
+      state.error = true
+      state.errorMessage = action.payload
     })
     //logoutUser
     builder.addCase(logoutUser.pending, state => {
       state.loading = true
-      state.message = ''
+      state.success = false
+      state.error = false
     })
     builder.addCase(logoutUser.fulfilled, state => {
       state.loading = false
     })
     builder.addCase(logoutUser.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.message = action.payload
+      state.error = true
+      state.errorMessage = action.payload
     })
   },
 })

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import createError from 'http-errors'
-import jwt from 'jsonwebtoken'
+import jwt, { VerifyErrors } from 'jsonwebtoken'
 import voucher_codes from 'voucher-code-generator'
 import User from '../models/userModel'
 import { config } from '../config/utilities'
@@ -56,7 +56,7 @@ const loginSendCode = async (req: Request, res: Response, next: NextFunction) =>
     loginUser.code = code
     await loginUser.save()
 
-    await sendEmail(loginSendCodeMessage(validationResult.email, code))
+    //await sendEmail(loginSendCodeMessage(validationResult.email, code))
 
     return res.status(200).send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.' })
   } catch (error: any) {
@@ -79,7 +79,8 @@ const confirmCode = async (req: Request, res: Response, next: NextFunction) => {
 
     if (checkedUser.code !== validationResult.code) throw createError(406, 'Kod dostępu jest niepoprawny.')
 
-    if (Date.now() - checkedUser.updatedAt > 5 * 60 * 1000) {
+    //300 * 1000
+    if (Date.now() - checkedUser.updatedAt > 900 * 1000) {
       checkedUser.code = null
       await checkedUser.save()
       throw createError(406, 'Kod dostępu stracił ważność.')
@@ -92,14 +93,14 @@ const confirmCode = async (req: Request, res: Response, next: NextFunction) => {
     checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
       (element: { refreshToken: string; expirationDate: number }) => element.expirationDate > Date.now()
     )
-    checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 15 * 60 * 1000 })
+    checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 900 * 1000 })
     await checkedUser.save()
 
     return res
       .cookie('refreshToken', refreshToken, {
         httpOnly: true,
         sameSite: 'none',
-        secure: config.ENV === 'prod' ? true : false,
+        secure: config.ENV !== 'test' ? true : false,
         maxAge: 900 * 1000,
       })
       .status(200)
@@ -128,19 +129,23 @@ const refreshAccessToken = async (req: Request, res: Response, next: NextFunctio
     const checkedUser = await User.findOne({ 'refreshTokens.refreshToken': req.cookies.refreshToken }).exec()
     if (!checkedUser) throw createError(401, 'Błąd autoryzacji.')
 
-    jwt.verify(req.cookies.refreshToken, config.JWT_REFRESH_TOKEN_SECRET, async (error: any, decode: any) => {
-      if (error || checkedUser._id.toString() !== decode.id) throw createError(401, 'Błąd autoryzacji.')
+    jwt.verify(
+      req.cookies.refreshToken,
+      config.JWT_REFRESH_TOKEN_SECRET,
+      async (error: VerifyErrors | null, decode: any) => {
+        if (error || checkedUser._id.toString() !== decode.id) throw createError(401, 'Błąd autoryzacji.')
 
-      const accessToken = await getAccessToken(decode.id, decode.email)
+        const accessToken = await getAccessToken(decode.id, decode.email)
 
-      return res.status(201).send({
-        userInfo: {
-          id: checkedUser._id,
-          email: checkedUser.email,
-          accessToken: accessToken,
-        },
-      })
-    })
+        return res.status(201).send({
+          userInfo: {
+            id: checkedUser._id,
+            email: checkedUser.email,
+            accessToken: accessToken,
+          },
+        })
+      }
+    )
   } catch (error) {
     return next(error)
   }
@@ -153,7 +158,7 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
     const checkedUser = await User.findOne({ 'refreshTokens.refreshToken': req.cookies.refreshToken }).exec()
     if (!checkedUser)
       return res
-        .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'prod' ? true : false })
+        .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV !== 'test' ? true : false })
         .sendStatus(204)
 
     checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
@@ -162,7 +167,7 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
     await checkedUser.save()
 
     return res
-      .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'prod' ? true : false })
+      .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV !== 'test' ? true : false })
       .sendStatus(204)
   } catch (error) {
     return next(error)

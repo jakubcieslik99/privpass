@@ -1,9 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { RootState } from '../store'
+import { ListedPasswordObject } from '../../components/profileScreen/ListedPassword'
 
 const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (_, thunkAPI) => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/passwords/getUserPasswords`)
+    const { listUser } = thunkAPI.getState() as RootState
+
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/passwords/getUserPasswords`, {
+      headers: {
+        Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
+      },
+    })
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data.message)
@@ -13,41 +21,41 @@ const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (_
 export { getUserPasswords }
 
 interface getUserPasswordsState {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  message: unknown | string | null
-  passwords:
-    | [
-        {
-          _id: string
-          name: string
-          password: string
-        }
-      ]
-    | []
+  loading: boolean
+  error: boolean
+  errorMessage: string
+  passwords: [ListedPasswordObject] | []
 }
 
 export const getUserPasswordsSlice = createSlice({
-  name: 'getUserPasswords',
+  name: 'passwords',
   initialState: {
-    loading: 'idle',
-    message: null,
+    loading: false,
+    error: false,
+    errorMessage: '',
     passwords: [],
   } as getUserPasswordsState,
-  reducers: {},
+  reducers: {
+    passwordsReset: state => {
+      state.passwords = []
+    },
+  },
   extraReducers: builder => {
-    builder.addCase(getUserPasswords.pending, (state, _action) => {
-      state.loading = 'pending'
-      state.message = null
+    builder.addCase(getUserPasswords.pending, state => {
+      state.loading = true
+      state.error = false
     })
     builder.addCase(getUserPasswords.fulfilled, (state, action) => {
-      state.loading = 'succeeded'
+      state.loading = false
       state.passwords = action.payload.passwords
     })
-    builder.addCase(getUserPasswords.rejected, (state, action) => {
-      state.loading = 'failed'
-      state.message = action.payload
+    builder.addCase(getUserPasswords.rejected, (state, action: PayloadAction<any>) => {
+      state.loading = false
+      state.error = true
+      state.errorMessage = action.payload
     })
   },
 })
 
+export const { passwordsReset } = getUserPasswordsSlice.actions
 export default getUserPasswordsSlice.reducer
