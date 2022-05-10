@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { RootState } from '../store'
 
 interface createUserPasswordData {
   name: string
@@ -7,13 +8,23 @@ interface createUserPasswordData {
 }
 
 const createUserPassword = createAsyncThunk(
-  'users/createUserPassword',
+  'passwords/createUserPassword',
   async (sendData: createUserPasswordData, thunkAPI) => {
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/users/createUserPassword`, {
-        name: sendData.name,
-        password: sendData.password,
-      })
+      const { listUser } = thunkAPI.getState() as RootState
+
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/passwords/createUserPassword`,
+        {
+          name: sendData.name,
+          password: sendData.password,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
+          },
+        }
+      )
       return data
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message)
@@ -24,34 +35,48 @@ const createUserPassword = createAsyncThunk(
 export { createUserPassword }
 
 interface createUserPasswordState {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  message: unknown | string | null
-  name: string | null
+  loading: boolean
+  success: boolean
+  successMessage: string
+  error: boolean
+  errorMessage: string
 }
 
 export const createUserPasswordSlice = createSlice({
-  name: 'createUserPassword',
+  name: 'passwords',
   initialState: {
-    loading: 'idle',
-    message: null,
-    name: null,
+    loading: false,
+    success: false,
+    successMessage: '',
+    error: false,
+    errorMessage: '',
   } as createUserPasswordState,
-  reducers: {},
+  reducers: {
+    successReset: state => {
+      state.success = false
+    },
+    errorReset: state => {
+      state.error = false
+    },
+  },
   extraReducers: builder => {
     builder.addCase(createUserPassword.pending, (state, _action) => {
-      state.loading = 'pending'
-      state.message = null
+      state.loading = true
+      state.success = false
+      state.error = false
     })
     builder.addCase(createUserPassword.fulfilled, (state, action) => {
-      state.loading = 'succeeded'
-      state.message = action.payload.message
-      state.name = action.payload.name
+      state.loading = false
+      state.success = true
+      state.successMessage = action.payload.message
     })
-    builder.addCase(createUserPassword.rejected, (state, action) => {
-      state.loading = 'failed'
-      state.message = action.payload
+    builder.addCase(createUserPassword.rejected, (state, action: PayloadAction<any>) => {
+      state.loading = false
+      state.error = true
+      state.errorMessage = action.payload
     })
   },
 })
 
+export const { successReset, errorReset } = createUserPasswordSlice.actions
 export default createUserPasswordSlice.reducer

@@ -55,7 +55,7 @@ const createUserPassword = async (req: Request, res: Response, next: NextFunctio
 
     await createPassword.save()
 
-    return res.status(201).send({ message: 'Dodano nowe hasło.', name: createPassword.name })
+    return res.status(201).send({ message: 'Dodano nowe hasło.' })
   } catch (error: any) {
     if (error.isJoi === true) {
       error.status = 422
@@ -83,7 +83,7 @@ const updateUserPassword = async (req: Request, res: Response, next: NextFunctio
     updatePassword.iv = iv
     await updatePassword.save()
 
-    return res.status(201).send({ message: 'Zaktualizowano hasło.', name: updatePassword.name })
+    return res.status(201).send({ message: 'Zaktualizowano hasło.' })
   } catch (error: any) {
     if (error.isJoi === true) {
       error.status = 422

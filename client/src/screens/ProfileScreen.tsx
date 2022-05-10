@@ -2,28 +2,37 @@ import { useState, useEffect } from 'react'
 import { FaTools, FaShareAlt, FaSearch, FaPlus } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../features/store'
 import { getUserPasswords } from '../features/passwordSlices/getUserPasswords'
+import { successReset } from '../features/passwordSlices/deleteUserPassword'
 import ListedPassword from '../components/profileScreen/ListedPassword'
 import AddPasswordModal from '../components/profileScreen/AddPasswordModal'
 import EditPasswordModal from '../components/profileScreen/EditPasswordModal'
 import ConfirmDeleteModal from '../components/profileScreen/ConfirmDeleteModal'
+import Success from '../components/universal/Success'
 import Error from '../components/universal/Error'
 import Empty from '../assets/empty.png'
 
 const ProfileScreen: React.FC = () => {
   const { loading, error, errorMessage, passwords } = useAppSelector(state => state.getUserPasswords)
   const { error: error2, errorMessage: errorMessage2 } = useAppSelector(state => state.getUserPassword)
+  const { success, successMessage } = useAppSelector(state => state.deleteUserPassword)
   const dispatch = useAppDispatch()
 
   const [addPasswordModalIsOpen, setAddPasswordModallIsOpen] = useState(false)
   const [editPasswordModalIsOpen, setEditPasswordModalIsOpen] = useState(false)
   const [confirmDeleteModalIsOpen, setConfirmDeleteModallIsOpen] = useState(false)
-  const [passwordToEdit, setPasswordToEdit] = useState('')
+  const [passwordToEdit, setPasswordToEdit] = useState({ id: '', name: '', password: '' })
   const [passwordToDelete, setPasswordToDelete] = useState({ id: '', name: '' })
 
   useEffect(() => {
-    dispatch(getUserPasswords())
+    passwords.length === 0 && dispatch(getUserPasswords())
     return () => {}
-  }, [dispatch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (success) setTimeout(() => dispatch(successReset()), 3000)
+    return () => {}
+  }, [success, dispatch])
 
   return (
     <main className="gradient-primary app-screen">
@@ -84,9 +93,10 @@ const ProfileScreen: React.FC = () => {
 
             <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
             <Error isOpen={error2 && errorMessage2 !== '' ? true : false} message={errorMessage2} styling="mb-4" />
+            <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
 
             <div className="flex flex-col gap-3">
-              {!loading && passwords.length > 0
+              {passwords.length > 0
                 ? passwords.map(element => (
                     <ListedPassword
                       key={element._id}

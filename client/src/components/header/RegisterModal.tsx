@@ -17,7 +17,7 @@ const RegisterModal = (props: RegisterModalProps) => {
   const [registerFormSwitch, setRegisterFormSwitch] = useState(true)
 
   useEffect(() => {
-    if (props.isOpen) document.body.classList.add('no-scroll')
+    props.isOpen && document.body.classList.add('no-scroll')
     return () => {}
   }, [props.isOpen])
 

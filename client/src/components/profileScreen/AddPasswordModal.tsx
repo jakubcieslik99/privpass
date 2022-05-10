@@ -3,7 +3,11 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition } from '@headlessui/react'
 import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'
+import { useAppSelector, useAppDispatch } from '../../features/store'
+import { createUserPassword, successReset, errorReset } from '../../features/passwordSlices/createUserPassword'
+import { getUserPasswords } from '../../features/passwordSlices/getUserPasswords'
 import { addPasswordErrors } from '../../validations/passwordValidations'
+import Success from '../universal/Success'
 import Error from '../universal/Error'
 
 interface AddPasswordModalProps {
@@ -17,6 +21,9 @@ interface AddPasswordFormValues {
 }
 
 const AddPasswordModal = (props: AddPasswordModalProps) => {
+  const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.createUserPassword)
+  const dispatch = useAppDispatch()
+
   const [passwordToShow, setPasswordToShow] = useState(false)
 
   const {
@@ -34,9 +41,14 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
   const watchAddPassword = watch('addPassword')
 
   useEffect(() => {
-    if (props.isOpen) document.body.classList.add('no-scroll')
+    props.isOpen && document.body.classList.add('no-scroll')
     return () => {}
   }, [props.isOpen])
+
+  useEffect(() => {
+    success && dispatch(getUserPasswords())
+    return () => {}
+  }, [success, dispatch])
 
   const closeHandler = () => {
     props.setIsOpen(false)
@@ -45,11 +57,18 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
       setValue('addName', '')
       setValue('addPassword', '')
       setPasswordToShow(false)
+      success && dispatch(successReset())
+      error && dispatch(errorReset())
     }, 200)
   }
 
   const submitHandler: SubmitHandler<AddPasswordFormValues> = data => {
-    console.log(data)
+    dispatch(
+      createUserPassword({
+        name: data.addName,
+        password: data.addPassword,
+      })
+    )
   }
 
   return (
@@ -94,6 +113,9 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
           </div>
 
           <div className="flex flex-col w-full mt-4 mb-5 overflow-y-auto">
+            <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
+            <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
+
             <div className="flex flex-col text-gray-800 md:mx-6">
               <label htmlFor="addName">Nazwa:</label>
               <input
@@ -171,11 +193,18 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
 
           <div className="flex justify-center w-full mb-1">
             <button
-              disabled={false}
+              disabled={loading}
               type="submit"
-              className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+              className="px-4 py-2 mr-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
             >
               Dodaj
+            </button>
+            <button
+              type="button"
+              className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95"
+              onClick={() => closeHandler()}
+            >
+              {success ? 'Zamknij' : 'Anuluj'}
             </button>
           </div>
         </Transition.Child>

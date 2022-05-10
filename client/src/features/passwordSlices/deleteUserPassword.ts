@@ -1,15 +1,22 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { RootState } from '../store'
 
 interface deleteUserPasswordData {
   id: string
 }
 
 const deleteUserPassword = createAsyncThunk(
-  'users/deleteUserPassword',
+  'passwords/deleteUserPassword',
   async (sendData: deleteUserPasswordData, thunkAPI) => {
     try {
-      const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/users/deleteUserPassword/${sendData.id}`)
+      const { listUser } = thunkAPI.getState() as RootState
+
+      const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/passwords/deleteUserPassword/${sendData.id}`, {
+        headers: {
+          Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
+        },
+      })
       return data
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message)
@@ -20,31 +27,48 @@ const deleteUserPassword = createAsyncThunk(
 export { deleteUserPassword }
 
 interface deleteUserPasswordState {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  message: unknown | string | null
+  loading: boolean
+  success: boolean
+  successMessage: string
+  error: boolean
+  errorMessage: string
 }
 
 export const deleteUserPasswordSlice = createSlice({
-  name: 'deleteUserPassword',
+  name: 'passwords',
   initialState: {
-    loading: 'idle',
-    message: null,
+    loading: false,
+    success: false,
+    successMessage: '',
+    error: false,
+    errorMessage: '',
   } as deleteUserPasswordState,
-  reducers: {},
+  reducers: {
+    successReset: state => {
+      state.success = false
+    },
+    errorReset: state => {
+      state.error = false
+    },
+  },
   extraReducers: builder => {
     builder.addCase(deleteUserPassword.pending, (state, _action) => {
-      state.loading = 'pending'
-      state.message = null
+      state.loading = true
+      state.success = false
+      state.error = false
     })
     builder.addCase(deleteUserPassword.fulfilled, (state, action) => {
-      state.loading = 'succeeded'
-      state.message = action.payload.message
+      state.loading = false
+      state.success = true
+      state.successMessage = action.payload.message
     })
-    builder.addCase(deleteUserPassword.rejected, (state, action) => {
-      state.loading = 'failed'
-      state.message = action.payload
+    builder.addCase(deleteUserPassword.rejected, (state, action: PayloadAction<any>) => {
+      state.loading = false
+      state.error = true
+      state.errorMessage = action.payload
     })
   },
 })
 
+export const { successReset, errorReset } = deleteUserPasswordSlice.actions
 export default deleteUserPasswordSlice.reducer

@@ -21,7 +21,7 @@ interface LoginEmailFormValues {
 }
 
 const LoginEmailForm = (props: LoginEmailFormProps) => {
-  const { success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
+  const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
   const {
@@ -68,9 +68,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
-        <div className="flex flex-col text-gray-800 md:mx-6">
-          <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
-        </div>
+        <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
 
         <div className="flex flex-col text-gray-800 md:mx-6">
           <label htmlFor="loginEmail">Email:</label>
@@ -104,7 +102,9 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
 
       <div className="flex justify-center w-full mb-1">
         <button
-          disabled={false}
+          disabled={
+            loading || (success && successMessage === 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.')
+          }
           type="submit"
           className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
@@ -126,7 +126,7 @@ interface LoginCodeFormValues {
 }
 
 const LoginCodeForm = (props: LoginCodeFormProps) => {
-  const { success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
+  const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const { email } = useAppSelector(state => state.storeEmail)
   const dispatch = useAppDispatch()
 
@@ -175,10 +175,8 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
-        <div className="flex flex-col text-gray-800 md:mx-6">
-          <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
-          <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
-        </div>
+        <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
+        <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
 
         <div className="flex flex-col items-center text-gray-800 md:mx-6">
           <label htmlFor="loginCode" className="mb-1 w-36">
@@ -214,7 +212,10 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
 
       <div className="flex justify-center w-full mb-1">
         <button
-          disabled={false}
+          disabled={
+            loading ||
+            (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.')
+          }
           type="submit"
           className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >

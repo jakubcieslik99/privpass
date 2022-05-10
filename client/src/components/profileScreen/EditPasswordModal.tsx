@@ -3,14 +3,18 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition } from '@headlessui/react'
 import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'
+import { useAppSelector, useAppDispatch } from '../../features/store'
+import { updateUserPassword, successReset, errorReset } from '../../features/passwordSlices/updateUserPassword'
+import { getUserPasswords } from '../../features/passwordSlices/getUserPasswords'
 import { editPasswordErrors } from '../../validations/passwordValidations'
+import Success from '../universal/Success'
 import Error from '../universal/Error'
 
 interface EditPasswordModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  passwordToEdit: string
-  setPasswordToEdit: React.Dispatch<React.SetStateAction<string>>
+  passwordToEdit: { id: string; name: string; password: string }
+  setPasswordToEdit: React.Dispatch<React.SetStateAction<{ id: string; name: string; password: string }>>
 }
 
 interface EditPasswordFormValues {
@@ -19,6 +23,9 @@ interface EditPasswordFormValues {
 }
 
 const EditPasswordModal = (props: EditPasswordModalProps) => {
+  const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.updateUserPassword)
+  const dispatch = useAppDispatch()
+
   const [passwordToShow, setPasswordToShow] = useState(false)
 
   const {
@@ -38,31 +45,37 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
   useEffect(() => {
     if (props.isOpen) {
       document.body.classList.add('no-scroll')
-      console.log('fetch ' + props.passwordToEdit + ' password data')
+      setValue('editName', props.passwordToEdit.name)
+      setValue('editPassword', props.passwordToEdit.password)
     }
     return () => {}
-  }, [props.isOpen, props.passwordToEdit])
+  }, [props.isOpen, setValue, props.passwordToEdit])
 
   useEffect(() => {
-    //setValue('editName', 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
-    //setValue('editPassword', 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+    success && dispatch(getUserPasswords())
     return () => {}
-  }, [setValue])
+  }, [success, dispatch])
 
   const closeHandler = () => {
-    console.log('reset fetched password')
-
     props.setIsOpen(false)
     document.body.classList.remove('no-scroll')
     setTimeout(() => {
       setValue('editName', '')
       setValue('editPassword', '')
       setPasswordToShow(false)
+      success && dispatch(successReset())
+      error && dispatch(errorReset())
     }, 200)
   }
 
   const submitHandler: SubmitHandler<EditPasswordFormValues> = data => {
-    console.log(data)
+    dispatch(
+      updateUserPassword({
+        id: props.passwordToEdit.id,
+        name: data.editName,
+        password: data.editPassword,
+      })
+    )
   }
 
   return (
@@ -107,6 +120,9 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
           </div>
 
           <div className="flex flex-col w-full mt-4 mb-5 overflow-y-auto">
+            <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
+            <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
+
             <div className="flex flex-col text-gray-800 md:mx-6">
               <label htmlFor="editName">Nazwa:</label>
               <input
@@ -184,11 +200,18 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
 
           <div className="flex justify-center w-full mb-1">
             <button
-              disabled={false}
+              disabled={loading}
               type="submit"
-              className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+              className="px-4 py-2 mr-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
             >
               Zapisz
+            </button>
+            <button
+              type="button"
+              className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95"
+              onClick={() => closeHandler()}
+            >
+              {success ? 'Zamknij' : 'Anuluj'}
             </button>
           </div>
         </Transition.Child>

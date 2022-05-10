@@ -13,7 +13,7 @@ const App: React.FC = () => {
         <Route path="/" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
 
-        <Route path="*" element={<div className="screen">404</div>} />
+        <Route path="*" element={<div>404</div>} />
       </Routes>
 
       <Footer />

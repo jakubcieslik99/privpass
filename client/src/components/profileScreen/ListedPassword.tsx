@@ -14,7 +14,7 @@ interface ListedPasswordProps {
   listedPassword: ListedPasswordObject
   setEditPasswordModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   setConfirmDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setPasswordToEdit: React.Dispatch<React.SetStateAction<string>>
+  setPasswordToEdit: React.Dispatch<React.SetStateAction<{ id: string; name: string; password: string }>>
   setPasswordToDelete: React.Dispatch<React.SetStateAction<{ id: string; name: string }>>
 }
 
@@ -22,13 +22,22 @@ const ListedPassword = (props: ListedPasswordProps) => {
   const { id, password } = useAppSelector(state => state.getUserPassword)
   const dispatch = useAppDispatch()
 
+  const [passwordShowing, setPasswordShowing] = useState(false)
+  const [passwordEditing, setPasswordEditing] = useState(false)
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordString, setPasswordString] = useState('')
 
   useEffect(() => {
     if (id === props.listedPassword._id && password !== '') {
-      setPasswordString(password)
-      setPasswordVisible(true)
+      if (passwordShowing) {
+        setPasswordString(password)
+        setPasswordVisible(true)
+        setPasswordShowing(false)
+      } else if (passwordEditing) {
+        props.setPasswordToEdit({ id, name: props.listedPassword.name, password })
+        props.setEditPasswordModalIsOpen(true)
+        setPasswordEditing(false)
+      }
       dispatch(idPasswordReset())
     }
     return () => {}
@@ -36,21 +45,23 @@ const ListedPassword = (props: ListedPasswordProps) => {
   }, [id, password])
 
   const openEditPasswordModalHandler = () => {
-    props.setPasswordToEdit('507f191e810c19729de860ea')
-    props.setEditPasswordModalIsOpen(true)
+    setPasswordEditing(true)
+    dispatch(getUserPassword({ id: props.listedPassword._id }))
   }
 
   const openConfirmDeleteModalHandler = () => {
     props.setPasswordToDelete({
-      id: '507f191e810c19729de860ea',
-      name: 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO',
+      id: props.listedPassword._id,
+      name: props.listedPassword.name,
     })
     props.setConfirmDeleteModalIsOpen(true)
   }
 
   const showPasswordHandler = () => {
-    if (!passwordVisible) dispatch(getUserPassword({ id: props.listedPassword._id }))
-    else {
+    if (!passwordVisible) {
+      setPasswordShowing(true)
+      dispatch(getUserPassword({ id: props.listedPassword._id }))
+    } else {
       setPasswordVisible(false)
       setPasswordString('')
     }
