@@ -8,7 +8,6 @@ import { getUserPassword, idPasswordReset } from '../../features/passwordSlices/
 export interface ListedPasswordObject {
   _id: string
   name: string
-  password: string
 }
 interface ListedPasswordProps {
   listedPassword: ListedPasswordObject
@@ -34,6 +33,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
         setPasswordVisible(true)
         setPasswordShowing(false)
       } else if (passwordEditing) {
+        passwordVisible && setPasswordVisible(false)
         props.setPasswordToEdit({ id, name: props.listedPassword.name, password })
         props.setEditPasswordModalIsOpen(true)
         setPasswordEditing(false)

@@ -9,10 +9,24 @@ const getUserPasswords = async (req: Request, res: Response, next: NextFunction)
   try {
     const { authenticatedUser } = res.locals
 
-    const userPasswords = await Password.find({ addedBy: authenticatedUser._id }, 'name').exec()
+    let query = {}
+    if (req.query.searchKeyword) {
+      query = {
+        addedBy: authenticatedUser._id,
+        name: { $regex: req.query.searchKeyword, $options: 'i' },
+      }
+    } else query = { addedBy: authenticatedUser._id }
+
+    let sortOrder = {}
+    if (req.query.sortOrder && req.query.sortOrder === 'oldest') sortOrder = { _id: 1 }
+    else if (req.query.sortOrder && req.query.sortOrder === 'newest') sortOrder = { _id: -1 }
+    else if (req.query.sortOrder && req.query.sortOrder === 'ztoa') sortOrder = { name: -1 }
+    else sortOrder = { name: 1 }
+
+    const userPasswords = await Password.find(query, 'name').sort(sortOrder).exec()
 
     const userPasswordsFinal = userPasswords.map(element => {
-      return { _id: element._id, name: element.name, password: 'hidden' }
+      return { _id: element._id, name: element.name }
     })
 
     return res.status(200).send({ passwords: userPasswordsFinal })

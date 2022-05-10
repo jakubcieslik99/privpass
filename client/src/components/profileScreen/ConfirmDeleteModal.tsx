@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
@@ -17,9 +18,16 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
   const { loading, success, error, errorMessage } = useAppSelector(state => state.deleteUserPassword)
   const dispatch = useAppDispatch()
 
+  const [searchParams] = useSearchParams()
+
   useEffect(() => {
     if (success) {
-      dispatch(getUserPasswords())
+      dispatch(
+        getUserPasswords({
+          searchKeyword: searchParams.get('searchKeyword') || '',
+          sortOrder: searchParams.get('sortOrder') || 'atoz',
+        })
+      )
       closeHandler()
     }
     return () => {}

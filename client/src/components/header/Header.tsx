@@ -65,59 +65,57 @@ const Header: React.FC = () => {
           </button>
         </div>
 
-        <ul className="flex-row items-center hidden md:flex mr-7">
-          {userInfo ? (
-            <>
-              <li
-                className={`flex items-center px-5 py-3 transition md:py-2 md:px-3 md:mr-1 text-percpass-300 ${
-                  pathname !== '/profile' &&
-                  'cursor-pointer hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95'
-                }`}
-                onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
+        {userInfo ? (
+          <ul className="flex-row items-center hidden md:flex mr-7">
+            <li
+              className={`flex items-center px-5 py-3 transition md:py-2 md:px-3 md:mr-1 text-percpass-300 ${
+                pathname !== '/profile' &&
+                'cursor-pointer hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95'
+              }`}
+              onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
+            >
+              <FaUser className="mr-1" />
+              {userInfo.email}
+            </li>
+            <li className="flex">
+              <div
+                className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
+                onClick={logoutHandler}
               >
-                <FaUser className="mr-1" />
-                {userInfo.email}
-              </li>
-              <li className="flex">
-                <div
-                  className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
-                  onClick={logoutHandler}
-                >
-                  Wyloguj
-                </div>
-              </li>
-            </>
-          ) : (
-            <>
-              <li
-                className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
-                onClick={() => scrollToHandler('product-section', -96)}
+                Wyloguj
+              </div>
+            </li>
+          </ul>
+        ) : (
+          <ul className="flex-row items-center hidden md:flex mr-7">
+            <div
+              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
+              onClick={() => scrollToHandler('product-section', -96)}
+            >
+              Produkt
+            </div>
+            <div
+              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
+              onClick={() => scrollToHandler('contact-section', -96)}
+            >
+              Kontakt
+            </div>
+            <li
+              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
+              onClick={() => setRegisterModalIsOpen(true)}
+            >
+              Rejestracja
+            </li>
+            <li className="flex">
+              <div
+                className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
+                onClick={() => setLoginModalIsOpen(true)}
               >
-                Produkt
-              </li>
-              <li
-                className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
-                onClick={() => scrollToHandler('contact-section', -96)}
-              >
-                Kontakt
-              </li>
-              <li
-                className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
-                onClick={() => setRegisterModalIsOpen(true)}
-              >
-                Rejestracja
-              </li>
-              <li className="flex">
-                <div
-                  className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
-                  onClick={() => setLoginModalIsOpen(true)}
-                >
-                  Logowanie
-                </div>
-              </li>
-            </>
-          )}
-        </ul>
+                Logowanie
+              </div>
+            </li>
+          </ul>
+        )}
 
         <ul
           className={`absolute w-full md:hidden flex flex-col transition-transform top-16 shadow-lg ${
@@ -146,18 +144,18 @@ const Header: React.FC = () => {
             </>
           ) : (
             <>
-              <li
+              <div
                 className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
                 onClick={() => scrollToHandler('product-section', -64)}
               >
                 Produkt
-              </li>
-              <li
+              </div>
+              <div
                 className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
                 onClick={() => scrollToHandler('contact-section', -64)}
               >
                 Kontakt
-              </li>
+              </div>
               <li
                 className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
                 onClick={() => setRegisterModalIsOpen(true)}

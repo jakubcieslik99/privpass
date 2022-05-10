@@ -3,6 +3,7 @@ import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
 import HomeScreen from './screens/HomeScreen'
 import ProfileScreen from './screens/ProfileScreen'
+import NotFound from './components/universal/NotFound'
 
 const App: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ const App: React.FC = () => {
         <Route path="/" element={<HomeScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
 
-        <Route path="*" element={<div>404</div>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />

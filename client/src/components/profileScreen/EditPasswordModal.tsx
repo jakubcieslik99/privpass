@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition } from '@headlessui/react'
@@ -26,6 +27,8 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.updateUserPassword)
   const dispatch = useAppDispatch()
 
+  const [searchParams] = useSearchParams()
+
   const [passwordToShow, setPasswordToShow] = useState(false)
 
   const {
@@ -52,9 +55,16 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
   }, [props.isOpen, setValue, props.passwordToEdit])
 
   useEffect(() => {
-    success && dispatch(getUserPasswords())
+    success &&
+      dispatch(
+        getUserPasswords({
+          searchKeyword: searchParams.get('searchKeyword') || '',
+          sortOrder: searchParams.get('sortOrder') || 'atoz',
+        })
+      )
     return () => {}
-  }, [success, dispatch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success])
 
   const closeHandler = () => {
     props.setIsOpen(false)

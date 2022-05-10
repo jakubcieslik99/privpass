@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { FaTools, FaShareAlt, FaSearch, FaPlus } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../features/store'
 import { getUserPasswords } from '../features/passwordSlices/getUserPasswords'
@@ -11,11 +12,21 @@ import Success from '../components/universal/Success'
 import Error from '../components/universal/Error'
 import Empty from '../assets/empty.png'
 
+interface URLStructure {
+  searchKeyword?: string
+  sortOrder?: string
+}
+let URL: URLStructure = {}
+
 const ProfileScreen: React.FC = () => {
   const { loading, error, errorMessage, passwords } = useAppSelector(state => state.getUserPasswords)
   const { error: error2, errorMessage: errorMessage2 } = useAppSelector(state => state.getUserPassword)
   const { success, successMessage } = useAppSelector(state => state.deleteUserPassword)
   const dispatch = useAppDispatch()
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchKeyword, setSearchKeyword] = useState(searchParams.get('searchKeyword') || '')
+  const [sortOrder, setSortOrder] = useState(searchParams.get('sortOrder') || 'atoz')
 
   const [addPasswordModalIsOpen, setAddPasswordModallIsOpen] = useState(false)
   const [editPasswordModalIsOpen, setEditPasswordModalIsOpen] = useState(false)
@@ -24,15 +35,30 @@ const ProfileScreen: React.FC = () => {
   const [passwordToDelete, setPasswordToDelete] = useState({ id: '', name: '' })
 
   useEffect(() => {
-    passwords.length === 0 && dispatch(getUserPasswords())
+    dispatch(getUserPasswords({ searchKeyword, sortOrder }))
     return () => {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [searchParams])
 
   useEffect(() => {
     if (success) setTimeout(() => dispatch(successReset()), 3000)
     return () => {}
   }, [success, dispatch])
+
+  const filterURL = (searchKeywordFilter: string, sortOrderFilter: string) => {
+    if (searchKeywordFilter !== '') URL.searchKeyword = searchKeywordFilter
+    else if (URL.searchKeyword) delete URL.searchKeyword
+    if (sortOrderFilter !== 'atoz') URL.sortOrder = sortOrderFilter
+    else if (URL.sortOrder) delete URL.sortOrder
+    setSearchParams({ ...URL })
+  }
+
+  const searchHandler = () => filterURL(searchKeyword, sortOrder)
+
+  const sortHandler = (value: string) => {
+    setSortOrder(value)
+    filterURL(searchKeyword, value)
+  }
 
   return (
     <main className="gradient-primary app-screen">
@@ -51,8 +77,15 @@ const ProfileScreen: React.FC = () => {
                   type="text"
                   placeholder="Szukaj"
                   className="w-full px-4 py-2 mr-2 text-gray-800 transition border-none rounded-full focus:outline-none"
+                  value={searchKeyword}
+                  onChange={e => setSearchKeyword(e.target.value)}
+                  onKeyDown={!loading ? e => e.key === 'Enter' && searchHandler() : undefined}
                 />
-                <button className="px-3 py-2 transition border rounded-full border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 text-md">
+                <button
+                  type="button"
+                  className="px-3 py-2 transition border rounded-full border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 text-md"
+                  onClick={!loading ? searchHandler : undefined}
+                >
                   <FaSearch />
                 </button>
               </div>
@@ -62,7 +95,8 @@ const ProfileScreen: React.FC = () => {
               <div className="mb-1 ml-3 text-xs">Sortowanie:</div>
               <select
                 className="w-full px-3 py-2 text-gray-800 transition border-none rounded-full cursor-pointer focus:outline-none"
-                defaultValue="1"
+                value={sortOrder}
+                onChange={e => sortHandler(e.target.value)}
               >
                 <option value="atoz">Alfabetycznie (A-Z)</option>
                 <option value="ztoa">Alfabetycznie (Z-A)</option>
@@ -109,7 +143,7 @@ const ProfileScreen: React.FC = () => {
                   ))
                 : !loading && (
                     <div className="flex flex-col items-center py-3 text-sm font-light">
-                      <div className="mb-5">Nie posiadasz zapisanych haseł.</div>
+                      <div className="mb-5">Nie znaleziono zapisanych haseł.</div>
                       <div className="w-48 md:w-56 lg:w-64">
                         <img src={Empty} alt="empty" />
                       </div>

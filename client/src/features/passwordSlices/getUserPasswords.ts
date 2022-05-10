@@ -3,15 +3,24 @@ import axios from 'axios'
 import { RootState } from '../store'
 import { ListedPasswordObject } from '../../components/profileScreen/ListedPassword'
 
-const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (_, thunkAPI) => {
+interface getUserPasswordsData {
+  searchKeyword: string
+  sortOrder: string
+}
+
+const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (sendData: getUserPasswordsData, thunkAPI) => {
   try {
+    const { searchKeyword, sortOrder } = sendData
     const { listUser } = thunkAPI.getState() as RootState
 
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/passwords/getUserPasswords`, {
-      headers: {
-        Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
-      },
-    })
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/passwords/getUserPasswords?searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
+        },
+      }
+    )
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data.message)
