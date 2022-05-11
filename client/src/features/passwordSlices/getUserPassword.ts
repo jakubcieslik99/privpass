@@ -17,7 +17,8 @@ const getUserPassword = createAsyncThunk('passwords/getUserPassword', async (sen
     })
     return data
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data.message)
+    const message = error?.response?.data?.message || error?.message || error.toString()
+    return thunkAPI.rejectWithValue(message)
   }
 })
 

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { scroller } from 'react-scroll'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../features/store'
@@ -7,6 +7,7 @@ import { logoutUser, userInfoReset } from '../../features/userSlices/listUser'
 import { passwordsReset } from '../../features/passwordSlices/getUserPasswords'
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
+import { LocationProps } from '../../App'
 
 const Header: React.FC = () => {
   const { userInfo } = useAppSelector(state => state.listUser)
@@ -16,8 +17,18 @@ const Header: React.FC = () => {
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false)
   const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false)
 
-  const { pathname } = useLocation()
   const navigate = useNavigate()
+  const { pathname, state } = useLocation() as LocationProps
+  const locationLoginModalIsOpen = state?.loginModalIsOpen || false
+
+  useEffect(() => {
+    if (locationLoginModalIsOpen) {
+      setLoginModalIsOpen(true)
+      navigate(pathname, { replace: true })
+    }
+    return () => {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   const scrollToTopHandler = () => {
     menuIsOpen && setMenuIsOpen(false)
@@ -39,7 +50,7 @@ const Header: React.FC = () => {
   }
 
   const logoutHandler = () => {
-    navigate('/')
+    navigate('/', { replace: true })
     dispatch(passwordsReset())
     dispatch(userInfoReset())
     dispatch(logoutUser())

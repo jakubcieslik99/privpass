@@ -20,7 +20,7 @@ const registerSendCode = createAsyncThunk('listUser/registerSendCode', async (se
     return data
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
-    return thunkAPI.rejectWithValue({ message })
+    return thunkAPI.rejectWithValue(message)
   }
 })
 const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData: loginSendCodeData, thunkAPI) => {
@@ -132,7 +132,7 @@ export const listUserSlice = createSlice({
     builder.addCase(registerSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       state.error = true
-      state.errorMessage = action.payload.message
+      state.errorMessage = action.payload
     })
     //loginSendCode
     builder.addCase(loginSendCode.pending, state => {
@@ -146,7 +146,7 @@ export const listUserSlice = createSlice({
     builder.addCase(loginSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       state.error = true
-      state.errorMessage = action.payload.message
+      state.errorMessage = action.payload
     })
     //confirmCode
     builder.addCase(confirmCode.pending, state => {

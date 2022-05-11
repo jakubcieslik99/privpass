@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
@@ -9,6 +9,7 @@ import { emailSet } from '../../features/userSlices/storeEmail'
 import { loginErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
 import Success from '../universal/Success'
+import { LocationProps } from '../../App'
 
 interface LoginEmailFormProps {
   formSwitch: boolean
@@ -136,12 +137,15 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
     reset,
     formState: { errors },
   } = useForm<LoginCodeFormValues>({ defaultValues: { loginCode: '' } })
+
   const navigate = useNavigate()
+  const { state } = useLocation() as LocationProps
+  const locationFrom = state?.from || '/profile'
 
   useEffect(() => {
     if (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.') {
       setTimeout(() => {
-        navigate('/profile')
+        navigate(locationFrom, { replace: true })
         props.closeHandler()
         setTimeout(() => reset(), 200)
       }, 3000)
