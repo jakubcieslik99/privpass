@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axiosPublic from '../../api/axiosPublic'
 
 interface registerSendCodeData {
   email: string
@@ -14,7 +14,7 @@ interface confirmCodeData {
 
 const registerSendCode = createAsyncThunk('listUser/registerSendCode', async (sendData: registerSendCodeData, thunkAPI) => {
   try {
-    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/users/registerSendCode`, {
+    const { data } = await axiosPublic.post(`/users/registerSendCode`, {
       email: sendData.email,
     })
     return data
@@ -25,7 +25,7 @@ const registerSendCode = createAsyncThunk('listUser/registerSendCode', async (se
 })
 const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData: loginSendCodeData, thunkAPI) => {
   try {
-    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/users/loginSendCode`, {
+    const { data } = await axiosPublic.post(`/users/loginSendCode`, {
       email: sendData.email,
     })
     return data
@@ -36,8 +36,8 @@ const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData
 })
 const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: confirmCodeData, thunkAPI) => {
   try {
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_API_URL}/users/confirmCode`,
+    const { data } = await axiosPublic.post(
+      `/users/confirmCode`,
       {
         code: sendData.code,
         email: sendData.email,
@@ -46,6 +46,7 @@ const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: co
     )
 
     data?.userInfo && localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
+    data?.accessToken && localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
 
     return data
   } catch (error: any) {
@@ -54,21 +55,9 @@ const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: co
   }
 })
 
-const refreshAccessToken = createAsyncThunk('listUser/refreshAccessToken', async (_, thunkAPI) => {
-  try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/refreshAccessToken`, { withCredentials: true })
-
-    data?.userInfo && localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
-
-    return data
-  } catch (error: any) {
-    const message = error?.response?.data?.message || error?.message || error.toString()
-    return thunkAPI.rejectWithValue(message)
-  }
-})
 const logoutUser = createAsyncThunk('listUser/logoutUser', async (_, thunkAPI) => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/logoutUser`, { withCredentials: true })
+    const { data } = await axiosPublic.get(`/users/logoutUser`, { withCredentials: true })
     return data
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
@@ -76,7 +65,7 @@ const logoutUser = createAsyncThunk('listUser/logoutUser', async (_, thunkAPI) =
   }
 })
 
-export { registerSendCode, loginSendCode, confirmCode, refreshAccessToken, logoutUser }
+export { registerSendCode, loginSendCode, confirmCode, logoutUser }
 
 interface listUserState {
   loading: boolean
@@ -87,7 +76,6 @@ interface listUserState {
   userInfo: {
     id: string
     email: string
-    accessToken: string
   } | null
 }
 
@@ -117,6 +105,7 @@ export const listUserSlice = createSlice({
     userInfoReset: state => {
       state.userInfo = null
       localStorage.removeItem('userInfo')
+      localStorage.removeItem('accessToken')
     },
   },
   extraReducers: builder => {
@@ -165,14 +154,6 @@ export const listUserSlice = createSlice({
       state.error = true
       state.errorMessage = action.payload
       state.userInfo = null
-    })
-    //refreshAccessToken
-    builder.addCase(refreshAccessToken.fulfilled, (state, action) => {
-      state.userInfo = action.payload.userInfo
-    })
-    builder.addCase(refreshAccessToken.rejected, (state, action: PayloadAction<any>) => {
-      state.error = true
-      state.errorMessage = action.payload
     })
     //logoutUser
     builder.addCase(logoutUser.pending, state => {

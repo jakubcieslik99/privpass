@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { RootState } from '../store'
+import axiosProtected from '../../api/axiosProtected'
 
 interface updateUserPasswordData {
   id: string
@@ -12,20 +11,10 @@ const updateUserPassword = createAsyncThunk(
   'passwords/updateUserPassword',
   async (sendData: updateUserPasswordData, thunkAPI) => {
     try {
-      const { listUser } = thunkAPI.getState() as RootState
-
-      const { data } = await axios.put(
-        `${process.env.REACT_APP_API_URL}/passwords/updateUserPassword/${sendData.id}`,
-        {
-          name: sendData.name,
-          password: sendData.password,
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
-          },
-        }
-      )
+      const { data } = await axiosProtected.put(`/passwords/updateUserPassword/${sendData.id}`, {
+        name: sendData.name,
+        password: sendData.password,
+      })
       return data
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || error.toString()

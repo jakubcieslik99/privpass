@@ -79,8 +79,7 @@ const confirmCode = async (req: Request, res: Response, next: NextFunction) => {
 
     if (checkedUser.code !== validationResult.code) throw createError(406, 'Kod dostępu jest niepoprawny.')
 
-    //300 * 1000
-    if (Date.now() - checkedUser.updatedAt > 900 * 1000) {
+    if (Date.now() - checkedUser.updatedAt > 300 * 1000) {
       checkedUser.code = null
       await checkedUser.save()
       throw createError(406, 'Kod dostępu stracił ważność.')
@@ -109,8 +108,8 @@ const confirmCode = async (req: Request, res: Response, next: NextFunction) => {
         userInfo: {
           id: checkedUser._id,
           email: checkedUser.email,
-          accessToken: accessToken,
         },
+        accessToken: accessToken,
       })
   } catch (error: any) {
     if (error.isJoi === true) {
@@ -137,13 +136,7 @@ const refreshAccessToken = async (req: Request, res: Response, next: NextFunctio
 
         const accessToken = await getAccessToken(decode.id, decode.email)
 
-        return res.status(201).send({
-          userInfo: {
-            id: checkedUser._id,
-            email: checkedUser.email,
-            accessToken: accessToken,
-          },
-        })
+        return res.status(201).send({ accessToken })
       }
     )
   } catch (error) {

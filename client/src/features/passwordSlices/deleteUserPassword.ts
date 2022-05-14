@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { RootState } from '../store'
+import axiosProtected from '../../api/axiosProtected'
 
 interface deleteUserPasswordData {
   id: string
@@ -10,13 +9,9 @@ const deleteUserPassword = createAsyncThunk(
   'passwords/deleteUserPassword',
   async (sendData: deleteUserPasswordData, thunkAPI) => {
     try {
-      const { listUser } = thunkAPI.getState() as RootState
-
-      const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/passwords/deleteUserPassword/${sendData.id}`, {
-        headers: {
-          Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
-        },
-      })
+      const { data } = await axiosProtected.delete(
+        `${process.env.REACT_APP_API_URL}/passwords/deleteUserPassword/${sendData.id}`
+      )
       return data
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || error.toString()

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { RootState } from '../store'
+//import { RootState } from '../store'
+import axiosProtected from '../../api/axiosProtected'
 import { ListedPasswordObject } from '../../components/profileScreen/ListedPassword'
 
 interface getUserPasswordsData {
@@ -11,15 +11,10 @@ interface getUserPasswordsData {
 const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (sendData: getUserPasswordsData, thunkAPI) => {
   try {
     const { searchKeyword, sortOrder } = sendData
-    const { listUser } = thunkAPI.getState() as RootState
+    //const { listUser } = thunkAPI.getState() as RootState
 
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/passwords/getUserPasswords?searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`,
-      {
-        headers: {
-          Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
-        },
-      }
+    const { data } = await axiosProtected.get(
+      `/passwords/getUserPasswords?searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`
     )
     return data
   } catch (error: any) {
@@ -61,8 +56,8 @@ export const getUserPasswordsSlice = createSlice({
     })
     builder.addCase(getUserPasswords.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      state.error = action.payload ? true : false
+      state.errorMessage = action.payload || ''
     })
   },
 })

@@ -35,8 +35,8 @@ const ProfileScreen: React.FC = () => {
   const [passwordToDelete, setPasswordToDelete] = useState({ id: '', name: '' })
 
   useEffect(() => {
-    dispatch(getUserPasswords({ searchKeyword, sortOrder }))
-    return () => {}
+    const promise = dispatch(getUserPasswords({ searchKeyword, sortOrder }))
+    return () => promise.abort()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 

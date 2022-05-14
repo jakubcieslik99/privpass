@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { RootState } from '../store'
+import axiosProtected from '../../api/axiosProtected'
 
 interface createUserPasswordData {
   name: string
@@ -11,20 +10,10 @@ const createUserPassword = createAsyncThunk(
   'passwords/createUserPassword',
   async (sendData: createUserPasswordData, thunkAPI) => {
     try {
-      const { listUser } = thunkAPI.getState() as RootState
-
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/passwords/createUserPassword`,
-        {
-          name: sendData.name,
-          password: sendData.password,
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + listUser?.userInfo?.accessToken,
-          },
-        }
-      )
+      const { data } = await axiosProtected.post(`/passwords/createUserPassword`, {
+        name: sendData.name,
+        password: sendData.password,
+      })
       return data
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || error.toString()
