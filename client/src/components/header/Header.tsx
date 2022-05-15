@@ -50,7 +50,7 @@ const Header: React.FC = () => {
   }
 
   const logoutHandler = () => {
-    navigate('/', { replace: true })
+    //navigate('/', { replace: true })
     dispatch(passwordsReset())
     dispatch(userInfoReset())
     dispatch(logoutUser())

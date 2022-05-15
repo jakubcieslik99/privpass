@@ -1,5 +1,13 @@
+import { AnyAction } from '@reduxjs/toolkit'
 import axios, { AxiosRequestConfig } from 'axios'
 import axiosPublic from '../api/axiosPublic'
+import { logoutUser, userInfoReset } from '../features/userSlices/listUser'
+import { passwordsReset } from '../features/passwordSlices/getUserPasswords'
+
+let store: AnyAction
+export const injectStore = (_store: any) => {
+  store = _store
+}
 
 const axiosProtected = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -47,16 +55,21 @@ const resIntercept = axiosProtected.interceptors.response.use(
       if (type === 'data') {
         prevRequest.headers['Authorization'] = `Bearer ${payload.accessToken}`
         return axiosProtected(prevRequest)
-      } else return Promise.reject(payload)
+      } else {
+        store.dispatch(passwordsReset())
+        store.dispatch(userInfoReset())
+        store.dispatch(logoutUser())
+        return Promise.reject(payload)
+      }
     }
     return Promise.reject(error)
   }
 )
 
-const axiosProtectedEject = () => {
+/*const axiosProtectedEject = () => {
   axiosProtected.interceptors.request.eject(reqIntercept)
   axiosProtected.interceptors.response.eject(resIntercept)
-}
+}*/
 
-export { reqIntercept, resIntercept, axiosProtectedEject }
+export { reqIntercept, resIntercept }
 export default axiosProtected
