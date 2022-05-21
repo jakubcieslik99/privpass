@@ -26,6 +26,7 @@ const Header: React.FC = () => {
       setLoginModalIsOpen(true)
       navigate(pathname, { replace: true })
     }
+    if (menuIsOpen) setMenuIsOpen(false)
     return () => {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])

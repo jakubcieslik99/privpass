@@ -61,7 +61,7 @@ const ProfileScreen: React.FC = () => {
   }
 
   return (
-    <main className="gradient-primary app-screen">
+    <main className="pt-16 md:pt-24 gradient-primary app-screen">
       <div className="grid gap-3 px-3 py-9 app-container md:grid-cols-3 lg:grid-cols-4">
         <div className="md:order-2">
           <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-percpass-500">
@@ -93,16 +93,19 @@ const ProfileScreen: React.FC = () => {
 
             <div className="mb-4">
               <div className="mb-1 ml-3 text-xs">Sortowanie:</div>
-              <select
-                className="w-full px-3 py-2 text-gray-800 transition border-none rounded-full cursor-pointer focus:outline-none"
-                value={sortOrder}
-                onChange={e => sortHandler(e.target.value)}
-              >
-                <option value="atoz">Alfabetycznie (A-Z)</option>
-                <option value="ztoa">Alfabetycznie (Z-A)</option>
-                <option value="newest">Od najnowszych</option>
-                <option value="oldest">Od najstarszych</option>
-              </select>
+
+              <div className="w-full h-[40px] bg-white rounded-full px-2">
+                <select
+                  className="w-full h-[40px] pr-2 py-2 text-gray-800 transition border-none rounded-full cursor-pointer focus:outline-none"
+                  value={sortOrder}
+                  onChange={e => sortHandler(e.target.value)}
+                >
+                  <option value="atoz">Alfabetycznie (A-Z)</option>
+                  <option value="ztoa">Alfabetycznie (Z-A)</option>
+                  <option value="newest">Od najnowszych</option>
+                  <option value="oldest">Od najstarszych</option>
+                </select>
+              </div>
             </div>
 
             <div>

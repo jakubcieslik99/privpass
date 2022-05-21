@@ -66,25 +66,27 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
         <h2 className="font-semibold">Rejestracja</h2>
         <FaTimes
-          className="transition cursor-pointer hover:text-gray-700 active:scale-95"
+          className="transition-colors cursor-pointer hover:text-gray-700 active:scale-95"
           onClick={() => props.closeHandler()}
         />
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
-        <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
+        <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
         <div className="flex flex-col text-gray-800 md:mx-6">
-          <label htmlFor="registerEmail">Email:</label>
+          <label htmlFor="registerEmail" className="mx-1">
+            Email:
+          </label>
           <input
             {...register('registerEmail', registerErrors.registerEmail)}
             id="registerEmail"
             type="text"
             placeholder="Podaj email"
-            className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
+            className="px-3 py-2 m-1 border rounded-lg border-percpass-400 focus:outline-percpass-400"
           />
 
-          <div className="grid">
+          <div className="grid mx-1">
             <Error
               isOpen={errors.registerEmail?.type === 'required' ? true : false}
               message={registerErrors.registerEmail.required.message}
@@ -185,11 +187,11 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
       </div>
 
       <div className="flex flex-col w-full my-4 overflow-y-auto">
-        <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
-        <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
+        <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mx-1 mb-4" />
+        <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
         <div className="flex flex-col items-center text-gray-800 md:mx-6">
-          <label htmlFor="registerCode" className="mb-1 w-36">
+          <label htmlFor="registerCode" className="mx-1 mb-1 w-36">
             Kod rejestracji:
           </label>
           <input
@@ -197,10 +199,10 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
             id="registerCode"
             type="text"
             placeholder="0000"
-            className="pl-[1.37rem] pr-1 py-2 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 monospace-font"
+            className="pl-[1.37rem] pr-1 py-2 m-1 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 monospace-font"
           />
 
-          <div className="grid">
+          <div className="grid mx-1">
             <Error
               isOpen={errors.registerCode?.type === 'required' ? true : false}
               message={registerErrors.registerCode.required.message}

@@ -55,8 +55,8 @@ body {
 
 /*-----ELEMENTS-----*/
 .app-screen {
-  min-height: calc(100vh - 64px - 116px);
-  @apply mt-16 overflow-hidden text-white md:mt-24;
+  min-height: calc(100vh - 116px);
+  @apply overflow-hidden text-white;
 }
 .app-hero-screen {
   @apply h-screen text-white;
@@ -77,7 +77,7 @@ body {
 /*from md*/
 @media (min-width: 768px) {
   .app-screen {
-    min-height: calc(100vh - 96px - 56px);
+    min-height: calc(100vh - 56px);
   }
 
   #product-section,

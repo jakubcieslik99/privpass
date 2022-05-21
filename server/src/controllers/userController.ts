@@ -56,7 +56,7 @@ const loginSendCode = async (req: Request, res: Response, next: NextFunction) =>
     loginUser.code = code
     await loginUser.save()
 
-    await sendEmail(loginSendCodeMessage(validationResult.email, code))
+    //await sendEmail(loginSendCodeMessage(validationResult.email, code))
 
     return res.status(200).send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.' })
   } catch (error: any) {

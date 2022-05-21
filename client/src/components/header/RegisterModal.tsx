@@ -48,8 +48,8 @@ const RegisterModal = (props: RegisterModalProps) => {
         leaveTo="opacity-0"
       >
         <FaTimes
-          className={`fixed hidden text-3xl text-gray-400 transition cursor-pointer right-3 top-3 hover:text-gray-300 active:scale-95 ${'md:hidden'}`}
-          onClick={() => closeHandler()}
+          className={`fixed hidden text-3xl text-gray-400 transition-colors cursor-pointer right-3 top-3 hover:text-gray-300 active:scale-95 ${'md:hidden'}`}
+          onClick={registerFormSwitch ? () => closeHandler() : undefined}
         />
       </Transition.Child>
 

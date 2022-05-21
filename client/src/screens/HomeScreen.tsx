@@ -13,7 +13,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <main>
-      <div id="hero-section" className="h-screen pt-16 md:pt-24 gradient-primary app-hero-screen">
+      <div id="hero-section" className="pt-16 md:pt-24 gradient-primary app-hero-screen">
         <div className="grid h-full grid-flow-col grid-rows-6 app-container md:grid-flow-row md:grid-cols-12 md:grid-rows-1">
           <div className="flex items-center justify-center row-span-2 md:col-span-5">
             <div className="flex flex-col items-center text-white">

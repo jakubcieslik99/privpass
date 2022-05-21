@@ -35,8 +35,9 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
     register,
     watch,
     setValue,
-    formState: { errors },
     handleSubmit,
+    reset,
+    formState: { errors },
   } = useForm<EditPasswordFormValues>({
     defaultValues: {
       editName: '',
@@ -70,8 +71,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
     props.setIsOpen(false)
     document.body.classList.remove('no-scroll')
     setTimeout(() => {
-      setValue('editName', '')
-      setValue('editPassword', '')
+      reset()
       setPasswordToShow(false)
       success && dispatch(successReset())
       error && dispatch(errorReset())
@@ -130,20 +130,22 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
           </div>
 
           <div className="flex flex-col w-full mt-4 mb-5 overflow-y-auto">
-            <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mb-4" />
-            <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mb-4" />
+            <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mx-1 mb-4" />
+            <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
             <div className="flex flex-col text-gray-800 md:mx-6">
-              <label htmlFor="editName">Nazwa:</label>
+              <label htmlFor="editName" className="mx-1">
+                Nazwa:
+              </label>
               <input
                 {...register('editName', editPasswordErrors.editName)}
                 id="editName"
                 type="text"
                 placeholder="Podaj nazwę"
-                className="px-3 py-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
+                className="px-3 py-2 m-1 border rounded-lg border-percpass-400 focus:outline-percpass-400"
               />
 
-              <div className="grid">
+              <div className="grid mx-1">
                 <Error
                   isOpen={errors.editName?.type === 'required' ? true : false}
                   message={editPasswordErrors.editName.required.message}
@@ -158,18 +160,20 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
             </div>
 
             <div className="relative flex flex-col mt-3 text-gray-800 md:mx-6">
-              <label htmlFor="editPassword">Hasło:</label>
+              <label htmlFor="editPassword" className="mx-1">
+                Hasło:
+              </label>
               <div className="flex items-center">
                 <input
                   {...register('editPassword', editPasswordErrors.editPassword)}
                   id="editPassword"
                   type={passwordToShow ? 'text' : 'password'}
                   placeholder="Podaj hasło"
-                  className="w-full px-3 py-2 mr-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
+                  className="w-full px-3 py-2 my-1 ml-1 mr-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
                 />
                 <button
                   type="button"
-                  className="relative flex-none p-2 text-xl transition bg-white border rounded-full w-9 h-9 text-percpass-400 border-percpass-400 hover:border-percpass-400/80 hover:text-percpass-400/80 active:scale-95"
+                  className="relative flex-none p-2 mr-1 text-xl transition bg-white border rounded-full w-9 h-9 text-percpass-400 border-percpass-400 hover:border-percpass-400/80 hover:text-percpass-400/80 active:scale-95"
                   onClick={() => setPasswordToShow(!passwordToShow)}
                 >
                   <FaEye
@@ -186,14 +190,14 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
               </div>
 
               <PasswordStrengthBar
-                className="mt-[3px] mr-11"
+                className="mt-[3px] ml-1 mr-12"
                 password={watchEditPassword}
                 minLength={1}
                 scoreWords={['bardzo słabe', 'słabe', 'przeciętne', 'silne', 'bardzo silne']}
                 shortScoreWord={'za krótkie'}
               />
 
-              <div className="grid">
+              <div className="grid mx-1">
                 <Error
                   isOpen={errors.editPassword?.type === 'required' ? true : false}
                   message={editPasswordErrors.editPassword.required.message}
