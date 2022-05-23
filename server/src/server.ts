@@ -6,7 +6,7 @@ import createError from 'http-errors'
 import { config, log } from './config/utilities'
 import databaseConnect from './config/databaseConnect'
 import corsOptions from './config/corsOptions'
-import isError from './middlewares/errorMiddleware'
+import { isError } from './middlewares/errorMiddleware'
 import userRoute from './routes/userRoute'
 import passwordRoute from './routes/passwordRoute'
 
