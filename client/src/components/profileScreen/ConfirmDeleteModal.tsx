@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
-import { deleteUserPassword, errorReset } from '../../features/passwordSlices/deleteUserPassword'
+import { deleteUserPassword, errorReset, successReset } from '../../features/passwordSlices/deleteUserPassword'
 import { getUserPasswords } from '../../features/passwordSlices/getUserPasswords'
 import Error from '../universal/Error'
 
@@ -15,43 +15,47 @@ interface ConfirmDeleteModalProps {
 }
 
 const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
+  //variables
+  const { isOpen, setIsOpen, setPasswordToDelete } = props
+
   const { loading, success, error, errorMessage } = useAppSelector(state => state.deleteUserPassword)
   const dispatch = useAppDispatch()
 
   const [searchParams] = useSearchParams()
 
+  //handlers
+  const closeHandler = useCallback(() => {
+    setIsOpen(false)
+    setTimeout(() => {
+      setPasswordToDelete({ id: '', name: '' })
+      error && dispatch(errorReset())
+    }, 2000)
+  }, [error, setIsOpen, setPasswordToDelete, dispatch])
+
+  const submitHandler = (event: React.SyntheticEvent<HTMLElement>) => {
+    event.preventDefault()
+    dispatch(deleteUserPassword({ id: props.passwordToDelete.id }))
+  }
+
+  //useEffects
   useEffect(() => {
     if (success) {
-      dispatch(
+      const promise = dispatch(
         getUserPasswords({
           searchKeyword: searchParams.get('searchKeyword') || '',
           sortOrder: searchParams.get('sortOrder') || 'atoz',
         })
       )
       closeHandler()
+      setTimeout(() => dispatch(successReset()), 30000)
+
+      return () => promise.abort()
     }
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success])
+  }, [success, searchParams, closeHandler, dispatch])
 
   useEffect(() => {
-    props.isOpen && document.body.classList.add('no-scroll')
-    return () => {}
-  }, [props.isOpen])
-
-  const closeHandler = () => {
-    props.setIsOpen(false)
-    setTimeout(() => {
-      props.setPasswordToDelete({ id: '', name: '' })
-      error && dispatch(errorReset())
-    }, 200)
-    document.body.classList.remove('no-scroll')
-  }
-
-  const submitHandler = (event: React.SyntheticEvent<HTMLElement>) => {
-    event.preventDefault()
-    dispatch(deleteUserPassword({ id: props.passwordToDelete.id }))
-  }
+    isOpen ? document.body.classList.add('no-scroll') : document.body.classList.remove('no-scroll')
+  }, [isOpen])
 
   return (
     <Transition className="fixed inset-0 z-30" show={props.isOpen}>

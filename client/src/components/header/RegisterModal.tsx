@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppDispatch } from '../../features/store'
@@ -12,18 +12,16 @@ interface RegisterModalProps {
 }
 
 const RegisterModal = (props: RegisterModalProps) => {
+  //variables
+  const { isOpen, setIsOpen } = props
+
   const dispatch = useAppDispatch()
 
   const [registerFormSwitch, setRegisterFormSwitch] = useState(true)
 
-  useEffect(() => {
-    props.isOpen && document.body.classList.add('no-scroll')
-    return () => {}
-  }, [props.isOpen])
-
-  const closeHandler = () => {
-    props.setIsOpen(false)
-    document.body.classList.remove('no-scroll')
+  //handlers
+  const closeHandler = useCallback(() => {
+    setIsOpen(false)
     setTimeout(() => {
       dispatch(successReset())
       dispatch(errorReset())
@@ -33,7 +31,12 @@ const RegisterModal = (props: RegisterModalProps) => {
 
       setRegisterFormSwitch(true)
     }, 200)
-  }
+  }, [setIsOpen, dispatch])
+
+  //useEffects
+  useEffect(() => {
+    isOpen ? document.body.classList.add('no-scroll') : document.body.classList.remove('no-scroll')
+  }, [isOpen])
 
   return (
     <Transition className="fixed inset-0 z-30" show={props.isOpen}>
@@ -75,6 +78,7 @@ const RegisterModal = (props: RegisterModalProps) => {
           <RegisterCodeForm
             formSwitch={registerFormSwitch}
             setFormSwitch={setRegisterFormSwitch}
+            isOpen={props.isOpen}
             closeHandler={closeHandler}
           />
         </Transition.Child>

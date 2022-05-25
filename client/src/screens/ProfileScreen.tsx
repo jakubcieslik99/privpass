@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom'
 import { FaTools, FaShareAlt, FaSearch, FaPlus } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../features/store'
 import { getUserPasswords } from '../features/passwordSlices/getUserPasswords'
-import { successReset } from '../features/passwordSlices/deleteUserPassword'
 import ListedPassword from '../components/profileScreen/ListedPassword'
 import AddPasswordModal from '../components/profileScreen/AddPasswordModal'
 import EditPasswordModal from '../components/profileScreen/EditPasswordModal'
@@ -16,9 +15,11 @@ interface URLStructure {
   searchKeyword?: string
   sortOrder?: string
 }
+
 let URL: URLStructure = {}
 
 const ProfileScreen: React.FC = () => {
+  //variables
   const { loading, error, errorMessage, passwords } = useAppSelector(state => state.getUserPasswords)
   const { error: error2, errorMessage: errorMessage2 } = useAppSelector(state => state.getUserPassword)
   const { success, successMessage } = useAppSelector(state => state.deleteUserPassword)
@@ -34,17 +35,7 @@ const ProfileScreen: React.FC = () => {
   const [passwordToEdit, setPasswordToEdit] = useState({ id: '', name: '', password: '' })
   const [passwordToDelete, setPasswordToDelete] = useState({ id: '', name: '' })
 
-  useEffect(() => {
-    const promise = dispatch(getUserPasswords({ searchKeyword, sortOrder }))
-    return () => promise.abort()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams])
-
-  useEffect(() => {
-    if (success) setTimeout(() => dispatch(successReset()), 3000)
-    return () => {}
-  }, [success, dispatch])
-
+  //handlers
   const filterURL = (searchKeywordFilter: string, sortOrderFilter: string) => {
     if (searchKeywordFilter !== '') URL.searchKeyword = searchKeywordFilter
     else if (URL.searchKeyword) delete URL.searchKeyword
@@ -59,6 +50,17 @@ const ProfileScreen: React.FC = () => {
     setSortOrder(value)
     filterURL(searchKeyword, value)
   }
+
+  //useEffects
+  useEffect(() => {
+    const promise = dispatch(
+      getUserPasswords({
+        searchKeyword: searchParams.get('searchKeyword') || '',
+        sortOrder: searchParams.get('sortOrder') || 'atoz',
+      })
+    )
+    return () => promise.abort()
+  }, [searchParams, dispatch])
 
   return (
     <main className="pt-16 md:pt-24 gradient-primary app-screen">

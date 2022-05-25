@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppDispatch } from '../../features/store'
@@ -12,24 +12,16 @@ interface LoginModalProps {
 }
 
 const LoginModal = (props: LoginModalProps) => {
+  //variables
+  const { isOpen, setIsOpen } = props
+
   const dispatch = useAppDispatch()
 
   const [loginFormSwitch, setLoginFormSwitch] = useState(true)
 
-  useEffect(() => {
-    if (props.isOpen) {
-      //const topScroll = window.pageYOffset || document.documentElement.scrollTop
-      //const leftScroll = window.pageXOffset || document.documentElement.scrollLeft
-      //window.onscroll = () => window.scrollTo(leftScroll, topScroll)
-      document.body.classList.add('no-scroll')
-    }
-    return () => {}
-  }, [props.isOpen])
-
-  const closeHandler = () => {
-    props.setIsOpen(false)
-    //window.onscroll = () => null
-    document.body.classList.remove('no-scroll')
+  //handlers
+  const closeHandler = useCallback(() => {
+    setIsOpen(false)
     setTimeout(() => {
       dispatch(successReset())
       dispatch(errorReset())
@@ -39,7 +31,20 @@ const LoginModal = (props: LoginModalProps) => {
 
       setLoginFormSwitch(true)
     }, 200)
-  }
+  }, [setIsOpen, dispatch])
+
+  //useEffects
+  useEffect(() => {
+    if (isOpen) {
+      //const topScroll = window.pageYOffset || document.documentElement.scrollTop
+      //const leftScroll = window.pageXOffset || document.documentElement.scrollLeft
+      //window.onscroll = () => window.scrollTo(leftScroll, topScroll)
+      document.body.classList.add('no-scroll')
+    } else {
+      //window.onscroll = () => null
+      document.body.classList.remove('no-scroll')
+    }
+  }, [isOpen])
 
   return (
     <Transition className="fixed inset-0 z-30" show={props.isOpen}>
@@ -74,7 +79,12 @@ const LoginModal = (props: LoginModalProps) => {
           leaveTo="opacity-0 scale-95"
         >
           <LoginEmailForm formSwitch={loginFormSwitch} setFormSwitch={setLoginFormSwitch} closeHandler={closeHandler} />
-          <LoginCodeForm formSwitch={loginFormSwitch} setFormSwitch={setLoginFormSwitch} closeHandler={closeHandler} />
+          <LoginCodeForm
+            formSwitch={loginFormSwitch}
+            setFormSwitch={setLoginFormSwitch}
+            isOpen={props.isOpen}
+            closeHandler={closeHandler}
+          />
         </Transition.Child>
       </div>
     </Transition>

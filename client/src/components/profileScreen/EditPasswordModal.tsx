@@ -24,6 +24,9 @@ interface EditPasswordFormValues {
 }
 
 const EditPasswordModal = (props: EditPasswordModalProps) => {
+  //variables
+  const { isOpen, passwordToEdit } = props
+
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.updateUserPassword)
   const dispatch = useAppDispatch()
 
@@ -46,30 +49,9 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
   })
   const watchEditPassword = watch('editPassword')
 
-  useEffect(() => {
-    if (props.isOpen) {
-      document.body.classList.add('no-scroll')
-      setValue('editName', props.passwordToEdit.name)
-      setValue('editPassword', props.passwordToEdit.password)
-    }
-    return () => {}
-  }, [props.isOpen, setValue, props.passwordToEdit])
-
-  useEffect(() => {
-    success &&
-      dispatch(
-        getUserPasswords({
-          searchKeyword: searchParams.get('searchKeyword') || '',
-          sortOrder: searchParams.get('sortOrder') || 'atoz',
-        })
-      )
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success])
-
+  //handlers
   const closeHandler = () => {
     props.setIsOpen(false)
-    document.body.classList.remove('no-scroll')
     setTimeout(() => {
       reset()
       setPasswordToShow(false)
@@ -87,6 +69,28 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
       })
     )
   }
+
+  //useEffects
+  useEffect(() => {
+    if (success) {
+      const promise = dispatch(
+        getUserPasswords({
+          searchKeyword: searchParams.get('searchKeyword') || '',
+          sortOrder: searchParams.get('sortOrder') || 'atoz',
+        })
+      )
+
+      return () => promise.abort()
+    }
+  }, [success, searchParams, dispatch])
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('no-scroll')
+      setValue('editName', passwordToEdit.name)
+      setValue('editPassword', passwordToEdit.password)
+    } else document.body.classList.remove('no-scroll')
+  }, [isOpen, passwordToEdit, setValue])
 
   return (
     <Transition className="fixed inset-0 z-30" show={props.isOpen}>

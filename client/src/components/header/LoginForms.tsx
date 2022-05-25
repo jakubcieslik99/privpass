@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
-import { loginSendCode, confirmCode, errorReset } from '../../features/userSlices/listUser'
+import { loginSendCode, confirmCode } from '../../features/userSlices/listUser'
 import { emailSet } from '../../features/userSlices/storeEmail'
 import { loginErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
@@ -22,6 +22,9 @@ interface LoginEmailFormValues {
 }
 
 const LoginEmailForm = (props: LoginEmailFormProps) => {
+  //variables
+  const { setFormSwitch } = props
+
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
@@ -32,20 +35,19 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
     formState: { errors },
   } = useForm<LoginEmailFormValues>({ defaultValues: { loginEmail: '' } })
 
-  useEffect(() => {
-    if (success && successMessage === 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.') {
-      errorMessage && dispatch(errorReset())
-      props.setFormSwitch(!props.formSwitch)
-      setTimeout(() => reset(), 200)
-    }
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success, successMessage])
-
+  //handlers
   const submitHandler: SubmitHandler<LoginEmailFormValues> = data => {
     dispatch(loginSendCode({ email: data.loginEmail }))
     dispatch(emailSet(data.loginEmail))
   }
+
+  //useEffects
+  useEffect(() => {
+    if (success && successMessage === 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.') {
+      setFormSwitch(false)
+      setTimeout(() => reset(), 200)
+    }
+  }, [success, successMessage, setFormSwitch, reset])
 
   return (
     <Transition
@@ -121,6 +123,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
 interface LoginCodeFormProps {
   formSwitch: boolean
   setFormSwitch: React.Dispatch<React.SetStateAction<boolean>>
+  isOpen: boolean
   closeHandler: () => void
 }
 
@@ -129,6 +132,9 @@ interface LoginCodeFormValues {
 }
 
 const LoginCodeForm = (props: LoginCodeFormProps) => {
+  //variables
+  const { isOpen, closeHandler } = props
+
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const { email } = useAppSelector(state => state.storeEmail)
   const dispatch = useAppDispatch()
@@ -144,20 +150,25 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
   const { state } = useLocation() as LocationProps
   const locationFrom = state?.from || '/profile'
 
-  useEffect(() => {
-    if (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.') {
-      setTimeout(() => {
-        navigate(locationFrom, { replace: true })
-        props.closeHandler()
-        setTimeout(() => reset(), 200)
-      }, 3000)
-    }
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success, successMessage])
-
+  //handlers
   const submitHandler: SubmitHandler<LoginCodeFormValues> = data =>
     dispatch(confirmCode({ code: data.loginCode, email: email }))
+
+  //useEffects
+  useEffect(() => {
+    if (
+      isOpen &&
+      success &&
+      successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.'
+    ) {
+      setTimeout(() => {
+        closeHandler()
+        setTimeout(() => reset(), 200)
+
+        navigate(locationFrom, { replace: true })
+      }, 3000)
+    }
+  }, [isOpen, success, successMessage, locationFrom, closeHandler, navigate, reset])
 
   return (
     <Transition

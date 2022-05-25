@@ -18,6 +18,9 @@ interface ListedPasswordProps {
 }
 
 const ListedPassword = (props: ListedPasswordProps) => {
+  //variables
+  const { listedPassword, setPasswordToEdit, setEditPasswordModalIsOpen } = props
+
   const { id, password } = useAppSelector(state => state.getUserPassword)
   const dispatch = useAppDispatch()
 
@@ -26,24 +29,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordString, setPasswordString] = useState('')
 
-  useEffect(() => {
-    if (id === props.listedPassword._id && password !== '') {
-      if (passwordShowing) {
-        setPasswordString(password)
-        setPasswordVisible(true)
-        setPasswordShowing(false)
-      } else if (passwordEditing) {
-        passwordVisible && setPasswordVisible(false)
-        props.setPasswordToEdit({ id, name: props.listedPassword.name, password })
-        props.setEditPasswordModalIsOpen(true)
-        setPasswordEditing(false)
-      }
-      dispatch(idPasswordReset())
-    }
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, password])
-
+  //handlers
   const openEditPasswordModalHandler = () => {
     setPasswordEditing(true)
     dispatch(getUserPassword({ id: props.listedPassword._id }))
@@ -66,6 +52,33 @@ const ListedPassword = (props: ListedPasswordProps) => {
       setPasswordString('')
     }
   }
+
+  //useEffects
+  useEffect(() => {
+    if (id === listedPassword._id && password !== '') {
+      if (passwordShowing) {
+        setPasswordString(password)
+        setPasswordVisible(true)
+        setPasswordShowing(false)
+      } else if (passwordEditing) {
+        passwordVisible && setPasswordVisible(false)
+        setPasswordToEdit({ id, name: listedPassword.name, password })
+        setEditPasswordModalIsOpen(true)
+        setPasswordEditing(false)
+      }
+      dispatch(idPasswordReset())
+    }
+  }, [
+    id,
+    password,
+    listedPassword,
+    passwordShowing,
+    passwordEditing,
+    passwordVisible,
+    setPasswordToEdit,
+    setEditPasswordModalIsOpen,
+    dispatch,
+  ])
 
   return (
     <div className="flex flex-col justify-between px-3 pt-2 pb-3 shadow-md md:pb-2 rounded-2xl bg-percpass-400 md:flex-row">

@@ -10,6 +10,7 @@ import RegisterModal from './RegisterModal'
 import { LocationProps } from '../../App'
 
 const Header: React.FC = () => {
+  //variables
   const { userInfo } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
@@ -21,16 +22,7 @@ const Header: React.FC = () => {
   const { pathname, state } = useLocation() as LocationProps
   const locationLoginModalIsOpen = state?.loginModalIsOpen || false
 
-  useEffect(() => {
-    if (locationLoginModalIsOpen) {
-      setLoginModalIsOpen(true)
-      navigate(pathname, { replace: true })
-    }
-    if (menuIsOpen) setMenuIsOpen(false)
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
+  //handlers
   const scrollToTopHandler = () => {
     menuIsOpen && setMenuIsOpen(false)
     scroller.scrollTo('hero-section', {
@@ -41,7 +33,8 @@ const Header: React.FC = () => {
   }
 
   const scrollToHandler = (to: string, offset: number) => {
-    setMenuIsOpen(!menuIsOpen)
+    //setMenuIsOpen(!menuIsOpen)
+    menuIsOpen && setMenuIsOpen(false)
     scroller.scrollTo(to, {
       spy: true,
       smooth: 'easeInOutCubic',
@@ -51,11 +44,22 @@ const Header: React.FC = () => {
   }
 
   const logoutHandler = () => {
-    //navigate('/', { replace: true })
+    navigate('/', { replace: true })
+    menuIsOpen && setMenuIsOpen(false)
+
     dispatch(passwordsReset())
     dispatch(userInfoReset())
     dispatch(logoutUser())
   }
+
+  //useEffects
+  useEffect(() => {
+    if (locationLoginModalIsOpen) {
+      setLoginModalIsOpen(true)
+      navigate(pathname, { replace: true })
+      menuIsOpen && setMenuIsOpen(false)
+    }
+  }, [pathname, locationLoginModalIsOpen, menuIsOpen, navigate])
 
   return (
     <header id="header" className="fixed top-0 z-10 w-full h-auto">
@@ -170,14 +174,20 @@ const Header: React.FC = () => {
               </div>
               <li
                 className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
-                onClick={() => setRegisterModalIsOpen(true)}
+                onClick={() => {
+                  setRegisterModalIsOpen(true)
+                  setMenuIsOpen(false)
+                }}
               >
                 Rejestracja
               </li>
               <li className="flex">
                 <div
                   className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
-                  onClick={() => setLoginModalIsOpen(true)}
+                  onClick={() => {
+                    setLoginModalIsOpen(true)
+                    setMenuIsOpen(false)
+                  }}
                 >
                   Logowanie
                 </div>

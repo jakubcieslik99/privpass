@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
-import { registerSendCode, confirmCode, errorReset } from '../../features/userSlices/listUser'
+import { registerSendCode, confirmCode } from '../../features/userSlices/listUser'
 import { emailSet } from '../../features/userSlices/storeEmail'
 import { registerErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
@@ -22,6 +22,9 @@ interface RegisterEmailFormValues {
 }
 
 const RegisterEmailForm = (props: RegisterEmailFormProps) => {
+  //variables
+  const { setFormSwitch } = props
+
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
@@ -32,23 +35,22 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
     formState: { errors },
   } = useForm<RegisterEmailFormValues>({ defaultValues: { registerEmail: '' } })
 
+  //handlers
+  const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
+    dispatch(registerSendCode({ email: data.registerEmail }))
+    dispatch(emailSet(data.registerEmail))
+  }
+
+  //useEffects
   useEffect(() => {
     if (
       success &&
       successMessage === 'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.'
     ) {
-      errorMessage && dispatch(errorReset())
-      props.setFormSwitch(!props.formSwitch)
+      setFormSwitch(false)
       setTimeout(() => reset(), 200)
     }
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success, successMessage])
-
-  const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
-    dispatch(registerSendCode({ email: data.registerEmail }))
-    dispatch(emailSet(data.registerEmail))
-  }
+  }, [success, successMessage, setFormSwitch, reset])
 
   return (
     <Transition
@@ -127,6 +129,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
 interface RegisterCodeFormProps {
   formSwitch: boolean
   setFormSwitch: React.Dispatch<React.SetStateAction<boolean>>
+  isOpen: boolean
   closeHandler: () => void
 }
 
@@ -135,6 +138,9 @@ interface RegisterCodeFormValues {
 }
 
 const RegisterCodeForm = (props: RegisterCodeFormProps) => {
+  //variables
+  const { isOpen, closeHandler } = props
+
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const { email } = useAppSelector(state => state.storeEmail)
   const dispatch = useAppDispatch()
@@ -150,20 +156,25 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
   const { state } = useLocation() as LocationProps
   const locationFrom = state?.from || '/profile'
 
-  useEffect(() => {
-    if (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.') {
-      setTimeout(() => {
-        navigate(locationFrom, { replace: true })
-        props.closeHandler()
-        setTimeout(() => reset(), 200)
-      }, 3000)
-    }
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success, successMessage])
-
+  //handlers
   const submitHandler: SubmitHandler<RegisterCodeFormValues> = data =>
     dispatch(confirmCode({ code: data.registerCode, email: email }))
+
+  //useEffects
+  useEffect(() => {
+    if (
+      isOpen &&
+      success &&
+      successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.'
+    ) {
+      setTimeout(() => {
+        closeHandler()
+        setTimeout(() => reset(), 200)
+
+        navigate(locationFrom, { replace: true })
+      }, 3000)
+    }
+  }, [isOpen, success, successMessage, locationFrom, closeHandler, navigate, reset])
 
   return (
     <Transition

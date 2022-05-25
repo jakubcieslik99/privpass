@@ -112,6 +112,8 @@ export const listUserSlice = createSlice({
     //registerSendCode
     builder.addCase(registerSendCode.pending, state => {
       state.loading = true
+      state.success = false
+      state.error = false
     })
     builder.addCase(registerSendCode.fulfilled, (state, action) => {
       state.loading = false
@@ -126,6 +128,8 @@ export const listUserSlice = createSlice({
     //loginSendCode
     builder.addCase(loginSendCode.pending, state => {
       state.loading = true
+      state.success = false
+      state.error = false
     })
     builder.addCase(loginSendCode.fulfilled, (state, action) => {
       state.loading = false

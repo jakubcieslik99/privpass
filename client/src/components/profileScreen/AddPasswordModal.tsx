@@ -22,6 +22,9 @@ interface AddPasswordFormValues {
 }
 
 const AddPasswordModal = (props: AddPasswordModalProps) => {
+  //variables
+  const { isOpen } = props
+
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.createUserPassword)
   const dispatch = useAppDispatch()
 
@@ -43,26 +46,9 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
   })
   const watchAddPassword = watch('addPassword')
 
-  useEffect(() => {
-    props.isOpen && document.body.classList.add('no-scroll')
-    return () => {}
-  }, [props.isOpen])
-
-  useEffect(() => {
-    success &&
-      dispatch(
-        getUserPasswords({
-          searchKeyword: searchParams.get('searchKeyword') || '',
-          sortOrder: searchParams.get('sortOrder') || 'atoz',
-        })
-      )
-    return () => {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success])
-
+  //handlers
   const closeHandler = () => {
     props.setIsOpen(false)
-    document.body.classList.remove('no-scroll')
     setTimeout(() => {
       reset()
       setPasswordToShow(false)
@@ -79,6 +65,24 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
       })
     )
   }
+
+  //useEffects
+  useEffect(() => {
+    if (success) {
+      const promise = dispatch(
+        getUserPasswords({
+          searchKeyword: searchParams.get('searchKeyword') || '',
+          sortOrder: searchParams.get('sortOrder') || 'atoz',
+        })
+      )
+
+      return () => promise.abort()
+    }
+  }, [success, searchParams, dispatch])
+
+  useEffect(() => {
+    isOpen ? document.body.classList.add('no-scroll') : document.body.classList.remove('no-scroll')
+  }, [isOpen])
 
   return (
     <Transition className="fixed inset-0 z-30" show={props.isOpen}>
