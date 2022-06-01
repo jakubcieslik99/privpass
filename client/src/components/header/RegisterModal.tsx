@@ -1,7 +1,6 @@
-import { useState, useCallback, useEffect } from 'react'
-import { Transition } from '@headlessui/react'
-import { FaTimes } from 'react-icons/fa'
-import { useAppDispatch } from '../../features/store'
+import { useState, Fragment } from 'react'
+import { Transition, Dialog } from '@headlessui/react'
+import { useAppSelector, useAppDispatch } from '../../features/store'
 import { successReset, errorReset, messageReset } from '../../features/userSlices/listUser'
 import { emailReset } from '../../features/userSlices/storeEmail'
 import { RegisterEmailForm, RegisterCodeForm } from './RegisterForms'
@@ -13,76 +12,69 @@ interface RegisterModalProps {
 
 const RegisterModal = (props: RegisterModalProps) => {
   //variables
-  const { isOpen, setIsOpen } = props
-
+  const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
+  const { email } = useAppSelector(state => state.storeEmail)
   const dispatch = useAppDispatch()
 
   const [registerFormSwitch, setRegisterFormSwitch] = useState(true)
 
   //handlers
-  const closeHandler = useCallback(() => {
-    setIsOpen(false)
+  const closeHandler = () => {
+    props.setIsOpen(false)
     setTimeout(() => {
-      dispatch(successReset())
-      dispatch(errorReset())
-      dispatch(messageReset())
+      success && dispatch(successReset())
+      error && dispatch(errorReset())
+      if (successMessage || errorMessage) dispatch(messageReset())
 
-      dispatch(emailReset())
+      email && dispatch(emailReset())
 
       setRegisterFormSwitch(true)
     }, 200)
-  }, [setIsOpen, dispatch])
-
-  //useEffects
-  useEffect(() => {
-    isOpen ? document.body.classList.add('no-scroll') : document.body.classList.remove('no-scroll')
-  }, [isOpen])
+  }
 
   return (
-    <Transition className="fixed inset-0 z-30" show={props.isOpen}>
-      <Transition.Child
-        className="fixed inset-0 bg-black bg-opacity-60"
-        onClick={registerFormSwitch ? () => closeHandler() : undefined}
-        enter="ease-out duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="ease-in duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <FaTimes
-          className={`fixed hidden text-3xl text-gray-400 transition-colors cursor-pointer right-3 top-3 hover:text-gray-300 active:scale-95 ${'md:hidden'}`}
-          onClick={registerFormSwitch ? () => closeHandler() : undefined}
-        />
-      </Transition.Child>
-
-      <div
-        className="fixed inset-0 flex items-center justify-center mx-4 my-6 md:mt-16 md:mb-32"
-        onClick={registerFormSwitch ? (e: any) => (e.target === e.currentTarget ? closeHandler() : undefined) : undefined}
-      >
+    <Transition as={Fragment} appear show={props.isOpen}>
+      <Dialog as="div" className="relative z-30" onClose={() => registerFormSwitch && !loading && closeHandler()}>
         <Transition.Child
-          className="relative w-full max-w-md min-h-full"
-          onClick={registerFormSwitch ? (e: any) => (e.target === e.currentTarget ? closeHandler() : undefined) : undefined}
+          as={Fragment}
           enter="ease-out duration-300"
-          enterFrom="opacity-0 scale-95"
-          enterTo="opacity-100 scale-100"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
           leave="ease-in duration-200"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-95"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <RegisterEmailForm
-            formSwitch={registerFormSwitch}
-            setFormSwitch={setRegisterFormSwitch}
-            closeHandler={closeHandler}
-          />
-          <RegisterCodeForm
-            formSwitch={registerFormSwitch}
-            setFormSwitch={setRegisterFormSwitch}
-            isOpen={props.isOpen}
-            closeHandler={closeHandler}
-          />
+          <div className="fixed inset-0 bg-black bg-opacity-60" />
         </Transition.Child>
-      </div>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-full px-4 py-6 text-center md:pt-16 md:pb-32">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="relative flex items-center w-full max-w-md">
+                <RegisterEmailForm
+                  formSwitch={registerFormSwitch}
+                  setFormSwitch={setRegisterFormSwitch}
+                  closeHandler={closeHandler}
+                />
+                <RegisterCodeForm
+                  formSwitch={registerFormSwitch}
+                  setFormSwitch={setRegisterFormSwitch}
+                  isOpen={props.isOpen}
+                  closeHandler={closeHandler}
+                />
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
     </Transition>
   )
 }

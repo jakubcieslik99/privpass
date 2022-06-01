@@ -33,7 +33,6 @@ const Header: React.FC = () => {
   }
 
   const scrollToHandler = (to: string, offset: number) => {
-    //setMenuIsOpen(!menuIsOpen)
     menuIsOpen && setMenuIsOpen(false)
     scroller.scrollTo(to, {
       spy: true,

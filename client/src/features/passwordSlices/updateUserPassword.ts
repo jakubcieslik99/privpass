@@ -34,7 +34,7 @@ interface updateUserPasswordState {
 }
 
 export const updateUserPasswordSlice = createSlice({
-  name: 'passwords',
+  name: 'passwords/updateUserPassword',
   initialState: {
     loading: false,
     success: false,
@@ -63,8 +63,10 @@ export const updateUserPasswordSlice = createSlice({
     })
     builder.addCase(updateUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      if (action.payload) {
+        state.error = true
+        state.errorMessage = action.payload
+      }
     })
   },
 })

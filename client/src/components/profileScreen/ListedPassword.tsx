@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import { RiHashtag, RiLockPasswordFill } from 'react-icons/ri'
 import { FaEye, FaEyeSlash, FaEdit, FaTrashAlt } from 'react-icons/fa'
@@ -12,73 +12,68 @@ export interface ListedPasswordObject {
 interface ListedPasswordProps {
   listedPassword: ListedPasswordObject
   setEditPasswordModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setConfirmDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   setPasswordToEdit: React.Dispatch<React.SetStateAction<{ id: string; name: string; password: string }>>
+  confirmDeleteModalIsOpen: boolean
+  setConfirmDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   setPasswordToDelete: React.Dispatch<React.SetStateAction<{ id: string; name: string }>>
 }
 
 const ListedPassword = (props: ListedPasswordProps) => {
   //variables
-  const { listedPassword, setPasswordToEdit, setEditPasswordModalIsOpen } = props
+  const getUserPasswordAbort1 = useRef<(reason?: string | undefined) => void>()
+  const getUserPasswordAbort2 = useRef<(reason?: string | undefined) => void>()
 
-  const { id, password } = useAppSelector(state => state.getUserPassword)
+  const { loading } = useAppSelector(state => state.getUserPasswords)
+  const { loading: loading2 } = useAppSelector(state => state.getUserPassword)
   const dispatch = useAppDispatch()
 
-  const [passwordShowing, setPasswordShowing] = useState(false)
-  const [passwordEditing, setPasswordEditing] = useState(false)
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordString, setPasswordString] = useState('')
 
   //handlers
-  const openEditPasswordModalHandler = () => {
-    setPasswordEditing(true)
-    dispatch(getUserPassword({ id: props.listedPassword._id }))
-  }
-
-  const openConfirmDeleteModalHandler = () => {
-    props.setPasswordToDelete({
-      id: props.listedPassword._id,
-      name: props.listedPassword.name,
-    })
-    props.setConfirmDeleteModalIsOpen(true)
-  }
-
   const showPasswordHandler = () => {
     if (!passwordVisible) {
-      setPasswordShowing(true)
-      dispatch(getUserPassword({ id: props.listedPassword._id }))
+      const getUserPasswordPromise = dispatch(getUserPassword({ id: props.listedPassword._id }))
+      getUserPasswordAbort1.current = getUserPasswordPromise.abort
+      getUserPasswordPromise
+        .unwrap()
+        .then(payload => {
+          setPasswordString(payload.password)
+          setPasswordVisible(true)
+          dispatch(idPasswordReset())
+        })
+        .catch(error => error)
     } else {
       setPasswordVisible(false)
       setPasswordString('')
     }
   }
 
+  const openEditPasswordModalHandler = () => {
+    const getUserPasswordPromise = dispatch(getUserPassword({ id: props.listedPassword._id }))
+    getUserPasswordAbort2.current = getUserPasswordPromise.abort
+    getUserPasswordPromise
+      .unwrap()
+      .then(payload => {
+        props.setPasswordToEdit({ id: payload._id, name: props.listedPassword.name, password: payload.password })
+        props.setEditPasswordModalIsOpen(true)
+        dispatch(idPasswordReset())
+      })
+      .catch(error => error)
+  }
+
+  const openConfirmDeleteModalHandler = () => {
+    props.setPasswordToDelete({ id: props.listedPassword._id, name: props.listedPassword.name })
+    props.setConfirmDeleteModalIsOpen(true)
+  }
+
   //useEffects
   useEffect(() => {
-    if (id === listedPassword._id && password !== '') {
-      if (passwordShowing) {
-        setPasswordString(password)
-        setPasswordVisible(true)
-        setPasswordShowing(false)
-      } else if (passwordEditing) {
-        passwordVisible && setPasswordVisible(false)
-        setPasswordToEdit({ id, name: listedPassword.name, password })
-        setEditPasswordModalIsOpen(true)
-        setPasswordEditing(false)
-      }
-      dispatch(idPasswordReset())
+    return () => {
+      getUserPasswordAbort1.current && getUserPasswordAbort1.current()
+      getUserPasswordAbort2.current && getUserPasswordAbort2.current()
     }
-  }, [
-    id,
-    password,
-    listedPassword,
-    passwordShowing,
-    passwordEditing,
-    passwordVisible,
-    setPasswordToEdit,
-    setEditPasswordModalIsOpen,
-    dispatch,
-  ])
+  }, [getUserPasswordAbort1, getUserPasswordAbort2])
 
   return (
     <div className="flex flex-col justify-between px-3 pt-2 pb-3 shadow-md md:pb-2 rounded-2xl bg-percpass-400 md:flex-row">
@@ -99,7 +94,8 @@ const ListedPassword = (props: ListedPasswordProps) => {
 
           <div className="flex items-center text-lg">
             <button
-              className="relative flex-none w-8 h-8 p-2 mr-2 transition border rounded-full text-percpass-200 border-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95"
+              disabled={loading || loading2}
+              className="relative flex-none w-8 h-8 p-2 mr-2 transition border rounded-full text-percpass-200 border-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 disabled:hover:border-percpass-200 disabled:hover:text-percpass-200 disabled:cursor-default disabled:active:scale-100"
               onClick={showPasswordHandler}
             >
               <FaEye
@@ -145,16 +141,18 @@ const ListedPassword = (props: ListedPasswordProps) => {
 
       <div className="flex md:flex-col md:justify-center md:mr-3">
         <button
-          className="flex items-center justify-center w-24 px-4 py-2 mr-2 text-sm transition rounded-full md:mr-0 md:mb-2 bg-cyan-500 hover:bg-cyan-400 active:scale-95"
-          onClick={() => openEditPasswordModalHandler()}
+          disabled={loading || loading2}
+          className="flex items-center justify-center w-24 px-4 py-2 mr-2 text-sm transition rounded-full md:mr-0 md:mb-2 bg-cyan-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          onClick={openEditPasswordModalHandler}
         >
           <FaEdit className="mr-2" />
           Edytuj
         </button>
 
         <button
-          className="flex items-center justify-center w-24 px-4 py-2 text-sm transition bg-red-400 rounded-full hover:bg-red-300 active:scale-95"
-          onClick={() => openConfirmDeleteModalHandler()}
+          disabled={loading || loading2}
+          className="flex items-center justify-center w-24 px-4 py-2 text-sm transition bg-red-400 rounded-full hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          onClick={openConfirmDeleteModalHandler}
         >
           <FaTrashAlt className="mr-2" />
           Usuń

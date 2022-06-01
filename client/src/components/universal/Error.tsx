@@ -10,7 +10,7 @@ const Error = (props: ErrorProps) => {
   return (
     <Transition
       id="error"
-      className={props.styling && props.styling}
+      className={`text-left ${props.styling && props.styling}`}
       show={props.isOpen}
       enter="ease-out duration-300"
       enterFrom="opacity-0"

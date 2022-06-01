@@ -5,6 +5,7 @@ import RequireAuth from './components/universal/RequireAuth'
 import HomeScreen from './screens/HomeScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import NotFound from './components/universal/NotFound'
+import ScrollTop from './components/universal/ScrollTop'
 
 export interface LocationProps {
   pathname: string
@@ -19,6 +20,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Header />
 
+      <ScrollTop />
       <Routes>
         <Route path="/" element={<HomeScreen />} />
 

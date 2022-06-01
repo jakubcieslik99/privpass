@@ -122,8 +122,10 @@ export const listUserSlice = createSlice({
     })
     builder.addCase(registerSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      if (action.payload) {
+        state.error = true
+        state.errorMessage = action.payload
+      }
     })
     //loginSendCode
     builder.addCase(loginSendCode.pending, state => {
@@ -138,8 +140,10 @@ export const listUserSlice = createSlice({
     })
     builder.addCase(loginSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      if (action.payload) {
+        state.error = true
+        state.errorMessage = action.payload
+      }
     })
     //confirmCode
     builder.addCase(confirmCode.pending, state => {
@@ -155,8 +159,10 @@ export const listUserSlice = createSlice({
     })
     builder.addCase(confirmCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      if (action.payload) {
+        state.error = true
+        state.errorMessage = action.payload
+      }
       state.userInfo = null
     })
     //logoutUser
@@ -170,8 +176,10 @@ export const listUserSlice = createSlice({
     })
     builder.addCase(logoutUser.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      if (action.payload) {
+        state.error = true
+        state.errorMessage = action.payload
+      }
     })
   },
 })

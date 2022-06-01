@@ -33,7 +33,7 @@ interface createUserPasswordState {
 }
 
 export const createUserPasswordSlice = createSlice({
-  name: 'passwords',
+  name: 'passwords/createUserPassword',
   initialState: {
     loading: false,
     success: false,
@@ -62,8 +62,10 @@ export const createUserPasswordSlice = createSlice({
     })
     builder.addCase(createUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      if (action.payload) {
+        state.error = true
+        state.errorMessage = action.payload
+      }
     })
   },
 })

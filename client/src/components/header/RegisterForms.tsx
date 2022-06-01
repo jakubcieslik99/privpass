@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
@@ -9,6 +9,7 @@ import { emailSet } from '../../features/userSlices/storeEmail'
 import { registerErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
 import Success from '../universal/Success'
+import Loader from '../universal/Loader'
 import { LocationProps } from '../../App'
 
 interface RegisterEmailFormProps {
@@ -23,9 +24,7 @@ interface RegisterEmailFormValues {
 
 const RegisterEmailForm = (props: RegisterEmailFormProps) => {
   //variables
-  const { setFormSwitch } = props
-
-  const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
+  const { loading, success, error, errorMessage } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
   const {
@@ -38,24 +37,20 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
   //handlers
   const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
     dispatch(registerSendCode({ email: data.registerEmail }))
-    dispatch(emailSet(data.registerEmail))
-  }
+      .unwrap()
+      .then(() => {
+        dispatch(emailSet(data.registerEmail))
 
-  //useEffects
-  useEffect(() => {
-    if (
-      success &&
-      successMessage === 'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.'
-    ) {
-      setFormSwitch(false)
-      setTimeout(() => reset(), 200)
-    }
-  }, [success, successMessage, setFormSwitch, reset])
+        props.setFormSwitch(false)
+        setTimeout(() => reset(), 200)
+      })
+      .catch(error => error)
+  }
 
   return (
     <Transition
       as="form"
-      className="absolute flex flex-col w-full max-w-md max-h-full px-5 py-4 -translate-y-1/2 bg-gray-100 rounded-lg shadow-md top-1/2"
+      className="absolute flex flex-col w-full px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
       onSubmit={handleSubmit(submitHandler)}
       show={props.formSwitch}
       enter="ease-out duration-300"
@@ -65,19 +60,25 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
+      {/*modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
-        <h2 className="font-semibold">Rejestracja</h2>
+        <div className="flex items-center">
+          <h2 className="font-semibold">Rejestracja</h2>
+          <Loader isLoading={loading} styling="ml-2" />
+        </div>
+
         <FaTimes
           className="transition-colors cursor-pointer hover:text-gray-700 active:scale-95"
-          onClick={() => props.closeHandler()}
+          onClick={() => !loading && props.closeHandler()}
         />
       </div>
 
+      {/*modal body*/}
       <div className="flex flex-col w-full my-4 overflow-y-auto">
         <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
         <div className="flex flex-col text-gray-800 md:mx-6">
-          <label htmlFor="registerEmail" className="mx-1">
+          <label htmlFor="registerEmail" className="mx-1 text-left">
             Email:
           </label>
           <input
@@ -108,14 +109,10 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
         </div>
       </div>
 
+      {/*modal footer*/}
       <div className="flex justify-center w-full mb-1">
         <button
-          disabled={
-            loading ||
-            (success &&
-              successMessage ===
-                'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.')
-          }
+          disabled={loading || success}
           type="submit"
           className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
@@ -139,7 +136,7 @@ interface RegisterCodeFormValues {
 
 const RegisterCodeForm = (props: RegisterCodeFormProps) => {
   //variables
-  const { isOpen, closeHandler } = props
+  const isMounted = useRef(true)
 
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const { email } = useAppSelector(state => state.storeEmail)
@@ -157,29 +154,32 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
   const locationFrom = state?.from || '/profile'
 
   //handlers
-  const submitHandler: SubmitHandler<RegisterCodeFormValues> = data =>
+  const submitHandler: SubmitHandler<RegisterCodeFormValues> = data => {
     dispatch(confirmCode({ code: data.registerCode, email: email }))
+      .unwrap()
+      .then(() => {
+        setTimeout(() => {
+          if (isMounted.current) {
+            props.closeHandler()
+            navigate(locationFrom, { replace: true })
+          }
+          setTimeout(() => reset(), 200)
+        }, 3000)
+      })
+      .catch(error => error)
+  }
 
   //useEffects
   useEffect(() => {
-    if (
-      isOpen &&
-      success &&
-      successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.'
-    ) {
-      setTimeout(() => {
-        closeHandler()
-        setTimeout(() => reset(), 200)
-
-        navigate(locationFrom, { replace: true })
-      }, 3000)
+    return () => {
+      isMounted.current = false
     }
-  }, [isOpen, success, successMessage, locationFrom, closeHandler, navigate, reset])
+  }, [isMounted])
 
   return (
     <Transition
       as="form"
-      className="absolute flex flex-col w-full max-w-md max-h-full px-5 py-4 -translate-y-1/2 bg-gray-100 rounded-lg shadow-md top-1/2"
+      className="absolute flex flex-col w-full px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
       onSubmit={handleSubmit(submitHandler)}
       show={!props.formSwitch}
       enter="ease-out duration-300"
@@ -189,14 +189,20 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
+      {/*modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
-        <h2 className="font-semibold">Rejestracja</h2>
+        <div className="flex items-center">
+          <h2 className="font-semibold">Rejestracja</h2>
+          <Loader isLoading={loading} styling="ml-2" />
+        </div>
+
         <FaTimes
           className="transition cursor-pointer hover:text-gray-700 active:scale-95"
-          onClick={() => props.closeHandler()}
+          onClick={() => !loading && props.closeHandler()}
         />
       </div>
 
+      {/*modal body*/}
       <div className="flex flex-col w-full my-4 overflow-y-auto">
         <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mx-1 mb-4" />
         <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
@@ -233,6 +239,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
         </div>
       </div>
 
+      {/*modal footer*/}
       <div className="flex justify-center w-full mb-1">
         <button
           disabled={

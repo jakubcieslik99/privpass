@@ -31,7 +31,7 @@ interface deleteUserPasswordState {
 }
 
 export const deleteUserPasswordSlice = createSlice({
-  name: 'passwords',
+  name: 'passwords/deleteUserPassword',
   initialState: {
     loading: false,
     success: false,
@@ -60,8 +60,10 @@ export const deleteUserPasswordSlice = createSlice({
     })
     builder.addCase(deleteUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
-      state.error = true
-      state.errorMessage = action.payload
+      if (action.payload) {
+        state.error = true
+        state.errorMessage = action.payload
+      }
     })
   },
 })
