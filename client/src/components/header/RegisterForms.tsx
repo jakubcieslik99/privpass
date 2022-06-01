@@ -50,7 +50,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
   return (
     <Transition
       as="form"
-      className="absolute flex flex-col w-full px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
+      className="flex flex-col w-full col-start-1 row-start-1 px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
       onSubmit={handleSubmit(submitHandler)}
       show={props.formSwitch}
       enter="ease-out duration-300"
@@ -179,7 +179,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
   return (
     <Transition
       as="form"
-      className="absolute flex flex-col w-full px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
+      className="flex flex-col w-full col-start-1 row-start-1 px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
       onSubmit={handleSubmit(submitHandler)}
       show={!props.formSwitch}
       enter="ease-out duration-300"

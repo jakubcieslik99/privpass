@@ -58,7 +58,7 @@ const LoginModal = (props: LoginModalProps) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`relative flex items-center w-full max-w-md`}>
+              <Dialog.Panel className="grid items-center w-full max-w-md">
                 <LoginEmailForm
                   formSwitch={loginFormSwitch}
                   setFormSwitch={setLoginFormSwitch}

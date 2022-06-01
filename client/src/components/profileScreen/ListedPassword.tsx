@@ -142,7 +142,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
       <div className="flex md:flex-col md:justify-center md:mr-3">
         <button
           disabled={loading || loading2}
-          className="flex items-center justify-center w-24 px-4 py-2 mr-2 text-sm transition rounded-full md:mr-0 md:mb-2 bg-cyan-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          className="flex items-center justify-center w-24 px-4 py-2 mr-2 text-sm transition rounded-full md:mr-0 md:mb-2 bg-cyan-500 hover:bg-cyan-400 active:scale-95 disabled:hover:bg-cyan-500 disabled:cursor-default disabled:active:scale-100"
           onClick={openEditPasswordModalHandler}
         >
           <FaEdit className="mr-2" />
@@ -151,7 +151,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
 
         <button
           disabled={loading || loading2}
-          className="flex items-center justify-center w-24 px-4 py-2 text-sm transition bg-red-400 rounded-full hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          className="flex items-center justify-center w-24 px-4 py-2 text-sm transition bg-red-400 rounded-full hover:bg-red-300 active:scale-95 disabled:hover:bg-red-400 disabled:cursor-default disabled:active:scale-100"
           onClick={openConfirmDeleteModalHandler}
         >
           <FaTrashAlt className="mr-2" />
