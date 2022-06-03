@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
 import jwt, { VerifyErrors } from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import voucher_codes from 'voucher-code-generator'
 import User from '../models/userModel'
 import { config } from '../config/utilities'
