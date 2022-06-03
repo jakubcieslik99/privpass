@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
 import jwt, { VerifyErrors } from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import voucher_codes from 'voucher-code-generator'
 import User from '../models/userModel'
 import { config } from '../config/utilities'
@@ -20,10 +21,12 @@ const registerSendCode = async (req: Request, res: Response) => {
   if (conflictUserEmail) throw createError(409, 'Istnieje już użytkownik o podanym adresie e-mail.')
 
   const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
+  const salt = await bcrypt.genSalt(10)
+  const hashedCode = await bcrypt.hash(code, salt)
 
   const createUser = new User({
     email: validationResult.email,
-    code: code,
+    code: hashedCode,
   })
   await createUser.save()
 
@@ -43,8 +46,10 @@ const loginSendCode = async (req: Request, res: Response) => {
   if (!loginUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
 
   const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
+  const salt = await bcrypt.genSalt(10)
+  const hashedCode = await bcrypt.hash(code, salt)
 
-  loginUser.code = code
+  loginUser.code = hashedCode
   await loginUser.save()
 
   await sendEmail(loginSendCodeMessage(validationResult.email, code))
@@ -60,7 +65,8 @@ const confirmCode = async (req: Request, res: Response) => {
   const checkedUser = await User.findOne({ email: validationResult.email }).exec()
   if (!checkedUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
 
-  if (checkedUser.code !== validationResult.code) throw createError(406, 'Kod dostępu jest niepoprawny.')
+  const checkCode = await bcrypt.compare(validationResult.code, checkedUser.code)
+  if (!checkCode) throw createError(406, 'Kod dostępu jest niepoprawny.')
 
   if (Date.now() - checkedUser.updatedAt > 300 * 1000) {
     checkedUser.code = null
