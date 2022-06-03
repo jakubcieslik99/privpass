@@ -215,6 +215,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
             {...register('registerCode', registerErrors.registerCode)}
             id="registerCode"
             type="text"
+            autoComplete="off"
             placeholder="0000"
             className="pl-[1.37rem] pr-1 py-2 m-1 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 monospace-font"
           />
