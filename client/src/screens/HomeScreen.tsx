@@ -5,8 +5,6 @@ import Product from '../assets/product.png'
 import Contact from '../assets/contact.png'
 import Marceljurkiewicz from '../assets/marceljurkiewicz.png'
 import Jakubcieslik from '../assets/jakubcieslik.png'
-import Jakubpasek from '../assets/jakubpasek.png'
-import Cezarypiechowiak from '../assets/cezarypiechowiak.png'
 
 const HomeScreen: React.FC = () => {
   const scrollToHandler = (offset: number) => {
@@ -123,47 +121,12 @@ const HomeScreen: React.FC = () => {
               Skontaktuj się z nami
             </h2>
             <h3 className="text-xl font-semibold tracking-wide text-center uppercase text-percpass-400">
-              Nasz zespół odpowie na wszystkie twoje pytania
+              Postaramy się odpowiedzieć na Twoje pytania
             </h3>
           </div>
 
-          <div className="grid gap-6 mb-9 md:grid-cols-2 lg:grid-cols-4">
-            <div className="relative mt-20 xl:max-w-sm">
-              <div className="overflow-hidden bg-white shadow-md rounded-xl">
-                <div className="absolute flex justify-center w-full -mt-20">
-                  <div className="w-32 h-32">
-                    <img
-                      src={Marceljurkiewicz}
-                      alt="Marcel Jurkiewicz"
-                      className="object-cover w-full h-full rounded-full shadow-md"
-                    />
-                  </div>
-                </div>
-                <div className="px-6 mt-16">
-                  <h1 className="mb-1 text-2xl text-center">Marcel Jurkiewicz</h1>
-                  <p className="text-sm text-center">UX/UI, frontend, dokumentacja</p>
-
-                  <div className="flex justify-center w-full pt-5 pb-5">
-                    <a href="mailto:kontakt@marceljurkiewicz.pl" className="mx-5">
-                      <MdEmail className="text-2xl text-percpass-400" />
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/marcel-jurkiewicz-1b4212226/"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mx-5"
-                    >
-                      <FaLinkedinIn className="text-2xl text-percpass-400" />
-                    </a>
-                    <a href="https://github.com/Juras99" target="_blank" rel="noreferrer" className="mx-5">
-                      <FaGithub className="text-2xl text-percpass-400" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative mt-20 xl:max-w-sm">
+          <div className="grid gap-6 justify-items-center mb-9 md:grid-cols-2 lg:grid-cols-8">
+            <div className="relative mt-20 xl:max-w-sm lg:col-span-3 lg:col-start-2">
               <div className="overflow-hidden bg-white shadow-md rounded-xl">
                 <div className="absolute flex justify-center w-full -mt-20">
                   <div className="w-32 h-32">
@@ -176,7 +139,9 @@ const HomeScreen: React.FC = () => {
                 </div>
                 <div className="px-6 mt-16">
                   <h1 className="mb-1 text-2xl text-center">Jakub Cieślik</h1>
-                  <p className="text-sm text-center">Frontend, backend, fullstack</p>
+                  <p className="text-sm text-center">
+                    Frontend development, UI/UX, backend development, DB management, deployment
+                  </p>
 
                   <div className="flex justify-center w-full pt-5 pb-5">
                     <a href="mailto:contact@jakubcieslik.com" className="mx-5">
@@ -198,55 +163,32 @@ const HomeScreen: React.FC = () => {
               </div>
             </div>
 
-            <div className="relative mt-20 xl:max-w-sm">
+            <div className="relative mt-20 xl:max-w-sm lg:col-span-3">
               <div className="overflow-hidden bg-white shadow-md rounded-xl">
                 <div className="absolute flex justify-center w-full -mt-20">
                   <div className="w-32 h-32">
-                    <img src={Jakubpasek} alt="Jakub Pasek" className="object-cover w-full h-full rounded-full shadow-md" />
+                    <img src={Marceljurkiewicz} alt="" className="object-cover w-full h-full rounded-full shadow-md" />
                   </div>
                 </div>
                 <div className="px-6 mt-16">
-                  <h1 className="mb-1 text-2xl text-center">Jakub Pasek</h1>
-                  <p className="text-sm text-center">Frontend, UX</p>
+                  <h1 className="mb-1 text-2xl text-center">Marcel Jurkiewicz</h1>
+                  <p className="text-sm text-center">
+                    Prezentacja, dokumentacja, UI (stylowanie niektórych komponentów ekranu domowego)
+                  </p>
 
                   <div className="flex justify-center w-full pt-5 pb-5">
-                    <a href="mailto:102227@g.elearn.uz.zgora.pl" className="mx-5">
+                    <a href="mailto:kontakt@marceljurkiewicz.pl" className="mx-5">
                       <MdEmail className="text-2xl text-percpass-400" />
                     </a>
-                    <a href="/" target="_blank" rel="noreferrer" className="mx-5">
+                    <a
+                      href="https://www.linkedin.com/in/marcel-jurkiewicz-1b4212226/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mx-5"
+                    >
                       <FaLinkedinIn className="text-2xl text-percpass-400" />
                     </a>
-                    <a href="https://github.com/sentix7" target="_blank" rel="noreferrer" className="mx-5">
-                      <FaGithub className="text-2xl text-percpass-400" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative mt-20 xl:max-w-sm">
-              <div className="overflow-hidden bg-white shadow-md rounded-xl">
-                <div className="absolute flex justify-center w-full -mt-20">
-                  <div className="w-32 h-32">
-                    <img
-                      src={Cezarypiechowiak}
-                      alt="Cezary Piechowiak"
-                      className="object-cover w-full h-full rounded-full shadow-md"
-                    />
-                  </div>
-                </div>
-                <div className="px-6 mt-16">
-                  <h1 className="mb-1 text-2xl text-center">Cezary Piechowiak</h1>
-                  <p className="text-sm text-center">Backend, DB management</p>
-
-                  <div className="flex justify-center w-full pt-5 pb-5">
-                    <a href="mailto:102233@g.elearn.uz.zgora.pl" className="mx-5">
-                      <MdEmail className="text-2xl text-percpass-400" />
-                    </a>
-                    <a href="/" target="_blank" rel="noreferrer" className="mx-5">
-                      <FaLinkedinIn className="text-2xl text-percpass-400" />
-                    </a>
-                    <a href="https://github.com/CezaryPiechowiak" target="_blank" rel="noreferrer" className="mx-5">
+                    <a href="https://github.com/juras99" target="_blank" rel="noreferrer" className="mx-5">
                       <FaGithub className="text-2xl text-percpass-400" />
                     </a>
                   </div>
