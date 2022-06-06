@@ -58,7 +58,9 @@ const ProfileScreen: React.FC = () => {
         sortOrder: searchParams.get('sortOrder') || 'atoz',
       })
     )
-    return () => getUserPasswordsPromise.abort()
+    return () => {
+      getUserPasswordsPromise.abort()
+    }
   }, [searchParams, dispatch])
 
   return (

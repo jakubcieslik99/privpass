@@ -59,6 +59,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
 
   //useEffects
   useEffect(() => {
+    isMounted.current = true
     return () => {
       isMounted.current = false
       if (getUserPasswordsAbort.current) {

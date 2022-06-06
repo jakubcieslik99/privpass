@@ -171,6 +171,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
 
   //useEffects
   useEffect(() => {
+    isMounted.current = true
     return () => {
       isMounted.current = false
     }

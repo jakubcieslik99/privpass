@@ -171,6 +171,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
 
   //useEffects
   useEffect(() => {
+    isMounted.current = true
     return () => {
       isMounted.current = false
     }

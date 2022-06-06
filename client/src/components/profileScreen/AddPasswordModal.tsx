@@ -86,6 +86,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
 
   //useEffects
   useEffect(() => {
+    isMounted.current = true
     return () => {
       isMounted.current = false
       if (getUserPasswordsAbort.current) {
