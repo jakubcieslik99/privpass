@@ -13,7 +13,7 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ## Features
 
-- Access with OTP sent via email address
+- Access via OTP sent to the email address
 - Adding, editing and deleting passwords
 - Getting user's selected password
 - Sorting and searching through all user's passwords
