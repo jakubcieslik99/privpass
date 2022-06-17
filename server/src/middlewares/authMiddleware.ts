@@ -12,7 +12,7 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
   jwt.verify(token, config.JWT_ACCESS_TOKEN_SECRET, async (error: VerifyErrors | null, decode: any) => {
     if (error || !decode) return next(createError(403, 'Błąd autoryzacji, sesja wygasła.'))
 
-    const authenticatedUser = await User.findById(decode.id)
+    const authenticatedUser = await User.findById(decode.id).exec()
     if (!authenticatedUser) return next(createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.'))
 
     res.locals.authenticatedUser = authenticatedUser
