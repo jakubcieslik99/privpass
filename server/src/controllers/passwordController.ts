@@ -11,21 +11,21 @@ const getUserPasswords = async (req: Request, res: Response) => {
   let query = {}
   if (req.query.searchKeyword) {
     query = {
-      addedBy: authenticatedUser._id,
+      addedBy: authenticatedUser.id,
       name: { $regex: req.query.searchKeyword, $options: 'i' },
     }
-  } else query = { addedBy: authenticatedUser._id }
+  } else query = { addedBy: authenticatedUser.id }
 
   let sortOrder = {}
-  if (req.query.sortOrder && req.query.sortOrder === 'oldest') sortOrder = { _id: 1 }
-  else if (req.query.sortOrder && req.query.sortOrder === 'newest') sortOrder = { _id: -1 }
+  if (req.query.sortOrder && req.query.sortOrder === 'oldest') sortOrder = { createdAt: 1 }
+  else if (req.query.sortOrder && req.query.sortOrder === 'newest') sortOrder = { createdAt: -1 }
   else if (req.query.sortOrder && req.query.sortOrder === 'ztoa') sortOrder = { name: -1 }
   else sortOrder = { name: 1 }
 
   const userPasswords = await Password.find(query, 'name').sort(sortOrder).exec()
 
   const userPasswordsFinal = userPasswords.map(element => {
-    return { _id: element._id, name: element.name }
+    return { _id: element.id, name: element.name }
   })
 
   return res.status(200).send({ passwords: userPasswordsFinal })
@@ -34,25 +34,25 @@ const getUserPasswords = async (req: Request, res: Response) => {
 const getUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
-  const foundPassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser._id }).exec()
+  const foundPassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
   if (!foundPassword) throw createError(404, 'Podane hasło nie istnieje lub zostało usunięte.')
 
   const decryptedPassword = decryptPassword({ encryptedPassword: foundPassword.encryptedPassword, iv: foundPassword.iv })
 
-  return res.status(200).send({ _id: foundPassword._id, password: decryptedPassword })
+  return res.status(200).send({ _id: foundPassword.id, password: decryptedPassword })
 }
 //POST - /passwords/createUserPassword
 const createUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
   const validationResult = await createPasswordValidation.validateAsync(req.body)
 
-  const possibleDuplicates = await Password.find({ addedBy: authenticatedUser._id, name: validationResult.name }).exec()
+  const possibleDuplicates = await Password.find({ addedBy: authenticatedUser.id, name: validationResult.name }).exec()
   if (possibleDuplicates.length > 0) throw createError(409, 'Istnieje już hasło o takiej nazwie.')
 
   const { encryptedPassword, iv } = encryptPassword(validationResult.password)
 
   const createPassword = new Password({
-    addedBy: authenticatedUser._id,
+    addedBy: authenticatedUser.id,
     name: validationResult.name,
     encryptedPassword: encryptedPassword,
     iv: iv,
@@ -67,10 +67,10 @@ const updateUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
   const validationResult = await updatePasswordValidation.validateAsync(req.body)
 
-  const possibleDuplicates = await Password.find({ addedBy: authenticatedUser._id, name: validationResult.name }).exec()
+  const possibleDuplicates = await Password.find({ addedBy: authenticatedUser.id, name: validationResult.name }).exec()
   if (possibleDuplicates.length > 1) throw createError(409, 'Istnieje już hasło o takiej nazwie.')
 
-  const updatePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser._id }).exec()
+  const updatePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
   if (!updatePassword) throw createError(404, 'Podane hasło nie istnieje lub zostało usunięte.')
 
   const { encryptedPassword, iv } = encryptPassword(validationResult.password)
@@ -86,7 +86,7 @@ const updateUserPassword = async (req: Request, res: Response) => {
 const deleteUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
-  const deletePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser._id }).exec()
+  const deletePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
   if (!deletePassword) throw createError(404, 'Podane hasło nie istnieje lub zostało usunięte.')
 
   await deletePassword.remove()

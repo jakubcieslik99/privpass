@@ -1,8 +1,18 @@
-import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-const passwordSchema = new mongoose.Schema(
+interface IPassword {
+  addedBy: Schema.Types.ObjectId
+  name: string
+  encryptedPassword: string
+  iv: string
+
+  createdAt: number
+  updatedAt: number
+}
+
+const passwordSchema = new Schema<IPassword>(
   {
-    addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    addedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
     encryptedPassword: { type: String, required: true },
     iv: { type: String, required: true },
@@ -12,6 +22,6 @@ const passwordSchema = new mongoose.Schema(
   }
 )
 
-const passwordModel = mongoose.model('Password', passwordSchema)
+const passwordModel = model('Password', passwordSchema)
 
 export default passwordModel

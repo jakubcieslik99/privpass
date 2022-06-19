@@ -65,7 +65,7 @@ const confirmCode = async (req: Request, res: Response) => {
   const checkedUser = await User.findOne({ email: validationResult.email }).exec()
   if (!checkedUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
 
-  const checkCode = await bcrypt.compare(validationResult.code, checkedUser.code)
+  const checkCode = await bcrypt.compare(validationResult.code, checkedUser.code || '')
   if (!checkCode) throw createError(406, 'Kod dostępu jest niepoprawny.')
 
   if (Date.now() - checkedUser.updatedAt > 300 * 1000) {
@@ -74,14 +74,14 @@ const confirmCode = async (req: Request, res: Response) => {
     throw createError(406, 'Kod dostępu stracił ważność.')
   }
 
-  const accessToken = await getAccessToken(checkedUser._id, checkedUser.email)
-  const refreshToken = await getRefreshToken(checkedUser._id, checkedUser.email)
+  const accessToken = await getAccessToken(checkedUser.id, checkedUser.email)
+  const refreshToken = await getRefreshToken(checkedUser.id, checkedUser.email)
 
   checkedUser.code = null
   checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
     (element: { refreshToken: string; expirationDate: number }) => element.expirationDate > Date.now()
   )
-  checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 900 * 1000 })
+  refreshToken && checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 900 * 1000 })
   await checkedUser.save()
 
   return res
@@ -95,7 +95,7 @@ const confirmCode = async (req: Request, res: Response) => {
     .send({
       message: 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.',
       userInfo: {
-        id: checkedUser._id,
+        id: checkedUser.id,
         email: checkedUser.email,
       },
       accessToken: accessToken,
@@ -110,7 +110,7 @@ const refreshAccessToken = async (req: Request, res: Response) => {
   if (!checkedUser) throw createError(401, 'Błąd autoryzacji.')
 
   jwt.verify(req.cookies.refreshToken, config.JWT_REFRESH_TOKEN_SECRET, async (error: VerifyErrors | null, decode: any) => {
-    if (error || checkedUser._id.toString() !== decode.id) throw createError(401, 'Błąd autoryzacji.')
+    if (error || checkedUser.id !== decode.id) throw createError(401, 'Błąd autoryzacji.')
 
     const accessToken = await getAccessToken(decode.id, decode.email)
 

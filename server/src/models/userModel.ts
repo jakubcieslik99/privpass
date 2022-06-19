@@ -1,6 +1,15 @@
-import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-const refreshTokenSchema = new mongoose.Schema(
+interface IUser {
+  email: string
+  code: string | null
+  refreshTokens: { refreshToken: string; expirationDate: number }[]
+
+  createdAt: number
+  updatedAt: number
+}
+
+const refreshTokenSchema = new Schema(
   {
     refreshToken: { type: String, required: true },
     expirationDate: { type: Date, required: true },
@@ -8,10 +17,10 @@ const refreshTokenSchema = new mongoose.Schema(
   { _id: false }
 )
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema<IUser>(
   {
     email: { type: String, required: true, lowercase: true, unique: true, dropDups: true },
-    code: { type: String },
+    code: { type: String, default: null },
     refreshTokens: [refreshTokenSchema],
   },
   {
@@ -19,6 +28,6 @@ const userSchema = new mongoose.Schema(
   }
 )
 
-const userModel = mongoose.model('User', userSchema)
+const userModel = model('User', userSchema)
 
 export default userModel

@@ -9,7 +9,7 @@ const parseString = (string: string) => {
   parsedString = parsedString.replace(/Ż/g, 'Z')
   parsedString = parsedString.replace(/Ź/g, 'Z')
 
-  parsedString = parsedString.replace(/a/g, 'a')
+  parsedString = parsedString.replace(/ą/g, 'a')
   parsedString = parsedString.replace(/ć/g, 'c')
   parsedString = parsedString.replace(/ę/g, 'e')
   parsedString = parsedString.replace(/ł/g, 'l')
