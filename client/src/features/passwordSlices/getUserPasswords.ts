@@ -27,6 +27,7 @@ export { getUserPasswords }
 
 interface getUserPasswordsState {
   loading: boolean
+  aborted: boolean
   error: boolean
   errorMessage: string
   passwords: [ListedPasswordObject] | []
@@ -36,6 +37,7 @@ export const getUserPasswordsSlice = createSlice({
   name: 'passwords/getUserPasswords',
   initialState: {
     loading: false,
+    aborted: false,
     error: false,
     errorMessage: '',
     passwords: [],
@@ -52,14 +54,15 @@ export const getUserPasswordsSlice = createSlice({
     })
     builder.addCase(getUserPasswords.fulfilled, (state, action) => {
       state.loading = false
+      state.aborted = false
       state.passwords = action.payload.passwords
     })
     builder.addCase(getUserPasswords.rejected, (state, action: PayloadAction<any>) => {
-      state.loading = false
       if (action.payload) {
+        state.loading = false
         state.error = true
         state.errorMessage = action.payload
-      }
+      } else state.aborted = true
     })
   },
 })
