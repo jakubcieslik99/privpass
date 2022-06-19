@@ -75,13 +75,15 @@ const confirmCode = async (req: Request, res: Response) => {
   }
 
   const accessToken = await getAccessToken(checkedUser.id, checkedUser.email)
+  if (!accessToken) throw createError(500, 'Błąd serwera.')
   const refreshToken = await getRefreshToken(checkedUser.id, checkedUser.email)
+  if (!refreshToken) throw createError(500, 'Błąd serwera.')
 
   checkedUser.code = null
   checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
     (element: { refreshToken: string; expirationDate: number }) => element.expirationDate > Date.now()
   )
-  refreshToken && checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 900 * 1000 })
+  checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 900 * 1000 })
   await checkedUser.save()
 
   return res
@@ -113,6 +115,7 @@ const refreshAccessToken = async (req: Request, res: Response) => {
     if (error || checkedUser.id !== decode.id) throw createError(401, 'Błąd autoryzacji.')
 
     const accessToken = await getAccessToken(decode.id, decode.email)
+    if (!accessToken) throw createError(500, 'Błąd serwera.')
 
     return res.status(201).send({ accessToken })
   })

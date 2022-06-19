@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-interface IUser {
+interface User {
   email: string
   code: string | null
   refreshTokens: { refreshToken: string; expirationDate: number }[]
@@ -17,10 +17,10 @@ const refreshTokenSchema = new Schema(
   { _id: false }
 )
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<User>(
   {
     email: { type: String, required: true, lowercase: true, unique: true, dropDups: true },
-    code: { type: String, default: null },
+    code: { type: String },
     refreshTokens: [refreshTokenSchema],
   },
   {

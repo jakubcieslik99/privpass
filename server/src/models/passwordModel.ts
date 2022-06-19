@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-interface IPassword {
+interface Password {
   addedBy: Schema.Types.ObjectId
   name: string
   encryptedPassword: string
@@ -10,7 +10,7 @@ interface IPassword {
   updatedAt: number
 }
 
-const passwordSchema = new Schema<IPassword>(
+const passwordSchema = new Schema<Password>(
   {
     addedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
