@@ -3,8 +3,8 @@ import { Schema, model } from 'mongoose'
 interface User {
   email: string
   code: string | null
-  refreshTokens: { refreshToken: string; expirationDate: number }[]
-
+  refreshTokens: { refreshToken: string; expirationDate: number }[] | []
+  //timestamps
   createdAt: number
   updatedAt: number
 }
@@ -19,7 +19,7 @@ const refreshTokenSchema = new Schema(
 
 const userSchema = new Schema<User>(
   {
-    email: { type: String, required: true, lowercase: true, unique: true, dropDups: true },
+    email: { type: String, required: true },
     code: { type: String },
     refreshTokens: [refreshTokenSchema],
   },

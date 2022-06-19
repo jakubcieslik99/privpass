@@ -17,7 +17,7 @@ const registerSendCode = async (req: Request, res: Response) => {
 
   const validationResult = await registerEmailValidation.validateAsync(req.body)
 
-  const conflictUserEmail = await User.findOne({ email: validationResult.email }).exec()
+  const conflictUserEmail = await User.findOne({ email: validationResult.email.toLowerCase() }).exec()
   if (conflictUserEmail) throw createError(409, 'Istnieje już użytkownik o podanym adresie e-mail.')
 
   const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
@@ -25,12 +25,12 @@ const registerSendCode = async (req: Request, res: Response) => {
   const hashedCode = await bcrypt.hash(code, salt)
 
   const createUser = new User({
-    email: validationResult.email,
+    email: validationResult.email.toLowerCase(),
     code: hashedCode,
   })
   await createUser.save()
 
-  await sendEmail(registerSendCodeMessage(validationResult.email, code))
+  await sendEmail(registerSendCodeMessage(validationResult.email.toLowerCase(), code))
 
   return res.status(201).send({
     message: 'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.',
@@ -42,7 +42,7 @@ const loginSendCode = async (req: Request, res: Response) => {
 
   const validationResult = await loginEmailValidation.validateAsync(req.body)
 
-  const loginUser = await User.findOne({ email: validationResult.email }).exec()
+  const loginUser = await User.findOne({ email: validationResult.email.toLowerCase() }).exec()
   if (!loginUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
 
   const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
@@ -52,7 +52,7 @@ const loginSendCode = async (req: Request, res: Response) => {
   loginUser.code = hashedCode
   await loginUser.save()
 
-  await sendEmail(loginSendCodeMessage(validationResult.email, code))
+  await sendEmail(loginSendCodeMessage(validationResult.email.toLowerCase(), code))
 
   return res.status(200).send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.' })
 }
@@ -62,7 +62,7 @@ const confirmCode = async (req: Request, res: Response) => {
 
   const validationResult = await confirmCodeValidation.validateAsync(req.body)
 
-  const checkedUser = await User.findOne({ email: validationResult.email }).exec()
+  const checkedUser = await User.findOne({ email: validationResult.email.toLowerCase() }).exec()
   if (!checkedUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
 
   const checkCode = await bcrypt.compare(validationResult.code, checkedUser.code || '')

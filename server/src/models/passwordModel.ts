@@ -5,7 +5,7 @@ interface Password {
   name: string
   encryptedPassword: string
   iv: string
-
+  //timestamps
   createdAt: number
   updatedAt: number
 }

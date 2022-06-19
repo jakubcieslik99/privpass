@@ -8,7 +8,7 @@ const errorHandler = (controller: Function) => (req: Request, res: Response, nex
 
 const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunction) => {
   //internal error handling
-  if (!error.status) {
+  if (!error.status && !error.isJoi) {
     log.error(`INTERNAL - ${error.stack || error.message || 'Internal error.'}`)
     return res.status(500).send({ message: 'Błąd serwera.' })
   }
@@ -18,10 +18,9 @@ const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunc
     return res.status(500).send({ message: 'Błąd serwera.' })
   }
   //client validation error handling
-  if (error.status === 422 || error.isJoi === true) {
-    config.ENV !== 'prod' &&
-      log.error(`CLIENT - 422: ${!error.isJoi ? parseString(error.message) : 'Przeslano bledne dane.'}`)
-    return res.status(422).send({ message: !error.isJoi ? error.message : 'Przesłano błędne dane.' })
+  if (error.isJoi) {
+    config.ENV !== 'prod' && log.error('CLIENT - 422: Przeslano bledne dane.')
+    return res.status(422).send({ message: 'Przesłano błędne dane.' })
   }
   //any other client error handling
   config.ENV !== 'prod' &&
