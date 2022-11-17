@@ -1,11 +1,11 @@
 {
   "name": "percpass-server",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "PercPASS",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
-    "dev:win": "nodemon --exec ./node_modules/.bin/ts-node src/server.ts",
+    "dev-win": "nodemon --exec ./node_modules/.bin/ts-node src/server.ts",
     "build": "tsc",
     "prod": "node dist/server.js"
   },
