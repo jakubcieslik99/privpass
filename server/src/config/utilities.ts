@@ -11,7 +11,7 @@ const config = {
   API_URL: process.env.API_URL || 'http://localhost:3001',
   WEBAPP_URL: process.env.WEBAPP_URL || 'http://localhost:3000',
   /*------------------------------------------------------------------------------------------*/
-  MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/percpass',
+  MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/privpass',
   /*------------------------------------------------------------------------------------------*/
   JWT_ACCESS_TOKEN_SECRET: process.env.JWT_ACCESS_TOKEN_SECRET || 'JWT_ACCESS_TOKEN_SECRET',
   JWT_REFRESH_TOKEN_SECRET: process.env.JWT_REFRESH_TOKEN_SECRET || 'JWT_REFRESH_TOKEN_SECRET',
@@ -20,7 +20,7 @@ const config = {
   /*------------------------------------------------------------------------------------------*/
   GMAIL_ADDRESS: process.env.GMAIL_ADDRESS,
   GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
-  NOREPLY_ADDRESS: process.env.NOREPLY_ADDRESS || 'noreply@percpass.com',
+  NOREPLY_ADDRESS: process.env.NOREPLY_ADDRESS || 'noreply@privpass.com',
 }
 
 const log = logger({

@@ -4,13 +4,13 @@ module.exports = {
     container: { center: true },
     extend: {
       colors: {
-        'percpass-100': '#9efff7',
-        'percpass-200': '#42e8df',
+        'privpass-100': '#9efff7',
+        'privpass-200': '#42e8df',
 
-        'percpass-300': '#cbcaf8',
-        'percpass-400': '#364392',
-        'percpass-500': '#342684',
-        'percpass-600': '#231169',
+        'privpass-300': '#cbcaf8',
+        'privpass-400': '#364392',
+        'privpass-500': '#342684',
+        'privpass-600': '#231169',
       },
     },
   },

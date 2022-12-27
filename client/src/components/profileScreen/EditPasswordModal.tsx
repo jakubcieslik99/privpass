@@ -171,7 +171,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                       id="editName"
                       type="text"
                       placeholder="Podaj nazwę"
-                      className="px-3 py-2 m-1 border rounded-lg border-percpass-400 focus:outline-percpass-400"
+                      className="px-3 py-2 m-1 border rounded-lg border-privpass-400 focus:outline-privpass-400"
                     />
 
                     <div className="grid mx-1">
@@ -198,11 +198,11 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                         id="editPassword"
                         type={passwordToShow ? 'text' : 'password'}
                         placeholder="Podaj hasło"
-                        className="w-full px-3 py-2 my-1 ml-1 mr-2 border rounded-lg border-percpass-400 focus:outline-percpass-400"
+                        className="w-full px-3 py-2 my-1 ml-1 mr-2 border rounded-lg border-privpass-400 focus:outline-privpass-400"
                       />
                       <button
                         type="button"
-                        className="relative flex-none p-2 mr-1 text-xl transition bg-white border rounded-full w-9 h-9 text-percpass-400 border-percpass-400 hover:border-percpass-400/80 hover:text-percpass-400/80 active:scale-95"
+                        className="relative flex-none p-2 mr-1 text-xl transition bg-white border rounded-full w-9 h-9 text-privpass-400 border-privpass-400 hover:border-privpass-400/80 hover:text-privpass-400/80 active:scale-95"
                         onClick={() => setPasswordToShow(!passwordToShow)}
                       >
                         <FaEye
@@ -246,14 +246,14 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                   <button
                     disabled={loading}
                     type="submit"
-                    className="px-4 py-2 mr-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+                    className="px-4 py-2 mr-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
                   >
                     Zapisz
                   </button>
                   <button
                     disabled={loading}
                     type="button"
-                    className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+                    className="px-4 py-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
                     onClick={closeHandler}
                   >
                     {success ? 'Zamknij' : 'Anuluj'}

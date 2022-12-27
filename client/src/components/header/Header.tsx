@@ -62,18 +62,18 @@ const Header: React.FC = () => {
 
   return (
     <header id="header" className="fixed top-0 z-10 w-full h-auto">
-      <nav className="flex flex-col justify-between md:flex-row md:bg-percpass-500 md:shadow-lg">
-        <div className="z-20 flex items-center justify-between h-16 md:h-24 bg-percpass-500">
+      <nav className="flex flex-col justify-between md:flex-row md:bg-privpass-500 md:shadow-lg">
+        <div className="z-20 flex items-center justify-between h-16 md:h-24 bg-privpass-500">
           <Link
             to="/"
             className="flex items-center ml-3 text-2xl font-bold text-white md:text-3xl md:ml-7"
             onClick={scrollToTopHandler}
           >
-            PercPASS <FaUserShield className="ml-2" />
+            PrivPASS <FaUserShield className="ml-2" />
           </Link>
 
           <button
-            className="px-3 py-2 mr-3 text-xl transition border rounded-full md:hidden text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
+            className="px-3 py-2 mr-3 text-xl transition border rounded-full md:hidden text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
             onClick={() => setMenuIsOpen(!menuIsOpen)}
           >
             <FaBars />
@@ -83,9 +83,9 @@ const Header: React.FC = () => {
         {userInfo ? (
           <ul className="flex-row items-center hidden md:flex mr-7">
             <li
-              className={`flex items-center px-5 py-3 transition md:py-2 md:px-3 md:mr-1 text-percpass-300 ${
+              className={`flex items-center px-5 py-3 transition md:py-2 md:px-3 md:mr-1 text-privpass-300 ${
                 pathname !== '/profile' &&
-                'cursor-pointer hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95'
+                'cursor-pointer hover:text-white hover:bg-privpass-400 md:hover:bg-transparent active:scale-95'
               }`}
               onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
             >
@@ -94,7 +94,7 @@ const Header: React.FC = () => {
             </li>
             <li className="flex">
               <div
-                className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
+                className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
                 onClick={logoutHandler}
               >
                 Wyloguj
@@ -104,26 +104,26 @@ const Header: React.FC = () => {
         ) : (
           <ul className="flex-row items-center hidden md:flex mr-7">
             <div
-              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
+              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent active:scale-95"
               onClick={() => scrollToHandler('product-section', -96)}
             >
               Produkt
             </div>
             <div
-              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
+              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent active:scale-95"
               onClick={() => scrollToHandler('contact-section', -96)}
             >
               Kontakt
             </div>
             <li
-              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent active:scale-95"
+              className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-2 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent active:scale-95"
               onClick={() => setRegisterModalIsOpen(true)}
             >
               Rejestracja
             </li>
             <li className="flex">
               <div
-                className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
+                className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
                 onClick={() => setLoginModalIsOpen(true)}
               >
                 Logowanie
@@ -135,13 +135,13 @@ const Header: React.FC = () => {
         <ul
           className={`absolute w-full md:hidden flex flex-col transition-transform top-16 shadow-lg ${
             !menuIsOpen ? '-translate-y-full' : 'translate-y-0'
-          } bg-percpass-500`}
+          } bg-privpass-500`}
         >
           {userInfo ? (
             <>
               <li
-                className={`flex items-center px-5 py-3 transition-colors md:py-2 md:px-3 md:mr-2 text-percpass-300 ${
-                  pathname !== '/profile' && 'cursor-pointer hover:text-white hover:bg-percpass-400 md:hover:bg-transparent'
+                className={`flex items-center px-5 py-3 transition-colors md:py-2 md:px-3 md:mr-2 text-privpass-300 ${
+                  pathname !== '/profile' && 'cursor-pointer hover:text-white hover:bg-privpass-400 md:hover:bg-transparent'
                 }`}
                 onClick={pathname !== '/profile' ? () => navigate('/profile') : undefined}
               >
@@ -150,7 +150,7 @@ const Header: React.FC = () => {
               </li>
               <li className="flex">
                 <div
-                  className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
+                  className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
                   onClick={logoutHandler}
                 >
                   Wyloguj
@@ -160,19 +160,19 @@ const Header: React.FC = () => {
           ) : (
             <>
               <div
-                className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
+                className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent"
                 onClick={() => scrollToHandler('product-section', -64)}
               >
                 Produkt
               </div>
               <div
-                className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
+                className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent"
                 onClick={() => scrollToHandler('contact-section', -64)}
               >
                 Kontakt
               </div>
               <li
-                className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-percpass-300 hover:text-white hover:bg-percpass-400 md:hover:bg-transparent"
+                className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent"
                 onClick={() => {
                   setRegisterModalIsOpen(true)
                   setMenuIsOpen(false)
@@ -182,7 +182,7 @@ const Header: React.FC = () => {
               </li>
               <li className="flex">
                 <div
-                  className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-percpass-300 border-percpass-300 hover:text-white hover:border-white active:scale-95"
+                  className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
                   onClick={() => {
                     setLoginModalIsOpen(true)
                     setMenuIsOpen(false)

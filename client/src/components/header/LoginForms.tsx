@@ -86,7 +86,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
             id="loginEmail"
             type="text"
             placeholder="Podaj email"
-            className="px-3 py-2 m-1 border rounded-lg border-percpass-400 focus:outline-percpass-400"
+            className="px-3 py-2 m-1 border rounded-lg border-privpass-400 focus:outline-privpass-400"
           />
 
           <div className="grid mx-1">
@@ -114,7 +114,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
         <button
           disabled={loading || success}
           type="submit"
-          className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
           Zaloguj się
         </button>
@@ -218,7 +218,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
             type="text"
             autoComplete="off"
             placeholder="0000"
-            className="pl-[1.37rem] pr-1 py-2 m-1 text-3xl tracking-[.4em] border rounded-lg w-36 border-percpass-400 focus:outline-percpass-400 monospace-font"
+            className="pl-[1.37rem] pr-1 py-2 m-1 text-3xl tracking-[.4em] border rounded-lg w-36 border-privpass-400 focus:outline-privpass-400 monospace-font"
           />
 
           <div className="grid mx-1">
@@ -249,7 +249,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
             (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.')
           }
           type="submit"
-          className="px-4 py-2 text-white transition rounded-full bg-percpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
           Potwierdź logowanie
         </button>

@@ -2,12 +2,12 @@ import { FaUserShield } from 'react-icons/fa'
 
 const Footer: React.FC = () => {
   return (
-    <footer className="p-4 bg-percpass-500">
+    <footer className="p-4 bg-privpass-500">
       <div className="flex flex-col items-center justify-center text-sm text-white md:flex-row">
         <p>Copyright © {new Date().getFullYear()}</p>
         <p className="hidden mx-3 font-extralight md:block">|</p>
         <p className="flex items-center my-2 text-xl font-bold md:text-base md:my-0">
-          PercPASS <FaUserShield className="ml-1" />
+          PrivPASS <FaUserShield className="ml-1" />
         </p>
         <p className="hidden mx-3 font-extralight md:block">|</p>
         <p>Wszelkie prawa zastrzeżone.</p>

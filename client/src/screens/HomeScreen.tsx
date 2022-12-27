@@ -25,7 +25,7 @@ const HomeScreen: React.FC = () => {
               <p className="text-2xl md:text-3xl">Twój bezpieczny</p>
               <p className="mb-4 text-2xl md:text-3xl">menedżer haseł</p>
               <button
-                className="px-4 py-3 transition border rounded-full cursor-pointer md:text-xl border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 text-md"
+                className="px-4 py-3 transition border rounded-full cursor-pointer md:text-xl border-privpass-200 text-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 text-md"
                 onClick={() => scrollToHandler(window.innerWidth < 768 ? -64 : -96)}
               >
                 DOWIEDZ SIĘ WIĘCEJ
@@ -39,7 +39,7 @@ const HomeScreen: React.FC = () => {
 
         <div className="absolute bottom-0 flex justify-center w-full">
           <button
-            className="m-4 text-3xl transition cursor-pointer md:m-6 md:text-2xl text-percpass-200 hover:text-percpass-100 active:scale-90"
+            className="m-4 text-3xl transition cursor-pointer md:m-6 md:text-2xl text-privpass-200 hover:text-privpass-100 active:scale-90"
             onClick={() => scrollToHandler(window.innerWidth < 768 ? -64 : -96)}
           >
             <FaArrowCircleDown />
@@ -51,9 +51,9 @@ const HomeScreen: React.FC = () => {
         <div className="w-full px-5 py-12 md:px-10 app-container">
           <div className="mb-14">
             <h2 className="mb-3 text-3xl font-bold leading-8 tracking-tight text-center text-gray-900 sm:text-4xl">
-              PercPASS to bezpieczny menedżer Twoich haseł.
+              PrivPASS to bezpieczny menedżer Twoich haseł.
             </h2>
-            <h3 className="text-xl font-semibold tracking-wide text-center uppercase text-percpass-400">
+            <h3 className="text-xl font-semibold tracking-wide text-center uppercase text-privpass-400">
               Od teraz nie musisz pamiętać wszystkich z nich.
             </h3>
           </div>
@@ -61,7 +61,7 @@ const HomeScreen: React.FC = () => {
           <div className="grid gap-6 mb-7 md:grid-cols-2">
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-percpass-400">
+                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-privpass-400">
                   <MdSecurity />
                 </div>
                 <p className="ml-16 text-xl font-medium leading-6 text-gray-900">Bezpieczne logowanie</p>
@@ -74,7 +74,7 @@ const HomeScreen: React.FC = () => {
 
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-percpass-400">
+                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-privpass-400">
                   <FaListUl />
                 </div>
                 <p className="ml-16 text-xl font-medium leading-6 text-gray-900">Hasła na wyciągnięcie ręki</p>
@@ -87,7 +87,7 @@ const HomeScreen: React.FC = () => {
 
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-percpass-400">
+                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-privpass-400">
                   <FaKey />
                 </div>
                 <p className="ml-16 text-xl font-medium leading-6 text-gray-900">Pełne szyfrowanie</p>
@@ -97,7 +97,7 @@ const HomeScreen: React.FC = () => {
 
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-percpass-400">
+                <div className="absolute flex items-center justify-center w-12 h-12 text-xl text-white rounded-xl bg-privpass-400">
                   <MdEmail />
                 </div>
                 <p className="ml-16 text-xl font-medium leading-6 text-gray-900">Szybki kontakt i pomoc</p>
@@ -120,7 +120,7 @@ const HomeScreen: React.FC = () => {
             <h2 className="mb-3 text-3xl font-bold leading-8 tracking-tight text-center text-gray-900 sm:text-4xl">
               Skontaktuj się z nami
             </h2>
-            <h3 className="text-xl font-semibold tracking-wide text-center uppercase text-percpass-400">
+            <h3 className="text-xl font-semibold tracking-wide text-center uppercase text-privpass-400">
               Postaramy się odpowiedzieć na Twoje pytania
             </h3>
           </div>
@@ -145,7 +145,7 @@ const HomeScreen: React.FC = () => {
 
                   <div className="flex justify-center w-full pt-5 pb-5">
                     <a href="mailto:contact@jakubcieslik.com" className="mx-5">
-                      <MdEmail className="text-2xl text-percpass-400" />
+                      <MdEmail className="text-2xl text-privpass-400" />
                     </a>
                     <a
                       href="https://www.linkedin.com/in/jakub-cie%C5%9Blik-8632951b2/"
@@ -153,10 +153,10 @@ const HomeScreen: React.FC = () => {
                       rel="noreferrer"
                       className="mx-5"
                     >
-                      <FaLinkedinIn className="text-2xl text-percpass-400" />
+                      <FaLinkedinIn className="text-2xl text-privpass-400" />
                     </a>
                     <a href="https://github.com/jakubcieslik99" target="_blank" rel="noreferrer" className="mx-5">
-                      <FaGithub className="text-2xl text-percpass-400" />
+                      <FaGithub className="text-2xl text-privpass-400" />
                     </a>
                   </div>
                 </div>
@@ -178,7 +178,7 @@ const HomeScreen: React.FC = () => {
 
                   <div className="flex justify-center w-full pt-5 pb-5">
                     <a href="mailto:kontakt@marceljurkiewicz.pl" className="mx-5">
-                      <MdEmail className="text-2xl text-percpass-400" />
+                      <MdEmail className="text-2xl text-privpass-400" />
                     </a>
                     <a
                       href="https://www.linkedin.com/in/marcel-jurkiewicz-1b4212226/"
@@ -186,10 +186,10 @@ const HomeScreen: React.FC = () => {
                       rel="noreferrer"
                       className="mx-5"
                     >
-                      <FaLinkedinIn className="text-2xl text-percpass-400" />
+                      <FaLinkedinIn className="text-2xl text-privpass-400" />
                     </a>
                     <a href="https://github.com/juras99" target="_blank" rel="noreferrer" className="mx-5">
-                      <FaGithub className="text-2xl text-percpass-400" />
+                      <FaGithub className="text-2xl text-privpass-400" />
                     </a>
                   </div>
                 </div>

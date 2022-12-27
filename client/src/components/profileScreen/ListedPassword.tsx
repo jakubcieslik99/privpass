@@ -76,7 +76,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
   }, [getUserPasswordAbort1, getUserPasswordAbort2])
 
   return (
-    <div className="flex flex-col justify-between px-3 pt-2 pb-3 shadow-md md:pb-2 rounded-2xl bg-percpass-400 md:flex-row">
+    <div className="flex flex-col justify-between px-3 pt-2 pb-3 shadow-md md:pb-2 rounded-2xl bg-privpass-400 md:flex-row">
       <div className="flex-1 min-w-0 mb-2 md:mr-4 md:mb-0">
         <div className="mb-2">
           <div className="flex items-center text-xs">
@@ -95,7 +95,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
           <div className="flex items-center text-lg">
             <button
               disabled={loading || loading2}
-              className="relative flex-none w-8 h-8 p-2 mr-2 transition border rounded-full text-percpass-200 border-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 disabled:hover:border-percpass-200 disabled:hover:text-percpass-200 disabled:cursor-default disabled:active:scale-100"
+              className="relative flex-none w-8 h-8 p-2 mr-2 transition border rounded-full text-privpass-200 border-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 disabled:hover:border-privpass-200 disabled:hover:text-privpass-200 disabled:cursor-default disabled:active:scale-100"
               onClick={showPasswordHandler}
             >
               <FaEye

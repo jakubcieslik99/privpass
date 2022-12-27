@@ -67,7 +67,7 @@ const ProfileScreen: React.FC = () => {
     <main className="pt-16 md:pt-24 gradient-primary app-screen">
       <div className="grid gap-3 px-3 py-9 app-container md:grid-cols-3 lg:grid-cols-4">
         <div className="md:order-2">
-          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-percpass-500">
+          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-privpass-500">
             <h2 className="flex items-center mb-4 text-xl">
               <FaTools className="mr-2 text-2xl" />
               Narzędzia:
@@ -87,7 +87,7 @@ const ProfileScreen: React.FC = () => {
                 <button
                   disabled={loading || loading2}
                   type="button"
-                  className="px-3 py-2 transition border rounded-full text-md border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 disabled:hover:border-percpass-200 disabled:hover:text-percpass-200 disabled:cursor-default disabled:active:scale-100"
+                  className="px-3 py-2 transition border rounded-full text-md border-privpass-200 text-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 disabled:hover:border-privpass-200 disabled:hover:text-privpass-200 disabled:cursor-default disabled:active:scale-100"
                   onClick={searchHandler}
                 >
                   <FaSearch />
@@ -117,7 +117,7 @@ const ProfileScreen: React.FC = () => {
               <div className="mb-1 ml-3 text-xs">Dodawanie:</div>
               <button
                 disabled={loading || loading2}
-                className="flex items-center px-3 py-2 transition border rounded-full text-md border-percpass-200 text-percpass-200 hover:border-percpass-100 hover:text-percpass-100 active:scale-95 disabled:hover:border-percpass-200 disabled:hover:text-percpass-200 disabled:cursor-default disabled:active:scale-100"
+                className="flex items-center px-3 py-2 transition border rounded-full text-md border-privpass-200 text-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 disabled:hover:border-privpass-200 disabled:hover:text-privpass-200 disabled:cursor-default disabled:active:scale-100"
                 onClick={() => setAddPasswordModalIsOpen(true)}
               >
                 <FaPlus className="mr-2" />
@@ -128,7 +128,7 @@ const ProfileScreen: React.FC = () => {
         </div>
 
         <div className="block overflow-hidden md:col-span-2 lg:col-span-3 md:order-1">
-          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-percpass-500">
+          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-privpass-500">
             <h2 className="flex items-center justify-between mb-5 text-xl">
               <div className="flex items-center">
                 <FaShareAlt className="mr-2 text-2xl" />

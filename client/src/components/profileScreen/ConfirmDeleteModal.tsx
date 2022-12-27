@@ -154,7 +154,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                     <button
                       disabled={loading}
                       type="button"
-                      className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+                      className="px-4 py-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
                       onClick={closeHandler}
                     >
                       Anuluj
@@ -173,7 +173,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                   >
                     <button
                       type="button"
-                      className="px-4 py-2 text-white transition rounded-full bg-percpass-400 hover:opacity-80 active:scale-95"
+                      className="px-4 py-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95"
                       onClick={closeHandler}
                     >
                       Zamknij
