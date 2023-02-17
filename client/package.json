@@ -1,7 +1,9 @@
 {
   "name": "privpass",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "private": true,
+  "author": "Jakub Cieślik",
+  "license": "UNLICENSED",
   "dependencies": {
     "@headlessui/react": "^1.7.7",
     "@reduxjs/toolkit": "^1.9.1",
@@ -35,7 +37,7 @@
   },
   "scripts": {
     "dev": "PORT=3000 react-scripts start",
-    "dev:win": "SET PORT=3000 && react-scripts start",
+    "dev-win": "SET PORT=3000 && react-scripts start",
     "build": "react-scripts build"
   },
   "eslintConfig": {

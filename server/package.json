@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "PrivPASS",
   "main": "server.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "prod": "node dist/server.js"
   },
   "author": "Jakub Cieślik",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.3",
