@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "PrivPASS",
   "main": "server.js",
   "scripts": {
@@ -15,16 +15,16 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
-    "@types/express": "^4.17.15",
+    "@types/express": "^4.17.17",
     "@types/express-slow-down": "^1.3.2",
     "@types/http-errors": "^2.0.1",
-    "@types/jsonwebtoken": "^9.0.0",
-    "@types/node": "^18.11.18",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^18.15.3",
     "@types/nodemailer": "^6.4.7",
     "@types/voucher-code-generator": "^1.1.1",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.21",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -36,12 +36,12 @@
     "express-slow-down": "^1.5.0",
     "helmet": "^6.0.1",
     "http-errors": "^2.0.0",
-    "joi": "^17.7.0",
+    "joi": "^17.8.4",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.8.1",
-    "nodemailer": "^6.8.0",
-    "pino": "^8.8.0",
-    "pino-pretty": "^9.1.1",
+    "mongoose": "^6.10.3",
+    "nodemailer": "^6.9.1",
+    "pino": "^8.11.0",
+    "pino-pretty": "^10.0.0",
     "voucher-code-generator": "^1.3.0"
   }
 }
