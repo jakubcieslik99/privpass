@@ -1,11 +1,10 @@
 {
   "name": "privpass-server",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "PrivPASS",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
-    "dev-win": "nodemon --exec ./node_modules/.bin/ts-node src/server.ts",
     "build": "tsc",
     "prod": "node dist/server.js"
   },

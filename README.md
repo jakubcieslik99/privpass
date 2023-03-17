@@ -44,7 +44,6 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ```bash
   npm run dev
-  npm run dev-win   //only on Windows
 ```
 
 ℹ️ Instructions for running client app locally:
