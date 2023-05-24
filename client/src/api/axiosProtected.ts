@@ -1,5 +1,5 @@
 import { AnyAction } from '@reduxjs/toolkit'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { InternalAxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 import axiosPublic from '../api/axiosPublic'
 import { logoutUser, userInfoReset } from '../features/userSlices/listUser'
 import { passwordsReset } from '../features/passwordSlices/getUserPasswords'
@@ -26,8 +26,8 @@ const refreshAccessToken = async () => {
 }
 
 const reqIntercept = axiosProtected.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
-    if (!config.headers) config.headers = {}
+  (config: InternalAxiosRequestConfig) => {
+    if (!config.headers) config.headers = {} as AxiosRequestHeaders
 
     if (!config.headers['Authorization']) {
       const accessToken = localStorage.getItem('accessToken')
