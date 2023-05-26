@@ -11,6 +11,7 @@ import { editPasswordErrors } from '../../validations/passwordValidations'
 import Success from '../universal/Success'
 import Error from '../universal/Error'
 import Loader from '../universal/Loader'
+import { tr } from '../../translations/translations'
 
 interface EditPasswordModalProps {
   isOpen: boolean
@@ -30,6 +31,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
   const isMounted = useRef(true)
   const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>()
 
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.updateUserPassword)
   const dispatch = useAppDispatch()
 
@@ -143,7 +145,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                 {/*modal header*/}
                 <Dialog.Title className="flex items-center justify-between w-full text-2xl text-gray-800">
                   <div className="flex items-center">
-                    <h2 className="font-semibold">Edycja hasła</h2>
+                    <h2 className="font-semibold">{tr('editPassModalHeader', language)}</h2>
                     <Loader isLoading={loading} styling="ml-2" />
                   </div>
 
@@ -164,25 +166,25 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
 
                   <div className="flex flex-col text-gray-800 md:mx-6">
                     <label htmlFor="editName" className="mx-1 text-left">
-                      Nazwa:
+                      {tr('editPassModalName', language)}
                     </label>
                     <input
                       {...register('editName', editPasswordErrors.editName)}
                       id="editName"
                       type="text"
-                      placeholder="Podaj nazwę"
+                      placeholder={tr('editPassModalNamePlaceholder', language)}
                       className="px-3 py-2 m-1 border rounded-lg border-privpass-400 focus:outline-privpass-400"
                     />
 
                     <div className="grid mx-1">
                       <Error
                         isOpen={errors.editName?.type === 'required' ? true : false}
-                        message={editPasswordErrors.editName.required.message}
+                        message={tr(editPasswordErrors.editName.required.message, language)}
                         styling="mt-1"
                       />
                       <Error
                         isOpen={errors.editName?.type === 'maxLength' ? true : false}
-                        message={editPasswordErrors.editName.maxLength.message}
+                        message={tr(editPasswordErrors.editName.maxLength.message, language)}
                         styling="mt-1"
                       />
                     </div>
@@ -190,14 +192,14 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
 
                   <div className="relative flex flex-col mt-3 text-gray-800 md:mx-6">
                     <label htmlFor="editPassword" className="mx-1 text-left">
-                      Hasło:
+                      {tr('editPassModalPassword', language)}
                     </label>
                     <div className="flex items-center">
                       <input
                         {...register('editPassword', editPasswordErrors.editPassword)}
                         id="editPassword"
                         type={passwordToShow ? 'text' : 'password'}
-                        placeholder="Podaj hasło"
+                        placeholder={tr('editPassModalPasswordPlaceholder', language)}
                         className="w-full px-3 py-2 my-1 ml-1 mr-2 border rounded-lg border-privpass-400 focus:outline-privpass-400"
                       />
                       <button
@@ -222,19 +224,25 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                       className="mt-[3px] ml-1 mr-12"
                       password={watchEditPassword}
                       minLength={1}
-                      scoreWords={['bardzo słabe', 'słabe', 'przeciętne', 'silne', 'bardzo silne']}
-                      shortScoreWord={'za krótkie'}
+                      scoreWords={[
+                        tr('passStrength1', language),
+                        tr('passStrength2', language),
+                        tr('passStrength3', language),
+                        tr('passStrength4', language),
+                        tr('passStrength5', language),
+                      ]}
+                      shortScoreWord={tr('passStrengthShort', language)}
                     />
 
                     <div className="grid mx-1">
                       <Error
                         isOpen={errors.editPassword?.type === 'required' ? true : false}
-                        message={editPasswordErrors.editPassword.required.message}
+                        message={tr(editPasswordErrors.editPassword.required.message, language)}
                         styling="mt-1"
                       />
                       <Error
                         isOpen={errors.editPassword?.type === 'maxLength' ? true : false}
-                        message={editPasswordErrors.editPassword.maxLength.message}
+                        message={tr(editPasswordErrors.editPassword.maxLength.message, language)}
                         styling="mt-1"
                       />
                     </div>
@@ -248,7 +256,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                     type="submit"
                     className="px-4 py-2 mr-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
                   >
-                    Zapisz
+                    {tr('editPassModalSubmit', language)}
                   </button>
                   <button
                     disabled={loading}
@@ -256,7 +264,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                     className="px-4 py-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
                     onClick={closeHandler}
                   >
-                    {success ? 'Zamknij' : 'Anuluj'}
+                    {success ? tr('editPassModalClose', language) : tr('editPassModalCancel', language)}
                   </button>
                 </div>
               </Dialog.Panel>

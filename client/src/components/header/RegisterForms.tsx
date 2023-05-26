@@ -11,6 +11,7 @@ import Error from '../universal/Error'
 import Success from '../universal/Success'
 import Loader from '../universal/Loader'
 import { LocationProps } from '../../App'
+import { tr } from '../../translations/translations'
 
 interface RegisterEmailFormProps {
   formSwitch: boolean
@@ -24,6 +25,7 @@ interface RegisterEmailFormValues {
 
 const RegisterEmailForm = (props: RegisterEmailFormProps) => {
   //variables
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, error, errorMessage } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
@@ -63,7 +65,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
       {/*modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
         <div className="flex items-center">
-          <h2 className="font-semibold">Rejestracja</h2>
+          <h2 className="font-semibold">{tr('registerFormsHeader', language)}</h2>
           <Loader isLoading={loading} styling="ml-2" />
         </div>
 
@@ -85,24 +87,24 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
             {...register('registerEmail', registerErrors.registerEmail)}
             id="registerEmail"
             type="text"
-            placeholder="Podaj email"
+            placeholder={tr('registerFormsEmailPlaceholder', language)}
             className="px-3 py-2 m-1 border rounded-lg border-privpass-400 focus:outline-privpass-400"
           />
 
           <div className="grid mx-1">
             <Error
               isOpen={errors.registerEmail?.type === 'required' ? true : false}
-              message={registerErrors.registerEmail.required.message}
+              message={tr(registerErrors.registerEmail.required.message, language)}
               styling="mt-1"
             />
             <Error
               isOpen={errors.registerEmail?.type === 'maxLength' ? true : false}
-              message={registerErrors.registerEmail.maxLength.message}
+              message={tr(registerErrors.registerEmail.maxLength.message, language)}
               styling="mt-1"
             />
             <Error
               isOpen={errors.registerEmail?.type === 'pattern' ? true : false}
-              message={registerErrors.registerEmail.pattern.message}
+              message={tr(registerErrors.registerEmail.pattern.message, language)}
               styling="mt-1"
             />
           </div>
@@ -116,7 +118,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
           type="submit"
           className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
-          Zarejestruj się
+          {tr('registerFormsSubmit', language)}
         </button>
       </div>
     </Transition>
@@ -138,6 +140,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
   //variables
   const isMounted = useRef(true)
 
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const { email } = useAppSelector(state => state.storeEmail)
   const dispatch = useAppDispatch()
@@ -193,7 +196,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
       {/*modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
         <div className="flex items-center">
-          <h2 className="font-semibold">Rejestracja</h2>
+          <h2 className="font-semibold">{tr('registerFormsHeader', language)}</h2>
           <Loader isLoading={loading} styling="ml-2" />
         </div>
 
@@ -210,7 +213,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
 
         <div className="flex flex-col items-center text-gray-800 md:mx-6">
           <label htmlFor="registerCode" className="mx-1 mb-1 w-36">
-            Kod rejestracji:
+            {tr('registerFormsCode', language)}
           </label>
           <input
             {...register('registerCode', registerErrors.registerCode)}
@@ -224,19 +227,20 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
           <div className="grid mx-1">
             <Error
               isOpen={errors.registerCode?.type === 'required' ? true : false}
-              message={registerErrors.registerCode.required.message}
+              message={tr(registerErrors.registerCode.required.message, language)}
               styling="mt-1"
             />
             <Error
               isOpen={errors.registerCode?.type === 'pattern' ? true : false}
-              message={registerErrors.registerCode.pattern.message}
+              message={tr(registerErrors.registerCode.pattern.message, language)}
               styling="mt-1"
             />
           </div>
 
           <div className="mt-4 text-xs text-center text-gray-700">
-            Kod rejestracji jest ważny przez <span className="font-semibold">5 minut</span>. Wejdź na swoje konto w przeciągu
-            tego czasu, aby potwierdzić rejestrację.
+            {tr('registerFormsHint1', language)}
+            <span className="font-semibold">{tr('registerFormsHint2', language)}</span>
+            {tr('registerFormsHint3', language)}
           </div>
         </div>
       </div>
@@ -251,7 +255,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
           type="submit"
           className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
-          Potwierdź rejestrację
+          {tr('registerFormsSubmitConfirm', language)}
         </button>
       </div>
     </Transition>

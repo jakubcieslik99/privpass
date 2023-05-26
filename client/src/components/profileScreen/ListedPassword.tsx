@@ -4,6 +4,7 @@ import { RiHashtag, RiLockPasswordFill } from 'react-icons/ri'
 import { FaEye, FaEyeSlash, FaEdit, FaTrashAlt } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
 import { getUserPassword, idPasswordReset } from '../../features/passwordSlices/getUserPassword'
+import { tr } from '../../translations/translations'
 
 export interface ListedPasswordObject {
   _id: string
@@ -23,6 +24,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
   const getUserPasswordAbort1 = useRef<(reason?: string | undefined) => void>()
   const getUserPasswordAbort2 = useRef<(reason?: string | undefined) => void>()
 
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading } = useAppSelector(state => state.getUserPasswords)
   const { loading: loading2 } = useAppSelector(state => state.getUserPassword)
   const dispatch = useAppDispatch()
@@ -81,7 +83,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
         <div className="mb-2">
           <div className="flex items-center text-xs">
             <RiHashtag className="mr-[2px]" />
-            Nazwa:
+            {tr('listedPassNameLabel', language)}
           </div>
           <div className="text-xl font-semibold truncate">{props.listedPassword.name}</div>
         </div>
@@ -89,7 +91,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
         <div className="md:mb-[-8px]">
           <div className="text-xs mb-[-7px] flex items-center">
             <RiLockPasswordFill className="mr-[2px]" />
-            Hasło:
+            {tr('listedPassPasswordLabel', language)}
           </div>
 
           <div className="flex items-center text-lg">
@@ -146,7 +148,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
           onClick={openEditPasswordModalHandler}
         >
           <FaEdit className="mr-2" />
-          Edytuj
+          {tr('listedPassEdit', language)}
         </button>
 
         <button
@@ -155,7 +157,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
           onClick={openConfirmDeleteModalHandler}
         >
           <FaTrashAlt className="mr-2" />
-          Usuń
+          {tr('listedPassDelete', language)}
         </button>
       </div>
     </div>

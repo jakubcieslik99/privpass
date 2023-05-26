@@ -1,6 +1,11 @@
 import { FaUserShield } from 'react-icons/fa'
+import { useAppSelector } from '../../features/store'
+import { tr } from '../../translations/translations'
 
 const Footer: React.FC = () => {
+  //variables
+  const { language } = useAppSelector(state => state.appSettings)
+
   return (
     <footer className="p-4 bg-privpass-500">
       <div className="flex flex-col items-center justify-center text-sm text-white md:flex-row">
@@ -10,7 +15,7 @@ const Footer: React.FC = () => {
           PrivPASS <FaUserShield className="ml-1" />
         </p>
         <p className="hidden mx-3 font-extralight md:block">|</p>
-        <p>Wszelkie prawa zastrzeżone.</p>
+        <p>{tr('footer', language)}</p>
       </div>
 
       <div className="mt-[15px] text-[.7rem] text-center text-gray-400 tracking-wide">

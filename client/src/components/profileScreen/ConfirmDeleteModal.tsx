@@ -8,6 +8,7 @@ import { getUserPasswords } from '../../features/passwordSlices/getUserPasswords
 import Success from '../universal/Success'
 import Error from '../universal/Error'
 import Loader from '../universal/Loader'
+import { tr } from '../../translations/translations'
 
 interface ConfirmDeleteModalProps {
   isOpen: boolean
@@ -21,6 +22,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
   const isMounted = useRef(true)
   const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>()
 
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.deleteUserPassword)
   const dispatch = useAppDispatch()
 
@@ -104,7 +106,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                 {/*modal header*/}
                 <Dialog.Title className="flex items-center justify-between w-full text-2xl text-gray-800">
                   <div className="flex items-center">
-                    <h2 className="font-semibold">Usuwanie</h2>
+                    <h2 className="font-semibold">{tr('confirmDelModalHeader', language)}</h2>
                     <Loader isLoading={loading} styling="ml-2" />
                   </div>
 
@@ -124,11 +126,12 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                   <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
                   <p className="mb-2 text-lg text-center text-gray-800 break-words">
-                    Czy na pewno chcesz usunąć hasło o nazwie: <b>{props.passwordToDelete.name}</b>?
+                    {tr('confirmDelModalMessage1', language)}
+                    <b>{props.passwordToDelete.name}</b>?
                   </p>
 
                   <p className="mb-2 text-sm text-center text-gray-600 break-words">
-                    Zapisane hasło zostanie całkowicie usunięte z bazy danych, a jego przywrócenie nie będzie możliwe.
+                    {tr('confirmDelModalMessage2', language)}
                   </p>
                 </div>
 
@@ -149,7 +152,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                       type="submit"
                       className="px-4 py-2 mr-2 text-white transition bg-red-400 rounded-full hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
                     >
-                      Usuń
+                      {tr('confirmDelModalSubmit', language)}
                     </button>
                     <button
                       disabled={loading}
@@ -157,7 +160,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                       className="px-4 py-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
                       onClick={closeHandler}
                     >
-                      Anuluj
+                      {tr('confirmDelModalCancel', language)}
                     </button>
                   </Transition>
 
@@ -176,7 +179,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                       className="px-4 py-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95"
                       onClick={closeHandler}
                     >
-                      Zamknij
+                      {tr('confirmDelModalClose', language)}
                     </button>
                   </Transition>
                 </div>

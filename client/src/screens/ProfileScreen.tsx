@@ -10,6 +10,7 @@ import ConfirmDeleteModal from '../components/profileScreen/ConfirmDeleteModal'
 import Error from '../components/universal/Error'
 import Loader from '../components/universal/Loader'
 import Empty from '../assets/empty.png'
+import { tr } from '../translations/translations'
 
 interface URLStructure {
   searchKeyword?: string
@@ -20,6 +21,7 @@ let URL: URLStructure = {}
 
 const ProfileScreen: React.FC = () => {
   //variables
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading, error, errorMessage, passwords } = useAppSelector(state => state.getUserPasswords)
   const { loading: loading2, error: error2, errorMessage: errorMessage2 } = useAppSelector(state => state.getUserPassword)
   const dispatch = useAppDispatch()
@@ -70,15 +72,15 @@ const ProfileScreen: React.FC = () => {
           <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-privpass-500">
             <h2 className="flex items-center mb-4 text-xl">
               <FaTools className="mr-2 text-2xl" />
-              Narzędzia:
+              {tr('profileScreenHeading', language)}
             </h2>
 
             <div className="mb-4">
-              <div className="mb-1 ml-3 text-xs">Wyszukiwanie:</div>
+              <div className="mb-1 ml-3 text-xs">{tr('profileScreenSearching', language)}</div>
               <div className="flex">
                 <input
                   type="text"
-                  placeholder="Szukaj"
+                  placeholder={tr('profileScreenSearchingPlaceholder', language)}
                   className="w-full px-4 py-2 mr-2 text-gray-800 transition border-none rounded-full focus:outline-none"
                   value={searchKeyword}
                   onChange={e => setSearchKeyword(e.target.value)}
@@ -96,7 +98,7 @@ const ProfileScreen: React.FC = () => {
             </div>
 
             <div className="mb-4">
-              <div className="mb-1 ml-3 text-xs">Sortowanie:</div>
+              <div className="mb-1 ml-3 text-xs">{tr('profileScreenSorting', language)}</div>
 
               <div className="w-full h-[40px] bg-white rounded-full px-2">
                 <select
@@ -105,23 +107,23 @@ const ProfileScreen: React.FC = () => {
                   value={sortOrder}
                   onChange={e => sortHandler(e.target.value)}
                 >
-                  <option value="atoz">Alfabetycznie (A-Z)</option>
-                  <option value="ztoa">Alfabetycznie (Z-A)</option>
-                  <option value="newest">Od najnowszych</option>
-                  <option value="oldest">Od najstarszych</option>
+                  <option value="atoz">{tr('profileScreenSortingOption1', language)}</option>
+                  <option value="ztoa">{tr('profileScreenSortingOption2', language)}</option>
+                  <option value="newest">{tr('profileScreenSortingOption3', language)}</option>
+                  <option value="oldest">{tr('profileScreenSortingOption4', language)}</option>
                 </select>
               </div>
             </div>
 
             <div>
-              <div className="mb-1 ml-3 text-xs">Dodawanie:</div>
+              <div className="mb-1 ml-3 text-xs">{tr('profileScreenAdding', language)}</div>
               <button
                 disabled={loading || loading2}
                 className="flex items-center px-3 py-2 transition border rounded-full text-md border-privpass-200 text-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 disabled:hover:border-privpass-200 disabled:hover:text-privpass-200 disabled:cursor-default disabled:active:scale-100"
                 onClick={() => setAddPasswordModalIsOpen(true)}
               >
                 <FaPlus className="mr-2" />
-                Dodaj nowe hasło
+                {tr('profileScreenAddingButton', language)}
               </button>
             </div>
           </div>
@@ -132,7 +134,7 @@ const ProfileScreen: React.FC = () => {
             <h2 className="flex items-center justify-between mb-5 text-xl">
               <div className="flex items-center">
                 <FaShareAlt className="mr-2 text-2xl" />
-                Twoje hasła:
+                {tr('profileScreenYourPasswords', language)}
               </div>
 
               <div className="relative text-2xl w-7 h-7">
@@ -159,9 +161,9 @@ const ProfileScreen: React.FC = () => {
                   ))
                 : !loading && (
                     <div className="flex flex-col items-center py-3 text-sm font-light">
-                      <div className="mb-5">Nie znaleziono zapisanych haseł.</div>
+                      <div className="mb-5">{tr('profileScreenYourPasswordsEmpty', language)}</div>
                       <div className="w-48 md:w-56 lg:w-64">
-                        <img src={Empty} alt="empty" />
+                        <img src={Empty} alt="" />
                       </div>
                     </div>
                   )}

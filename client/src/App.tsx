@@ -1,4 +1,7 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useAppSelector } from './features/store'
+import { tr } from './translations/translations'
 import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
 import RequireAuth from './components/universal/RequireAuth'
@@ -16,6 +19,13 @@ export interface LocationProps {
 }
 
 const App: React.FC = () => {
+  const { language } = useAppSelector(state => state.appSettings)
+
+  useEffect(() => {
+    document.documentElement.lang = language
+    document.title = tr('title', language)
+  }, [language])
+
   return (
     <BrowserRouter>
       <Header />

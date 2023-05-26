@@ -11,6 +11,7 @@ import Error from '../universal/Error'
 import Success from '../universal/Success'
 import Loader from '../universal/Loader'
 import { LocationProps } from '../../App'
+import { tr } from '../../translations/translations'
 
 interface LoginEmailFormProps {
   formSwitch: boolean
@@ -24,6 +25,7 @@ interface LoginEmailFormValues {
 
 const LoginEmailForm = (props: LoginEmailFormProps) => {
   //variables
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, error, errorMessage } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
@@ -63,7 +65,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
       {/*modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
         <div className="flex items-center">
-          <h2 className="font-semibold">Logowanie</h2>
+          <h2 className="font-semibold">{tr('loginFormsHeader', language)}</h2>
           <Loader isLoading={loading} styling="ml-2" />
         </div>
 
@@ -85,24 +87,24 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
             {...register('loginEmail', loginErrors.loginEmail)}
             id="loginEmail"
             type="text"
-            placeholder="Podaj email"
+            placeholder={tr('loginFormsEmailPlaceholder', language)}
             className="px-3 py-2 m-1 border rounded-lg border-privpass-400 focus:outline-privpass-400"
           />
 
           <div className="grid mx-1">
             <Error
               isOpen={errors.loginEmail?.type === 'required' ? true : false}
-              message={loginErrors.loginEmail.required.message}
+              message={tr(loginErrors.loginEmail.required.message, language)}
               styling="mt-1"
             />
             <Error
               isOpen={errors.loginEmail?.type === 'maxLength' ? true : false}
-              message={loginErrors.loginEmail.maxLength.message}
+              message={tr(loginErrors.loginEmail.maxLength.message, language)}
               styling="mt-1"
             />
             <Error
               isOpen={errors.loginEmail?.type === 'pattern' ? true : false}
-              message={loginErrors.loginEmail.pattern.message}
+              message={tr(loginErrors.loginEmail.pattern.message, language)}
               styling="mt-1"
             />
           </div>
@@ -116,7 +118,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
           type="submit"
           className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
-          Zaloguj się
+          {tr('loginFormsSubmit', language)}
         </button>
       </div>
     </Transition>
@@ -138,6 +140,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
   //variables
   const isMounted = useRef(true)
 
+  const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const { email } = useAppSelector(state => state.storeEmail)
   const dispatch = useAppDispatch()
@@ -193,7 +196,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
       {/*modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
         <div className="flex items-center">
-          <h2 className="font-semibold">Logowanie</h2>
+          <h2 className="font-semibold">{tr('loginFormsHeader', language)}</h2>
           <Loader isLoading={loading} styling="ml-2" />
         </div>
 
@@ -210,7 +213,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
 
         <div className="flex flex-col items-center text-gray-800 md:mx-6">
           <label htmlFor="loginCode" className="mx-1 mb-1 w-36">
-            Kod logowania:
+            {tr('loginFormsCode', language)}
           </label>
           <input
             {...register('loginCode', loginErrors.loginCode)}
@@ -224,19 +227,20 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
           <div className="grid mx-1">
             <Error
               isOpen={errors.loginCode?.type === 'required' ? true : false}
-              message={loginErrors.loginCode.required.message}
+              message={tr(loginErrors.loginCode.required.message, language)}
               styling="mt-1"
             />
             <Error
               isOpen={errors.loginCode?.type === 'pattern' ? true : false}
-              message={loginErrors.loginCode.pattern.message}
+              message={tr(loginErrors.loginCode.pattern.message, language)}
               styling="mt-1"
             />
           </div>
 
           <div className="mt-4 text-xs text-center text-gray-700">
-            Kod logowania jest ważny przez <span className="font-semibold">5 minut</span>. Zaloguj się na swoje konto w
-            przeciągu tego czasu.
+            {tr('loginFormsHint1', language)}
+            <span className="font-semibold">{tr('loginFormsHint2', language)}</span>
+            {tr('loginFormsHint3', language)}
           </div>
         </div>
       </div>
@@ -251,7 +255,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
           type="submit"
           className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
         >
-          Potwierdź logowanie
+          {tr('loginFormsSubmitConfirm', language)}
         </button>
       </div>
     </Transition>

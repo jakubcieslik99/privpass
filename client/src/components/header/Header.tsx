@@ -3,6 +3,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { scroller } from 'react-scroll'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../features/store'
+import { changeLanguage } from '../../features/appSlices/appSettings'
+import { availableLanguages } from '../../constants/AppSettings'
+import { tr } from '../../translations/translations'
 import { logoutUser, userInfoReset } from '../../features/userSlices/listUser'
 import { passwordsReset } from '../../features/passwordSlices/getUserPasswords'
 import LoginModal from './LoginModal'
@@ -11,6 +14,7 @@ import { LocationProps } from '../../App'
 
 const Header: React.FC = () => {
   //variables
+  const { language } = useAppSelector(state => state.appSettings)
   const { userInfo } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
 
@@ -51,6 +55,10 @@ const Header: React.FC = () => {
     dispatch(logoutUser())
   }
 
+  const changeLanguageHandler = (value: any) => {
+    dispatch(changeLanguage(value))
+  }
+
   //useEffects
   useEffect(() => {
     if (locationLoginModalIsOpen) {
@@ -72,12 +80,32 @@ const Header: React.FC = () => {
             PrivPASS <FaUserShield className="ml-2" />
           </Link>
 
-          <button
-            className="px-3 py-2 mr-3 text-xl transition border rounded-full md:hidden text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
-            onClick={() => setMenuIsOpen(!menuIsOpen)}
-          >
-            <FaBars />
-          </button>
+          <div className="flex items-center justify-between gap-3 mr-3">
+            <div className="transition md:hidden px-[6px] py-[2px] text-sm border rounded-full text-privpass-300 border-privpass-300 hover:text-white hover:border-white">
+              <select
+                className="bg-transparent border-none rounded-full cursor-pointer focus:outline-none"
+                value={language}
+                onChange={e => changeLanguageHandler(e.target.value)}
+              >
+                {availableLanguages.map((languageOption: any) => (
+                  <option
+                    key={languageOption}
+                    value={languageOption}
+                    className={`text-privpass-500 ${language === languageOption && 'bg-black/20'}`}
+                  >
+                    {languageOption.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              className="px-3 py-2 text-xl transition border rounded-full md:hidden text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
+              onClick={() => setMenuIsOpen(!menuIsOpen)}
+            >
+              <FaBars />
+            </button>
+          </div>
         </div>
 
         {userInfo ? (
@@ -97,8 +125,26 @@ const Header: React.FC = () => {
                 className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
                 onClick={logoutHandler}
               >
-                Wyloguj
+                {tr('headerLogout', language)}
               </div>
+            </li>
+
+            <li className="transition px-[6px] py-[2px] ml-4 text-sm border rounded-full text-privpass-300 border-privpass-300 hover:text-white hover:border-white">
+              <select
+                className="bg-transparent border-none rounded-full cursor-pointer focus:outline-none"
+                value={language}
+                onChange={e => changeLanguageHandler(e.target.value)}
+              >
+                {availableLanguages.map((languageOption: any) => (
+                  <option
+                    key={languageOption}
+                    value={languageOption}
+                    className={`text-privpass-500 ${language === languageOption && 'bg-black/20'}`}
+                  >
+                    {languageOption.toUpperCase()}
+                  </option>
+                ))}
+              </select>
             </li>
           </ul>
         ) : (
@@ -107,27 +153,45 @@ const Header: React.FC = () => {
               className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent active:scale-95"
               onClick={() => scrollToHandler('product-section', -96)}
             >
-              Produkt
+              {tr('headerProduct', language)}
             </div>
             <div
               className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent active:scale-95"
               onClick={() => scrollToHandler('contact-section', -96)}
             >
-              Kontakt
+              {tr('headerContact', language)}
             </div>
             <li
               className="px-5 py-3 transition cursor-pointer md:py-2 md:px-3 md:mr-2 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent active:scale-95"
               onClick={() => setRegisterModalIsOpen(true)}
             >
-              Rejestracja
+              {tr('headerRegister', language)}
             </li>
             <li className="flex">
               <div
                 className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
                 onClick={() => setLoginModalIsOpen(true)}
               >
-                Logowanie
+                {tr('headerLogin', language)}
               </div>
+            </li>
+
+            <li className="transition px-[6px] py-[2px] ml-4 text-sm border rounded-full text-privpass-300 border-privpass-300 hover:text-white hover:border-white">
+              <select
+                className="bg-transparent border-none rounded-full cursor-pointer focus:outline-none"
+                value={language}
+                onChange={e => changeLanguageHandler(e.target.value)}
+              >
+                {availableLanguages.map((languageOption: any) => (
+                  <option
+                    key={languageOption}
+                    value={languageOption}
+                    className={`text-privpass-500 ${language === languageOption && 'bg-black/20'}`}
+                  >
+                    {languageOption.toUpperCase()}
+                  </option>
+                ))}
+              </select>
             </li>
           </ul>
         )}
@@ -153,7 +217,7 @@ const Header: React.FC = () => {
                   className="px-3 py-2 mx-4 mt-2 mb-4 transition border rounded-full cursor-pointer md:m-0 text-privpass-300 border-privpass-300 hover:text-white hover:border-white active:scale-95"
                   onClick={logoutHandler}
                 >
-                  Wyloguj
+                  {tr('headerLogout', language)}
                 </div>
               </li>
             </>
@@ -163,13 +227,13 @@ const Header: React.FC = () => {
                 className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent"
                 onClick={() => scrollToHandler('product-section', -64)}
               >
-                Produkt
+                {tr('headerProduct', language)}
               </div>
               <div
                 className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-1 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent"
                 onClick={() => scrollToHandler('contact-section', -64)}
               >
-                Kontakt
+                {tr('headerContact', language)}
               </div>
               <li
                 className="px-5 py-3 transition-colors cursor-pointer md:py-2 md:px-3 md:mr-2 text-privpass-300 hover:text-white hover:bg-privpass-400 md:hover:bg-transparent"
@@ -178,7 +242,7 @@ const Header: React.FC = () => {
                   setMenuIsOpen(false)
                 }}
               >
-                Rejestracja
+                {tr('headerRegister', language)}
               </li>
               <li className="flex">
                 <div
@@ -188,7 +252,7 @@ const Header: React.FC = () => {
                     setMenuIsOpen(false)
                   }}
                 >
-                  Logowanie
+                  {tr('headerLogin', language)}
                 </div>
               </li>
             </>
