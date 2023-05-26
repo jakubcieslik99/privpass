@@ -1,10 +1,11 @@
 import createError from 'http-errors'
+import { TOO_MANY_REQUESTS } from '../constants/ErrorMessages'
 
 const rateLimiter = {
   windowMs: 60 * 1000,
   max: 15,
   handler: () => {
-    throw createError(429, 'Zbyt dużo zapytań do serwera.')
+    throw createError(429, TOO_MANY_REQUESTS)
   },
 }
 

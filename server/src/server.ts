@@ -12,6 +12,7 @@ import { rateLimiter, speedLimiter } from './config/limitOptions'
 import { isError } from './middlewares/errorMiddleware'
 import userRoute from './routes/userRoute'
 import passwordRoute from './routes/passwordRoute'
+import { RESOURCE_DOES_NOT_EXIST } from './constants/ErrorMessages'
 
 const app = express()
 app.set('trust proxy', `loopback, ${config.IP}`)
@@ -29,7 +30,7 @@ app.use(slowDown(speedLimiter))
 app.use('/users', userRoute)
 app.use('/passwords', passwordRoute)
 //404 error
-app.all('*', (_req, _res, next) => next(createError(404, 'Podany zasób nie istnieje.')))
+app.all('*', (_req, _res, next) => next(createError(404, RESOURCE_DOES_NOT_EXIST)))
 //errors handling middleware
 app.use(isError)
 

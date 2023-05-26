@@ -14,7 +14,7 @@ const getAccessToken = (userId: string, userEmail: string) => {
       (error, token) => {
         if (error) {
           log.error(error.message)
-          return reject(createError(500, 'Błąd serwera.'))
+          return reject(createError(500, 'Error during generating an access token.'))
         }
         return resolve(token)
       }
@@ -34,7 +34,7 @@ const getRefreshToken = (userId: string, userEmail: string) => {
       (error, token) => {
         if (error) {
           log.error(error.message)
-          return reject(createError(500, 'Błąd serwera.'))
+          return reject(createError(500, 'Error during generating a refresh token.'))
         }
         return resolve(token)
       }
