@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "PrivPASS",
   "main": "server.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "@types/express-slow-down": "^1.3.2",
     "@types/http-errors": "^2.0.1",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/node": "^18.16.15",
+    "@types/node": "^18.16.16",
     "@types/nodemailer": "^6.4.8",
     "@types/voucher-code-generator": "^1.1.1",
     "nodemon": "^2.0.22",
