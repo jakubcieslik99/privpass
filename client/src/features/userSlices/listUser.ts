@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axiosPublic from '../../api/axiosPublic'
+import { availableLanguages } from '../../constants/AppSettings'
 
 interface registerSendCodeData {
   email: string
@@ -14,9 +15,10 @@ interface confirmCodeData {
 
 const registerSendCode = createAsyncThunk('listUser/registerSendCode', async (sendData: registerSendCodeData, thunkAPI) => {
   try {
-    const { data } = await axiosPublic.post(`/users/registerSendCode`, {
-      email: sendData.email,
-    })
+    const { data } = await axiosPublic.post(
+      `/users/registerSendCode?lang=${localStorage.getItem('language') || availableLanguages[0]}`,
+      { email: sendData.email }
+    )
     return data
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
@@ -25,9 +27,10 @@ const registerSendCode = createAsyncThunk('listUser/registerSendCode', async (se
 })
 const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData: loginSendCodeData, thunkAPI) => {
   try {
-    const { data } = await axiosPublic.post(`/users/loginSendCode`, {
-      email: sendData.email,
-    })
+    const { data } = await axiosPublic.post(
+      `/users/loginSendCode?lang=${localStorage.getItem('language') || availableLanguages[0]}`,
+      { email: sendData.email }
+    )
     return data
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()

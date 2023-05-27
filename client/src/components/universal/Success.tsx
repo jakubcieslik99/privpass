@@ -1,4 +1,6 @@
 import { Transition } from '@headlessui/react'
+import { useAppSelector } from '../../features/store'
+import { tr } from '../../translations/translations'
 
 interface SuccessProps {
   isOpen: boolean
@@ -7,6 +9,9 @@ interface SuccessProps {
 }
 
 const Success = (props: SuccessProps) => {
+  //variables
+  const { language } = useAppSelector(state => state.appSettings)
+
   return (
     <Transition
       id="success"
@@ -19,7 +24,7 @@ const Success = (props: SuccessProps) => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      {props.message}
+      {props.message.includes('_', 3) ? tr(props.message.split(':')[0], language) : props.message}
     </Transition>
   )
 }

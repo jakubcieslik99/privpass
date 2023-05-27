@@ -2,21 +2,21 @@ const addPasswordErrors = {
   addName: {
     required: {
       value: true,
-      message: 'Pole wymagane.',
+      message: 'validationErrorRequired',
     },
     maxLength: {
       value: 40,
-      message: 'Maksymalna długość nazwy to 40 znaków.',
+      message: 'validationErrorNameLength',
     },
   },
   addPassword: {
     required: {
       value: true,
-      message: 'Pole wymagane.',
+      message: 'validationErrorRequired',
     },
     maxLength: {
       value: 60,
-      message: 'Maksymalna długość hasła to 60 znaków.',
+      message: 'validationErrorPasswordLength',
     },
   },
 }
@@ -25,21 +25,21 @@ const editPasswordErrors = {
   editName: {
     required: {
       value: true,
-      message: 'Pole wymagane.',
+      message: 'validationErrorRequired',
     },
     maxLength: {
       value: 40,
-      message: 'Maksymalna długość nazwy to 40 znaków.',
+      message: 'validationErrorNameLength',
     },
   },
   editPassword: {
     required: {
       value: true,
-      message: 'Pole wymagane.',
+      message: 'validationErrorRequired',
     },
     maxLength: {
       value: 60,
-      message: 'Maksymalna długość hasła to 60 znaków.',
+      message: 'validationErrorPasswordLength',
     },
   },
 }

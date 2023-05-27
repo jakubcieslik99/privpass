@@ -1,4 +1,6 @@
 import { Transition } from '@headlessui/react'
+import { useAppSelector } from '../../features/store'
+import { tr } from '../../translations/translations'
 
 interface ErrorProps {
   isOpen: boolean
@@ -7,6 +9,9 @@ interface ErrorProps {
 }
 
 const Error = (props: ErrorProps) => {
+  //variables
+  const { language } = useAppSelector(state => state.appSettings)
+
   return (
     <Transition
       id="error"
@@ -19,7 +24,7 @@ const Error = (props: ErrorProps) => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      {props.message}
+      {props.message.includes('_', 3) ? tr(props.message.split(':')[0], language) : props.message}
     </Transition>
   )
 }

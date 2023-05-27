@@ -47,7 +47,7 @@ const resIntercept = axiosProtected.interceptors.response.use(
   async error => {
     const prevRequest = error?.config
 
-    if (error?.response?.status === 403 && !prevRequest?.sent) {
+    if (error?.response?.status === 403 && error?.response?.data?.message.split(':')[0] === '403_1' && !prevRequest?.sent) {
       prevRequest.sent = true
 
       const { type, payload } = await refreshAccessToken()
