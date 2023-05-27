@@ -11,9 +11,10 @@ const Footer: React.FC = () => {
       <div className="flex flex-col items-center justify-center text-sm text-white md:flex-row">
         <p>Copyright © {new Date().getFullYear()}</p>
         <p className="hidden mx-3 font-extralight md:block">|</p>
-        <p className="flex items-center my-2 text-xl font-bold md:text-base md:my-0">
+        <p className="flex items-center mt-2 text-xl font-bold md:mr-2 md:text-base md:mt-0">
           PrivPASS <FaUserShield className="ml-1" />
         </p>
+        <p className="mb-2 text-xs italic font-light md:mb-0">by Jakub Cieślik</p>
         <p className="hidden mx-3 font-extralight md:block">|</p>
         <p>{tr('footer', language)}</p>
       </div>

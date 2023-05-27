@@ -174,12 +174,7 @@ const HomeScreen: React.FC = () => {
                     <a href="mailto:kontakt@marceljurkiewicz.pl" className="mx-5">
                       <MdEmail className="text-2xl text-privpass-400" />
                     </a>
-                    <a
-                      href="https://www.linkedin.com/in/marcel-jurkiewicz-1b4212226"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mx-5"
-                    >
+                    <a href="https://www.linkedin.com/in/marceljurkiewicz" target="_blank" rel="noreferrer" className="mx-5">
                       <FaLinkedinIn className="text-2xl text-privpass-400" />
                     </a>
                     <a href="https://github.com/juras99" target="_blank" rel="noreferrer" className="mx-5">
