@@ -21,7 +21,12 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ## Screenshots
 
-<img src="https://i.ibb.co/88tXBZW/privpass-2.png" width="800">
+<img src="https://i.ibb.co/fC8WCkq/privpass-2.png" width="800">
+
+## Endpoints Documentation
+
+📚 Documentation of all available endpoints can be found here:
+[API Documentation](https://documenter.getpostman.com/view/20607862/2s93m7X29r)
 
 ## Run Locally
 
@@ -115,15 +120,19 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 - `NOREPLY_ADDRESS`
 
+( ℹ️ - sample .env config file is provided in the server directory under the name `.env.sample` )
+
 ⚙️ To build client app, you will need to add the following environment variables to your .env file
 
 - `REACT_APP_ENV`
 
 - `REACT_APP_API_URL`
 
+( ℹ️ - sample .env config file is provided in the client app directory under the name `.env.sample` )
+
 ## Languages
 
-🔤 Available client app languages: **PL**
+🔤 Available client app languages: **EN**, **PL**
 
 ## Feedback
 
