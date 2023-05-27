@@ -3,6 +3,8 @@ import createError from 'http-errors'
 import Password from '../models/passwordModel'
 import { createPasswordValidation, updatePasswordValidation } from '../validations/passwordValidation'
 import { encryptPassword, decryptPassword } from '../functions/encryptDecrypt'
+import { NEW_PASSWORD_ADDED, PASSWORD_UPDATED, PASSWORD_DELETED } from '../constants/SuccessMessages'
+import { PASSWORD_DOES_NOT_EXIST, PASSWORD_NAME_ALREADY_EXISTS } from '../constants/ErrorMessages'
 
 //GET - /passwords/getUserPasswords
 const getUserPasswords = async (req: Request, res: Response) => {
@@ -35,7 +37,7 @@ const getUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
   const foundPassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
-  if (!foundPassword) throw createError(404, 'Podane hasło nie istnieje lub zostało usunięte.')
+  if (!foundPassword) throw createError(404, PASSWORD_DOES_NOT_EXIST)
 
   const decryptedPassword = decryptPassword({ encryptedPassword: foundPassword.encryptedPassword, iv: foundPassword.iv })
 
@@ -47,7 +49,7 @@ const createUserPassword = async (req: Request, res: Response) => {
   const validationResult = await createPasswordValidation.validateAsync(req.body)
 
   const possibleDuplicates = await Password.find({ addedBy: authenticatedUser.id, name: validationResult.name }).exec()
-  if (possibleDuplicates.length > 0) throw createError(409, 'Istnieje już hasło o takiej nazwie.')
+  if (possibleDuplicates.length > 0) throw createError(409, PASSWORD_NAME_ALREADY_EXISTS)
 
   const { encryptedPassword, iv } = encryptPassword(validationResult.password)
 
@@ -60,7 +62,7 @@ const createUserPassword = async (req: Request, res: Response) => {
 
   await createPassword.save()
 
-  return res.status(201).send({ message: 'Dodano nowe hasło.' })
+  return res.status(201).send({ message: NEW_PASSWORD_ADDED })
 }
 //PUT - /passwords/updateUserPassword/:id
 const updateUserPassword = async (req: Request, res: Response) => {
@@ -68,10 +70,10 @@ const updateUserPassword = async (req: Request, res: Response) => {
   const validationResult = await updatePasswordValidation.validateAsync(req.body)
 
   const possibleDuplicates = await Password.find({ addedBy: authenticatedUser.id, name: validationResult.name }).exec()
-  if (possibleDuplicates.length > 1) throw createError(409, 'Istnieje już hasło o takiej nazwie.')
+  if (possibleDuplicates.length > 1) throw createError(409, PASSWORD_NAME_ALREADY_EXISTS)
 
   const updatePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
-  if (!updatePassword) throw createError(404, 'Podane hasło nie istnieje lub zostało usunięte.')
+  if (!updatePassword) throw createError(404, PASSWORD_DOES_NOT_EXIST)
 
   const { encryptedPassword, iv } = encryptPassword(validationResult.password)
 
@@ -80,18 +82,18 @@ const updateUserPassword = async (req: Request, res: Response) => {
   updatePassword.iv = iv
   await updatePassword.save()
 
-  return res.status(201).send({ message: 'Zaktualizowano hasło.' })
+  return res.status(201).send({ message: PASSWORD_UPDATED })
 }
 //DELETE - /passwords/deleteUserPassword/:id
 const deleteUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
   const deletePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
-  if (!deletePassword) throw createError(404, 'Podane hasło nie istnieje lub zostało usunięte.')
+  if (!deletePassword) throw createError(404, PASSWORD_DOES_NOT_EXIST)
 
   await deletePassword.remove()
 
-  return res.status(200).send({ message: 'Usunięto hasło.' })
+  return res.status(200).send({ message: PASSWORD_DELETED })
 }
 
 export { getUserPasswords, getUserPassword, createUserPassword, updateUserPassword, deleteUserPassword }

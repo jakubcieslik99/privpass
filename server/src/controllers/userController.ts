@@ -10,15 +10,26 @@ import { getAccessToken, getRefreshToken } from '../functions/generateTokens'
 import sendEmail from '../functions/sendEmail'
 import { registerSendCodeMessage } from '../messages/registerMessages'
 import { loginSendCodeMessage } from '../messages/loginMessages'
+import { CONFIRM_REGISTRATION, CONFIRM_LOGIN, CONFIRMED } from '../constants/SuccessMessages'
+import { AvailableLanguages, availableLanguages } from '../constants/AvailableLanguages'
+import {
+  SERVER_ERROR,
+  UNAUTHORIZED,
+  USER_DOES_NOT_EXIST,
+  INVALID_ACCESS_CODE,
+  ACCESS_CODE_EXPIRED,
+  USER_ALREADY_LOGGED_IN,
+  USER_EMAIL_ALREADY_EXISTS,
+} from '../constants/ErrorMessages'
 
 //POST - /users/registerSendCode
 const registerSendCode = async (req: Request, res: Response) => {
-  if (req.cookies?.refreshToken) throw createError(409, 'Użytkownik jest zalogowany.')
+  if (req.cookies?.refreshToken) throw createError(409, USER_ALREADY_LOGGED_IN)
 
   const validationResult = await registerEmailValidation.validateAsync(req.body)
 
   const conflictUserEmail = await User.findOne({ email: validationResult.email.toLowerCase() }).exec()
-  if (conflictUserEmail) throw createError(409, 'Istnieje już użytkownik o podanym adresie e-mail.')
+  if (conflictUserEmail) throw createError(409, USER_EMAIL_ALREADY_EXISTS)
 
   const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
   const salt = await bcrypt.genSalt(10)
@@ -30,20 +41,24 @@ const registerSendCode = async (req: Request, res: Response) => {
   })
   await createUser.save()
 
-  await sendEmail(registerSendCodeMessage(validationResult.email.toLowerCase(), code))
+  await sendEmail(
+    registerSendCodeMessage(
+      validationResult.email.toLowerCase(),
+      code,
+      (req.params.language as AvailableLanguages) || availableLanguages[0]
+    )
+  )
 
-  return res.status(201).send({
-    message: 'Zarejestrowano pomyślnie. Teraz potwierdź rejestrację otrzymanym na podany adres email kodem.',
-  })
+  return res.status(201).send({ message: CONFIRM_REGISTRATION })
 }
 //POST - /users/loginSendCode
 const loginSendCode = async (req: Request, res: Response) => {
-  if (req.cookies?.refreshToken) throw createError(409, 'Użytkownik jest zalogowany.')
+  if (req.cookies?.refreshToken) throw createError(409, USER_ALREADY_LOGGED_IN)
 
   const validationResult = await loginEmailValidation.validateAsync(req.body)
 
   const loginUser = await User.findOne({ email: validationResult.email.toLowerCase() }).exec()
-  if (!loginUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
+  if (!loginUser) throw createError(404, USER_DOES_NOT_EXIST)
 
   const [code] = voucher_codes.generate({ count: 1, length: 4, charset: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
   const salt = await bcrypt.genSalt(10)
@@ -52,32 +67,38 @@ const loginSendCode = async (req: Request, res: Response) => {
   loginUser.code = hashedCode
   await loginUser.save()
 
-  await sendEmail(loginSendCodeMessage(validationResult.email.toLowerCase(), code))
+  await sendEmail(
+    loginSendCodeMessage(
+      validationResult.email.toLowerCase(),
+      code,
+      (req.params.language as AvailableLanguages) || availableLanguages[0]
+    )
+  )
 
-  return res.status(200).send({ message: 'Teraz potwierdź logowanie otrzymanym na podany adres email kodem.' })
+  return res.status(200).send({ message: CONFIRM_LOGIN })
 }
 //POST - /users/confirmCode
 const confirmCode = async (req: Request, res: Response) => {
-  if (req.cookies?.refreshToken) throw createError(409, 'Użytkownik jest zalogowany.')
+  if (req.cookies?.refreshToken) throw createError(409, USER_ALREADY_LOGGED_IN)
 
   const validationResult = await confirmCodeValidation.validateAsync(req.body)
 
   const checkedUser = await User.findOne({ email: validationResult.email.toLowerCase() }).exec()
-  if (!checkedUser) throw createError(404, 'Konto użytkownika nie istnieje lub zostało usunięte.')
+  if (!checkedUser) throw createError(404, USER_DOES_NOT_EXIST)
 
   const checkCode = await bcrypt.compare(validationResult.code, checkedUser.code || '')
-  if (!checkCode) throw createError(406, 'Kod dostępu jest niepoprawny.')
+  if (!checkCode) throw createError(406, INVALID_ACCESS_CODE)
 
   if (Date.now() - checkedUser.updatedAt > 300 * 1000) {
     checkedUser.code = null
     await checkedUser.save()
-    throw createError(406, 'Kod dostępu stracił ważność.')
+    throw createError(406, ACCESS_CODE_EXPIRED)
   }
 
   const accessToken = await getAccessToken(checkedUser.id, checkedUser.email)
-  if (!accessToken) throw createError(500, 'Błąd serwera.')
+  if (!accessToken) throw createError(500, SERVER_ERROR)
   const refreshToken = await getRefreshToken(checkedUser.id, checkedUser.email)
-  if (!refreshToken) throw createError(500, 'Błąd serwera.')
+  if (!refreshToken) throw createError(500, SERVER_ERROR)
 
   checkedUser.code = null
   checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
@@ -95,7 +116,7 @@ const confirmCode = async (req: Request, res: Response) => {
     })
     .status(200)
     .send({
-      message: 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.',
+      message: CONFIRMED,
       userInfo: {
         id: checkedUser.id,
         email: checkedUser.email,
@@ -106,16 +127,16 @@ const confirmCode = async (req: Request, res: Response) => {
 
 //GET - /users/refreshAccessToken
 const refreshAccessToken = async (req: Request, res: Response) => {
-  if (!req.cookies?.refreshToken) throw createError(401, 'Błąd autoryzacji.')
+  if (!req.cookies?.refreshToken) throw createError(401, UNAUTHORIZED)
 
   const checkedUser = await User.findOne({ 'refreshTokens.refreshToken': req.cookies.refreshToken }).exec()
-  if (!checkedUser) throw createError(401, 'Błąd autoryzacji.')
+  if (!checkedUser) throw createError(401, UNAUTHORIZED)
 
   jwt.verify(req.cookies.refreshToken, config.JWT_REFRESH_TOKEN_SECRET, async (error: VerifyErrors | null, decode: any) => {
-    if (error || checkedUser.id !== decode.id) throw createError(401, 'Błąd autoryzacji.')
+    if (error || checkedUser.id !== decode.id) throw createError(401, UNAUTHORIZED)
 
     const accessToken = await getAccessToken(decode.id, decode.email)
-    if (!accessToken) throw createError(500, 'Błąd serwera.')
+    if (!accessToken) throw createError(500, SERVER_ERROR)
 
     return res.status(201).send({ accessToken })
   })

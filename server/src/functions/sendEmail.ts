@@ -15,7 +15,7 @@ const sendEmail = (message: { from: string; to: string; subject: string; text: s
     transporter.sendMail(mailOptions, error => {
       if (error) {
         log.error(error)
-        return reject(createError(500, 'Błąd serwera.'))
+        return reject(createError(500, 'Error during sending an email.'))
       }
       return resolve()
     })
