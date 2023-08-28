@@ -28,7 +28,7 @@
     "react-scroll": "^1.8.9",
     "redux": "^4.2.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^3.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
