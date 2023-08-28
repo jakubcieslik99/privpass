@@ -6,6 +6,9 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "00:00"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       client-dependencies:
         patterns:
@@ -20,6 +23,9 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "00:00"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       server-dependencies:
         patterns:
