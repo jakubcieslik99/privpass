@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "PrivPASS",
   "main": "server.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "Jakub Cieślik",
   "license": "UNLICENSED",
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.2",
+    "@types/bcryptjs": "^2.4.3",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
@@ -36,7 +36,7 @@
     "helmet": "^6.2.0",
     "http-errors": "^2.0.0",
     "joi": "^17.10.0",
-    "jsonwebtoken": "^9.0.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.12.0",
     "nodemailer": "^6.9.4",
     "pino": "^8.15.0",
