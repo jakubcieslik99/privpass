@@ -33,7 +33,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.5"
   },
   "scripts": {
     "dev": "PORT=3000 react-scripts start",
