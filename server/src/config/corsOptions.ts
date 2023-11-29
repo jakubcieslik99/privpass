@@ -1,7 +1,7 @@
 import { CorsOptions } from 'cors'
 import { config } from './utilities'
 
-const allowedOrigins = [config.WEBAPP_URL, config.API_URL]
+const allowedOrigins = [config.API_URL, config.WEBAPP_URL]
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {

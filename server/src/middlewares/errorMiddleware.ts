@@ -19,11 +19,11 @@ const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunc
   }
   //client validation error handling
   if (error.isJoi) {
-    config.ENV !== 'prod' && log.error(`CLIENT - ${UNPROCESSABLE_ENTITY}`)
+    config.ENV !== 'production' && log.error(`CLIENT - ${UNPROCESSABLE_ENTITY}`)
     return res.status(422).send({ message: UNPROCESSABLE_ENTITY })
   }
   //any other client error handling
-  config.ENV !== 'prod' && log.error(`CLIENT - ${error.message || SERVER_ERROR}`)
+  config.ENV !== 'production' && log.error(`CLIENT - ${error.message || SERVER_ERROR}`)
   return res.status(error.status).send({ message: error.message || SERVER_ERROR })
 }
 

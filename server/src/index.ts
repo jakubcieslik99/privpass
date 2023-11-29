@@ -15,7 +15,7 @@ import passwordRoute from './routes/passwordRoute'
 import { RESOURCE_DOES_NOT_EXIST } from './constants/ErrorMessages'
 
 const app = express()
-app.set('trust proxy', `loopback, ${config.IP}`)
+app.set('trust proxy', `loopback, ${config.HOST}`)
 databaseConnect(app)
 
 app.use(express.urlencoded({ extended: false }))

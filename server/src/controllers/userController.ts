@@ -111,7 +111,7 @@ const confirmCode = async (req: Request, res: Response) => {
     .cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: 'none',
-      secure: config.ENV !== 'test' ? true : false,
+      secure: config.ENV === 'production' ? true : false,
       maxAge: 900 * 1000,
     })
     .status(200)
@@ -148,7 +148,7 @@ const logoutUser = async (req: Request, res: Response) => {
   const checkedUser = await User.findOne({ 'refreshTokens.refreshToken': req.cookies.refreshToken }).exec()
   if (!checkedUser)
     return res
-      .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV !== 'test' ? true : false })
+      .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'production' ? true : false })
       .sendStatus(204)
 
   checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
@@ -157,7 +157,7 @@ const logoutUser = async (req: Request, res: Response) => {
   await checkedUser.save()
 
   return res
-    .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV !== 'test' ? true : false })
+    .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'production' ? true : false })
     .sendStatus(204)
 }
 

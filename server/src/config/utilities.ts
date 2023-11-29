@@ -4,20 +4,22 @@ import logger from 'pino'
 dotenv.config()
 
 const config = {
-  ENV: process.env.ENV || 'dev',
-  /*------------------------------------------------------------------------------------------*/
+  ENV: process.env.ENV || 'development',
+  // Node.js
+  HOST: process.env.HOST || 'localhost',
   PORT: process.env.PORT || 3001,
-  IP: process.env.IP || '127.0.0.1',
   API_URL: process.env.API_URL || 'http://localhost:3001',
   WEBAPP_URL: process.env.WEBAPP_URL || 'http://localhost:3000',
-  /*------------------------------------------------------------------------------------------*/
-  MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/privpass',
-  /*------------------------------------------------------------------------------------------*/
+  // MongoDB
+  MONGO_HOST: process.env.MONGO_HOST || 'localhost',
+  MONGO_PORT: process.env.MONGO_PORT || 27017,
+  MONGO_DB: process.env.MONGO_DB || 'database',
+  MONGO_USER: process.env.MONGO_USER || 'root',
+  MONGO_PASSWORD: process.env.MONGO_PASSWORD || 'Passw0rd!',
+  // Other
   JWT_ACCESS_TOKEN_SECRET: process.env.JWT_ACCESS_TOKEN_SECRET || 'JWT_ACCESS_TOKEN_SECRET',
   JWT_REFRESH_TOKEN_SECRET: process.env.JWT_REFRESH_TOKEN_SECRET || 'JWT_REFRESH_TOKEN_SECRET',
-  /*------------------------------------------------------------------------------------------*/
   CRYPTO_SECRET: process.env.CRYPTO_SECRET || 'CRYPTO_SECRET',
-  /*------------------------------------------------------------------------------------------*/
   GMAIL_ADDRESS: process.env.GMAIL_ADDRESS,
   GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
   NOREPLY_ADDRESS: process.env.NOREPLY_ADDRESS || 'noreply@privpass.com',

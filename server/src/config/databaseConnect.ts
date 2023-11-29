@@ -9,7 +9,8 @@ const databaseConnect = async (app: Application) => {
   mongoose.set('strictQuery', false)
 
   try {
-    await mongoose.connect(config.MONGODB_URI)
+    const URI = `mongodb://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`
+    await mongoose.connect(URI)
     app.emit('ready')
   } catch (error) {
     log.error(error)
