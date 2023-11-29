@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mongo:
+    container_name: ${DIR}_mongo_dev
+    image: bitnami/mongodb:${MONGO_VER}
+    volumes:
+      - mongo_dev_data:/bitnami/mongodb
+    environment:
+      MONGODB_DATABASE: ${MONGO_DB}
+      MONGODB_USERNAME: ${MONGO_USER}
+      MONGODB_PASSWORD: ${MONGO_PASSWORD}
+      MONGODB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - ${MONGO_PORT}:27017
+    expose:
+      - ${MONGO_PORT}
+    networks:
+      - internalnet
+
+volumes:
+  mongo_dev_data: {}
+
+networks:
+  internalnet:
+    driver: bridge
