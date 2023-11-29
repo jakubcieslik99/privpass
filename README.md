@@ -48,6 +48,7 @@ Express.js app as a backend (server) and React app as a frontend (client).
 - Run server app in development mode
 
 ```bash
+  npm run docker
   npm run dev
 ```
 
@@ -64,7 +65,7 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ```bash
   npm run dev
-  npm run dev-win   //only on Windows
+  npm run dev:win
 ```
 
 ## Deployment
@@ -81,7 +82,7 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ```bash
   npm install --omit=dev
-  npm run prod
+  npm run start
 ```
 
 ℹ️ Instructions for building client app to production
@@ -96,17 +97,29 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ⚙️ To run server app, you will need to add the following environment variables to your .env file
 
+- `DIR`
+
 - `ENV`
 
-- `PORT`
+- `MONGO_VER`
 
-- `IP`
+- `HOST`
+
+- `PORT`
 
 - `API_URL`
 
 - `WEBAPP_URL`
 
-- `MONGODB_URI`
+- `MONGO_HOST`
+
+- `MONGO_PORT`
+
+- `MONGO_DB`
+
+- `MONGO_USER`
+
+- `MONGO_PASSWORD`
 
 - `JWT_ACCESS_TOKEN_SECRET`
 

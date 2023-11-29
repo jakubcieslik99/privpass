@@ -1,35 +1,37 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/client"
+  - package-ecosystem: 'npm'
+    directory: '/client'
+    target-branch: 'main'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "00:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '00:00'
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
       client-dependencies:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
 
-  - package-ecosystem: "npm"
-    directory: "/server"
+  - package-ecosystem: 'npm'
+    directory: '/server'
+    target-branch: 'main'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "00:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '00:00'
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
       server-dependencies:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
