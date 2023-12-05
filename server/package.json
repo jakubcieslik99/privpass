@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "PrivPASS",
   "main": "index.js",
   "scripts": {
