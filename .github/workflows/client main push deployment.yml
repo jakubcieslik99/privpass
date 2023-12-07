@@ -1,0 +1,40 @@
+name: Deployment on "main" branch client folder push
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'client/**'
+      - '!.github/**'
+      - '!**/.gitignore'
+      - '!**/.prettierrc'
+      - '!**/*.md'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: CI/CD
+    env:
+      REACT_APP_ENV: production
+      REACT_APP_API_URL: ${{ vars.API_URL }}
+
+    steps:
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          envs: REACT_APP_ENV,REACT_APP_API_URL
+          script: |
+            cd /var/www/javascript/privpass-client/privpass/client
+            git pull origin main
+            npm ci
+            echo -e "\
+              REACT_APP_ENV=$REACT_APP_ENV\n\
+              REACT_APP_API_URL=$REACT_APP_API_URL\n\
+            " > .env
+            rm -r build
+            npm run build
+            exit

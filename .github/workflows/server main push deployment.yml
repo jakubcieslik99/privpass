@@ -1,0 +1,77 @@
+name: Deployment on "main" branch server folder push
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'server/**'
+      - '!.github/**'
+      - '!**/.gitignore'
+      - '!**/.prettierrc'
+      - '!**/*.md'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: CI/CD
+    env:
+      ENV: production
+      # Node.js
+      HOST: ${{ vars.HOST }}
+      PORT: ${{ vars.PORT }}
+      API_URL: ${{ vars.API_URL }}
+      WEBAPP_URL: ${{ vars.WEBAPP_URL }}
+      # MongoDB
+      MONGO_HOST: ${{ vars.MONGO_HOST }}
+      MONGO_PORT: ${{ vars.MONGO_PORT }}
+      MONGO_DB: ${{ vars.MONGO_DB }}
+      MONGO_USER: ${{ vars.MONGO_USER }}
+      MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+      # Other
+      JWT_ACCESS_TOKEN_SECRET: ${{ secrets.JWT_ACCESS_TOKEN_SECRET }}
+      JWT_REFRESH_TOKEN_SECRET: ${{ secrets.JWT_REFRESH_TOKEN_SECRET }}
+      CRYPTO_SECRET: ${{ secrets.CRYPTO_SECRET }}
+      GMAIL_ADDRESS: ${{ vars.GMAIL_ADDRESS }}
+      GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+      NOREPLY_ADDRESS: ${{ vars.NOREPLY_ADDRESS }}
+
+    steps:
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          envs: ENV,HOST,PORT,API_URL,WEBAPP_URL,MONGO_HOST,MONGO_PORT,MONGO_DB,MONGO_USER,MONGO_PASSWORD,JWT_ACCESS_TOKEN_SECRET,JWT_REFRESH_TOKEN_SECRET,CRYPTO_SECRET,GMAIL_ADDRESS,GMAIL_PASSWORD,NOREPLY_ADDRESS
+          script: |
+            cd /var/www/javascript/privpass-server/privpass/server
+            pm2 stop privpass-server:$PORT
+            git pull origin main
+            npm ci
+            rm -r dist
+            npm run build
+            cd dist
+            echo -e "\
+              ENV=$ENV\n\
+              \n\
+              HOST=$HOST\n\
+              PORT=$PORT\n\
+              API_URL=$API_URL\n\
+              WEBAPP_URL=$WEBAPP_URL\n\
+              \n\
+              MONGO_HOST=$MONGO_HOST\n\
+              MONGO_PORT=$MONGO_PORT\n\
+              MONGO_DB=$MONGO_DB\n\
+              MONGO_USER=$MONGO_USER\n\
+              MONGO_PASSWORD=$MONGO_PASSWORD\n\
+              \n\
+              JWT_ACCESS_TOKEN_SECRET=$JWT_ACCESS_TOKEN_SECRET\n\
+              JWT_REFRESH_TOKEN_SECRET=$JWT_REFRESH_TOKEN_SECRET\n\
+              CRYPTO_SECRET=$CRYPTO_SECRET\n\
+              GMAIL_ADDRESS=$GMAIL_ADDRESS\n\
+              GMAIL_PASSWORD=$GMAIL_PASSWORD\n\
+              NOREPLY_ADDRESS=$NOREPLY_ADDRESS\n\
+            " > .env
+            pm2 start privpass-server:$PORT
+            exit
