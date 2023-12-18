@@ -25,8 +25,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.12.3",
     "nodemailer": "^6.9.7",
-    "pino": "^8.16.2",
-    "pino-pretty": "^10.2.3",
+    "pino": "^8.17.1",
+    "pino-pretty": "^10.3.0",
     "voucher-code-generator": "^1.3.0"
   },
   "devDependencies": {
@@ -37,11 +37,11 @@
     "@types/express-slow-down": "^1.3.5",
     "@types/http-errors": "^2.0.4",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/node": "^18.19.2",
+    "@types/node": "^18.19.3",
     "@types/nodemailer": "^6.4.14",
     "@types/voucher-code-generator": "^1.1.3",
     "nodemon": "^2.0.22",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   }
 }
