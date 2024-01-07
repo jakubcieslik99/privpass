@@ -1,62 +1,49 @@
 {
   "name": "privpass",
-  "version": "1.7.5",
   "private": true,
+  "version": "1.7.6",
+  "type": "module",
   "author": "Jakub Cieślik",
   "license": "UNLICENSED",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write .",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@reduxjs/toolkit": "^1.9.7",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.67",
-    "@types/react": "^18.2.41",
-    "@types/react-dom": "^18.2.17",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/react-scroll": "^1.8.10",
-    "axios": "^1.6.2",
+    "axios": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.48.2",
+    "react-hook-form": "^7.49.2",
     "react-icons": "^4.12.0",
     "react-password-strength-bar": "^0.4.1",
     "react-redux": "^8.1.3",
-    "react-router-dom": "^6.20.1",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^6.21.1",
     "react-scroll": "^1.9.0",
-    "redux": "^4.2.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "redux": "^4.2.1"
   },
   "devDependencies": {
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-scroll": "^1.8.10",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.5"
-  },
-  "scripts": {
-    "dev": "PORT=3000 react-scripts start",
-    "dev:win": "SET PORT=3000 && react-scripts start",
-    "build": "react-scripts build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "postcss": "^8.4.33",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
   },
   "homepage": "https://privpass.jakubcieslik.com/"
 }

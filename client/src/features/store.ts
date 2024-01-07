@@ -20,7 +20,7 @@ const store = configureStore({
     updateUserPassword: updateUserPasswordReducer,
     deleteUserPassword: deleteUserPasswordReducer,
   },
-  devTools: process.env.REACT_APP_ENV === 'production' ? false : true,
+  devTools: import.meta.env.VITE_APP_ENV === 'production' ? false : true,
 })
 
 export type RootState = ReturnType<typeof store.getState>

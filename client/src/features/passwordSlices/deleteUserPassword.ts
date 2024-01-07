@@ -10,7 +10,7 @@ const deleteUserPassword = createAsyncThunk(
   async (sendData: deleteUserPasswordData, thunkAPI) => {
     try {
       const { data } = await axiosProtected.delete(
-        `${process.env.REACT_APP_API_URL}/passwords/deleteUserPassword/${sendData.id}`
+        `${import.meta.env.VITE_APP_API_URL}/passwords/deleteUserPassword/${sendData.id}`
       )
       return data
     } catch (error: any) {
