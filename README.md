@@ -65,7 +65,6 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ```bash
   npm run dev
-  npm run dev:win
 ```
 
 ## Deployment
@@ -137,9 +136,9 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ⚙️ To build client app, you will need to add the following environment variables to your .env file
 
-- `REACT_APP_ENV`
+- `VITE_APP_ENV`
 
-- `REACT_APP_API_URL`
+- `VITE_APP_API_URL`
 
 ( ℹ️ - sample .env config file is provided in the client app directory under the name `.env.sample` )
 

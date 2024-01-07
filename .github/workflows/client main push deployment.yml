@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: CI/CD
     env:
-      REACT_APP_ENV: production
-      REACT_APP_API_URL: ${{ vars.API_URL }}
+      VITE_APP_ENV: production
+      VITE_APP_API_URL: ${{ vars.API_URL }}
 
     steps:
       - name: Deploy to production server
@@ -26,14 +26,14 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
-          envs: REACT_APP_ENV,REACT_APP_API_URL
+          envs: VITE_APP_ENV,VITE_APP_API_URL
           script: |
             cd /var/www/javascript/privpass-client/privpass/client
             git pull origin main
             npm ci
             echo -e "\
-              REACT_APP_ENV=$REACT_APP_ENV\n\
-              REACT_APP_API_URL=$REACT_APP_API_URL\n\
+              VITE_APP_ENV=$VITE_APP_ENV\n\
+              VITE_APP_API_URL=$VITE_APP_API_URL\n\
             " > .env
             rm -r build
             npm run build
