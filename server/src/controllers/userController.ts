@@ -22,7 +22,7 @@ import {
   USER_EMAIL_ALREADY_EXISTS,
 } from '../constants/ErrorMessages'
 
-//POST - /users/registerSendCode
+// POST - /users/registerSendCode
 const registerSendCode = async (req: Request, res: Response) => {
   if (req.cookies?.refreshToken) throw createError(409, USER_ALREADY_LOGGED_IN)
 
@@ -51,7 +51,7 @@ const registerSendCode = async (req: Request, res: Response) => {
 
   return res.status(201).send({ message: CONFIRM_REGISTRATION })
 }
-//POST - /users/loginSendCode
+// POST - /users/loginSendCode
 const loginSendCode = async (req: Request, res: Response) => {
   if (req.cookies?.refreshToken) throw createError(409, USER_ALREADY_LOGGED_IN)
 
@@ -77,7 +77,7 @@ const loginSendCode = async (req: Request, res: Response) => {
 
   return res.status(200).send({ message: CONFIRM_LOGIN })
 }
-//POST - /users/confirmCode
+// POST - /users/confirmCode
 const confirmCode = async (req: Request, res: Response) => {
   if (req.cookies?.refreshToken) throw createError(409, USER_ALREADY_LOGGED_IN)
 
@@ -125,7 +125,7 @@ const confirmCode = async (req: Request, res: Response) => {
     })
 }
 
-//GET - /users/refreshAccessToken
+// GET - /users/refreshAccessToken
 const refreshAccessToken = async (req: Request, res: Response) => {
   if (!req.cookies?.refreshToken) throw createError(401, UNAUTHORIZED)
 
@@ -141,7 +141,7 @@ const refreshAccessToken = async (req: Request, res: Response) => {
     return res.status(201).send({ accessToken })
   })
 }
-//GET - /users/logoutUser
+// GET - /users/logoutUser
 const logoutUser = async (req: Request, res: Response) => {
   if (!req.cookies?.refreshToken) return res.sendStatus(204)
 

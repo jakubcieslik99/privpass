@@ -1,13 +1,15 @@
 {
   "name": "privpass-server",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "PrivPASS",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "docker": "docker-compose up --force-recreate",
+    "docker": "docker-compose -p privpass-server up --force-recreate",
     "dev": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext ts",
+    "format": "prettier --write ."
   },
   "author": "Jakub Cieślik",
   "license": "UNLICENSED",
@@ -23,10 +25,10 @@
     "http-errors": "^2.0.0",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^6.12.3",
-    "nodemailer": "^6.9.7",
-    "pino": "^8.16.2",
-    "pino-pretty": "^10.2.3",
+    "mongoose": "^6.12.5",
+    "nodemailer": "^6.9.8",
+    "pino": "^8.17.2",
+    "pino-pretty": "^10.3.1",
     "voucher-code-generator": "^1.3.0"
   },
   "devDependencies": {
@@ -37,11 +39,16 @@
     "@types/express-slow-down": "^1.3.5",
     "@types/http-errors": "^2.0.4",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/node": "^18.19.2",
+    "@types/node": "^18.19.5",
     "@types/nodemailer": "^6.4.14",
     "@types/voucher-code-generator": "^1.1.3",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
     "nodemon": "^2.0.22",
-    "ts-node": "^10.9.1",
+    "prettier": "^3.1.1",
+    "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   }
 }

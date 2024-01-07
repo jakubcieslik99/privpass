@@ -6,7 +6,7 @@ import { encryptPassword, decryptPassword } from '../functions/encryptDecrypt'
 import { NEW_PASSWORD_ADDED, PASSWORD_UPDATED, PASSWORD_DELETED } from '../constants/SuccessMessages'
 import { PASSWORD_DOES_NOT_EXIST, PASSWORD_NAME_ALREADY_EXISTS } from '../constants/ErrorMessages'
 
-//GET - /passwords/getUserPasswords
+// GET - /passwords/getUserPasswords
 const getUserPasswords = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
@@ -32,7 +32,7 @@ const getUserPasswords = async (req: Request, res: Response) => {
 
   return res.status(200).send({ passwords: userPasswordsFinal })
 }
-//GET - /passwords/getUserPassword/:id
+// GET - /passwords/getUserPassword/:id
 const getUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
@@ -43,7 +43,7 @@ const getUserPassword = async (req: Request, res: Response) => {
 
   return res.status(200).send({ _id: foundPassword.id, password: decryptedPassword })
 }
-//POST - /passwords/createUserPassword
+// POST - /passwords/createUserPassword
 const createUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
   const validationResult = await createPasswordValidation.validateAsync(req.body)
@@ -64,7 +64,7 @@ const createUserPassword = async (req: Request, res: Response) => {
 
   return res.status(201).send({ message: NEW_PASSWORD_ADDED })
 }
-//PUT - /passwords/updateUserPassword/:id
+// PUT - /passwords/updateUserPassword/:id
 const updateUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
   const validationResult = await updatePasswordValidation.validateAsync(req.body)
@@ -84,7 +84,7 @@ const updateUserPassword = async (req: Request, res: Response) => {
 
   return res.status(201).send({ message: PASSWORD_UPDATED })
 }
-//DELETE - /passwords/deleteUserPassword/:id
+// DELETE - /passwords/deleteUserPassword/:id
 const deleteUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 

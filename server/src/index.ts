@@ -15,7 +15,7 @@ import passwordRoute from './routes/passwordRoute'
 import { RESOURCE_DOES_NOT_EXIST } from './constants/ErrorMessages'
 
 const app = express()
-app.set('trust proxy', `loopback, ${config.HOST}`)
+app.set('trust proxy', `loopback, ${config.HOST === 'localhost' ? '127.0.0.1' : config.HOST}`)
 databaseConnect(app)
 
 app.use(express.urlencoded({ extended: false }))
@@ -26,12 +26,12 @@ app.use(cors(corsOptions))
 app.use(rateLimit(rateLimiter))
 app.use(slowDown(speedLimiter))
 
-//routes
+// routes
 app.use('/users', userRoute)
 app.use('/passwords', passwordRoute)
-//404 error
+// 404 error
 app.all('*', (_req, _res, next) => next(createError(404, RESOURCE_DOES_NOT_EXIST)))
-//errors handling middleware
+// errors handling middleware
 app.use(isError)
 
 app.on('ready', () => {

@@ -4,7 +4,7 @@ interface User {
   email: string
   code: string | null
   refreshTokens: { refreshToken: string; expirationDate: number }[] | []
-  //timestamps
+  // timestamps
   createdAt: number
   updatedAt: number
 }
