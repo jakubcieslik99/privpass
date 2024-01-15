@@ -7,5 +7,8 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    semi: ['error', 'never'],
+    quotes: ['error', 'single'],
+    'arrow-parens': ['error', 'as-needed'],
   },
 }
