@@ -22,7 +22,7 @@
     "react-icons": "^4.12.0",
     "react-password-strength-bar": "^0.4.1",
     "react-redux": "^8.1.3",
-    "react-router-dom": "^6.21.2",
+    "react-router-dom": "^6.21.3",
     "react-scroll": "^1.9.0",
     "redux": "^4.2.1"
   },
@@ -34,16 +34,16 @@
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.16",
+    "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.33",
-    "prettier": "^3.2.2",
+    "prettier": "^3.2.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11"
+    "vite": "^5.0.12"
   },
   "homepage": "https://privpass.jakubcieslik.com/"
 }
