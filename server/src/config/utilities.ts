@@ -25,7 +25,7 @@ const config = {
   NOREPLY_ADDRESS: process.env.NOREPLY_ADDRESS || 'noreply@privpass.com',
 }
 
-const log = logger({
+const log = logger.default({
   transport: {
     target: 'pino-pretty',
     options: {

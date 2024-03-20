@@ -1,6 +1,12 @@
 import express from 'express'
-import { errorHandler } from '../middlewares/errorMiddleware'
-import { registerSendCode, loginSendCode, confirmCode, refreshAccessToken, logoutUser } from '../controllers/userController'
+import { errorHandler } from '../middlewares/errorMiddleware.js'
+import {
+  registerSendCode,
+  loginSendCode,
+  confirmCode,
+  refreshAccessToken,
+  logoutUser,
+} from '../controllers/userController.js'
 
 const router = express.Router()
 

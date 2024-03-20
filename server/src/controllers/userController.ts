@@ -3,15 +3,15 @@ import createError from 'http-errors'
 import jwt, { VerifyErrors } from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import voucher_codes from 'voucher-code-generator'
-import User from '../models/userModel'
-import { config } from '../config/utilities'
-import { registerEmailValidation, loginEmailValidation, confirmCodeValidation } from '../validations/userValidation'
-import { getAccessToken, getRefreshToken } from '../functions/generateTokens'
-import sendEmail from '../functions/sendEmail'
-import { registerSendCodeMessage } from '../messages/registerMessages'
-import { loginSendCodeMessage } from '../messages/loginMessages'
-import { CONFIRM_REGISTRATION, CONFIRM_LOGIN, CONFIRMED } from '../constants/SuccessMessages'
-import { AvailableLanguages, availableLanguages } from '../constants/AvailableLanguages'
+import User from '../models/userModel.js'
+import { config } from '../config/utilities.js'
+import { registerEmailValidation, loginEmailValidation, confirmCodeValidation } from '../validations/userValidation.js'
+import { getAccessToken, getRefreshToken } from '../functions/generateTokens.js'
+import sendEmail from '../functions/sendEmail.js'
+import { registerSendCodeMessage } from '../messages/registerMessages.js'
+import { loginSendCodeMessage } from '../messages/loginMessages.js'
+import { CONFIRM_REGISTRATION, CONFIRM_LOGIN, CONFIRMED } from '../constants/SuccessMessages.js'
+import { AvailableLanguages, availableLanguages } from '../constants/AvailableLanguages.js'
 import {
   SERVER_ERROR,
   UNAUTHORIZED,
@@ -20,7 +20,7 @@ import {
   ACCESS_CODE_EXPIRED,
   USER_ALREADY_LOGGED_IN,
   USER_EMAIL_ALREADY_EXISTS,
-} from '../constants/ErrorMessages'
+} from '../constants/ErrorMessages.js'
 
 // POST - /users/registerSendCode
 const registerSendCode = async (req: Request, res: Response) => {
@@ -45,8 +45,8 @@ const registerSendCode = async (req: Request, res: Response) => {
     registerSendCodeMessage(
       validationResult.email.toLowerCase(),
       code,
-      (req.params.language as AvailableLanguages) || availableLanguages[0]
-    )
+      (req.params.language as AvailableLanguages) || availableLanguages[0],
+    ),
   )
 
   return res.status(201).send({ message: CONFIRM_REGISTRATION })
@@ -71,8 +71,8 @@ const loginSendCode = async (req: Request, res: Response) => {
     loginSendCodeMessage(
       validationResult.email.toLowerCase(),
       code,
-      (req.params.language as AvailableLanguages) || availableLanguages[0]
-    )
+      (req.params.language as AvailableLanguages) || availableLanguages[0],
+    ),
   )
 
   return res.status(200).send({ message: CONFIRM_LOGIN })
@@ -102,7 +102,7 @@ const confirmCode = async (req: Request, res: Response) => {
 
   checkedUser.code = null
   checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
-    (element: { refreshToken: string; expirationDate: number }) => element.expirationDate > Date.now()
+    (element: { refreshToken: string; expirationDate: number }) => element.expirationDate > Date.now(),
   )
   checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 900 * 1000 })
   await checkedUser.save()
@@ -152,7 +152,7 @@ const logoutUser = async (req: Request, res: Response) => {
       .sendStatus(204)
 
   checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
-    (element: { refreshToken: string; expirationDate: number }) => element.refreshToken !== req.cookies.refreshToken
+    (element: { refreshToken: string; expirationDate: number }) => element.refreshToken !== req.cookies.refreshToken,
   )
   await checkedUser.save()
 

@@ -1,6 +1,6 @@
-import { config } from '../config/utilities'
-import { AvailableLanguages } from '../constants/AvailableLanguages'
-import { tr } from './translations/translations'
+import { config } from '../config/utilities.js'
+import { AvailableLanguages } from '../constants/AvailableLanguages.js'
+import { tr } from './translations/translations.js'
 
 const loginSendCodeMessage = (to: string, code: string, language: AvailableLanguages) => {
   return {

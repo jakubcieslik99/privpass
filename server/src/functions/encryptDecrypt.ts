@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { config } from '../config/utilities'
+import { config } from '../config/utilities.js'
 
 const encryptPassword = (password: string) => {
   const iv = Buffer.from(crypto.randomBytes(16))
@@ -15,7 +15,7 @@ const decryptPassword = (encryption: { encryptedPassword: string; iv: string }) 
   const decipher = crypto.createDecipheriv(
     'aes-256-ctr',
     Buffer.from(config.CRYPTO_SECRET),
-    Buffer.from(encryption.iv, 'hex')
+    Buffer.from(encryption.iv, 'hex'),
   )
 
   const decryptedPassword = Buffer.concat([

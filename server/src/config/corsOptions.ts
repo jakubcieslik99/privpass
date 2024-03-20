@@ -1,5 +1,5 @@
 import { CorsOptions } from 'cors'
-import { config } from './utilities'
+import { config } from './utilities.js'
 
 const allowedOrigins = [config.API_URL, config.WEBAPP_URL]
 

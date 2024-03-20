@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { HttpError } from 'http-errors'
-import { config, log } from '../config/utilities'
-import { SERVER_ERROR, UNPROCESSABLE_ENTITY } from '../constants/ErrorMessages'
+import { config, log } from '../config/utilities.js'
+import { SERVER_ERROR, UNPROCESSABLE_ENTITY } from '../constants/ErrorMessages.js'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const errorHandler = (controller: Function) => (req: Request, res: Response, next: NextFunction) =>

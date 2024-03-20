@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
-import Password from '../models/passwordModel'
-import { createPasswordValidation, updatePasswordValidation } from '../validations/passwordValidation'
-import { encryptPassword, decryptPassword } from '../functions/encryptDecrypt'
-import { NEW_PASSWORD_ADDED, PASSWORD_UPDATED, PASSWORD_DELETED } from '../constants/SuccessMessages'
-import { PASSWORD_DOES_NOT_EXIST, PASSWORD_NAME_ALREADY_EXISTS } from '../constants/ErrorMessages'
+import Password from '../models/passwordModel.js'
+import { createPasswordValidation, updatePasswordValidation } from '../validations/passwordValidation.js'
+import { encryptPassword, decryptPassword } from '../functions/encryptDecrypt.js'
+import { NEW_PASSWORD_ADDED, PASSWORD_UPDATED, PASSWORD_DELETED } from '../constants/SuccessMessages.js'
+import { PASSWORD_DOES_NOT_EXIST, PASSWORD_NAME_ALREADY_EXISTS } from '../constants/ErrorMessages.js'
 
 // GET - /passwords/getUserPasswords
 const getUserPasswords = async (req: Request, res: Response) => {

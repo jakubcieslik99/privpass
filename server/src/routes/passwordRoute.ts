@@ -1,14 +1,14 @@
 import express from 'express'
-import { isValidId } from '../middlewares/validityMiddleware'
-import { isAuth } from '../middlewares/authMiddleware'
-import { errorHandler } from '../middlewares/errorMiddleware'
+import { isValidId } from '../middlewares/validityMiddleware.js'
+import { isAuth } from '../middlewares/authMiddleware.js'
+import { errorHandler } from '../middlewares/errorMiddleware.js'
 import {
   getUserPasswords,
   getUserPassword,
   createUserPassword,
   updateUserPassword,
   deleteUserPassword,
-} from '../controllers/passwordController'
+} from '../controllers/passwordController.js'
 
 const router = express.Router()
 

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import createError from 'http-errors'
-import { config, log } from '../config/utilities'
+import { config, log } from '../config/utilities.js'
 
 const getAccessToken = (userId: string, userEmail: string) => {
   return new Promise<string | undefined>((resolve, reject) => {
@@ -17,7 +17,7 @@ const getAccessToken = (userId: string, userEmail: string) => {
           return reject(createError(500, 'Error during generating an access token.'))
         }
         return resolve(token)
-      }
+      },
     )
   })
 }
@@ -37,7 +37,7 @@ const getRefreshToken = (userId: string, userEmail: string) => {
           return reject(createError(500, 'Error during generating a refresh token.'))
         }
         return resolve(token)
-      }
+      },
     )
   })
 }

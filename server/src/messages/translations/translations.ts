@@ -1,4 +1,4 @@
-import { AvailableLanguages, availableLanguages } from '../../constants/AvailableLanguages'
+import { AvailableLanguages, availableLanguages } from '../../constants/AvailableLanguages.js'
 import en from './en.json'
 import pl from './pl.json'
 

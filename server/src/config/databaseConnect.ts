@@ -1,6 +1,6 @@
 import { Application } from 'express'
 import mongoose from 'mongoose'
-import { config, log } from './utilities'
+import { config, log } from './utilities.js'
 
 const databaseConnect = async (app: Application) => {
   mongoose.connection.on('connected', () => log.info('MongoDB connection established'))

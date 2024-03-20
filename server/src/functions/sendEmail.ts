@@ -1,6 +1,6 @@
 import createError from 'http-errors'
-import { log } from '../config/utilities'
-import transporter from '../config/nodemailerOptions'
+import { log } from '../config/utilities.js'
+import transporter from '../config/nodemailerOptions.js'
 
 const sendEmail = (message: { from: string; to: string; subject: string; text: string; html: string }) => {
   return new Promise<void>((resolve, reject) => {
