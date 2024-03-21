@@ -1,6 +1,6 @@
 import { AvailableLanguages, availableLanguages } from '../../constants/AvailableLanguages.js'
-import en from './en.json'
-import pl from './pl.json'
+import en from './en.json' assert { type: 'json' }
+import pl from './pl.json' assert { type: 'json' }
 
 export const tr = (key: string, language: AvailableLanguages): string => {
   let langData: { [key: string]: string } = {}
