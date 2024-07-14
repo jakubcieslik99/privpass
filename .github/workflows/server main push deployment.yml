@@ -8,8 +8,10 @@ on:
       - 'server/**'
       - '!.github/**'
       - '!**/.gitignore'
-      - '!**/.prettierrc'
+      - '!**/.eslintrc.json'
+      - '!**/.prettierrc.json'
       - '!**/*.md'
+      - '!**/LICENSE'
 
 jobs:
   deploy:
@@ -21,7 +23,7 @@ jobs:
       HOST: ${{ vars.HOST }}
       PORT: ${{ vars.PORT }}
       API_URL: ${{ vars.API_URL }}
-      WEBAPP_URL: ${{ vars.WEBAPP_URL }}
+      APP_URL: ${{ vars.APP_URL }}
       # MongoDB
       MONGO_HOST: ${{ vars.MONGO_HOST }}
       MONGO_PORT: ${{ vars.MONGO_PORT }}
@@ -43,7 +45,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
-          envs: ENV,HOST,PORT,API_URL,WEBAPP_URL,MONGO_HOST,MONGO_PORT,MONGO_DB,MONGO_USER,MONGO_PASSWORD,JWT_ACCESS_TOKEN_SECRET,JWT_REFRESH_TOKEN_SECRET,CRYPTO_SECRET,GMAIL_ADDRESS,GMAIL_PASSWORD,NOREPLY_ADDRESS
+          envs: ENV,HOST,PORT,API_URL,APP_URL,MONGO_HOST,MONGO_PORT,MONGO_DB,MONGO_USER,MONGO_PASSWORD,JWT_ACCESS_TOKEN_SECRET,JWT_REFRESH_TOKEN_SECRET,CRYPTO_SECRET,GMAIL_ADDRESS,GMAIL_PASSWORD,NOREPLY_ADDRESS
           script: |
             cd /var/www/javascript/privpass-server/privpass/server
             pm2 stop privpass-server:$PORT
@@ -58,7 +60,7 @@ jobs:
               HOST=$HOST\n\
               PORT=$PORT\n\
               API_URL=$API_URL\n\
-              WEBAPP_URL=$WEBAPP_URL\n\
+              APP_URL=$APP_URL\n\
               \n\
               MONGO_HOST=$MONGO_HOST\n\
               MONGO_PORT=$MONGO_PORT\n\
