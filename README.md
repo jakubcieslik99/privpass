@@ -96,9 +96,9 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ⚙️ To run server app, you will need to add the following environment variables to your .env file
 
-- `DIR`
+- `DIR` _(default already set for development)_
 
-- `ENV`
+- `ENV` _(default already set for development)_
 
 - `MONGO_VER`
 
@@ -108,7 +108,7 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 - `API_URL`
 
-- `WEBAPP_URL`
+- `APP_URL`
 
 - `MONGO_HOST`
 
@@ -138,7 +138,7 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 - `VITE_APP_ENV`
 
-- `VITE_APP_API_URL`
+- `VITE_API_URL`
 
 ( ℹ️ - sample .env config file is provided in the client app directory under the name `.env.sample` )
 
