@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "PrivPASS",
   "type": "module",
   "main": "index.ts",
