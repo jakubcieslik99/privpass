@@ -1,28 +1,30 @@
 {
   "name": "privpass",
-  "version": "1.7.11",
+  "version": "1.8.0",
   "description": "PrivPASS",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "cross-env VITE_APP_ENV=development vite",
+    "build": "cross-env VITE_APP_ENV=production tsc && cross-env VITE_APP_ENV=production vite build",
     "lint": "eslint . --ignore-path ../.gitignore --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --ignore-path ../.gitignore --write \"**/*.+(js|jsx|ts|tsx)\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update:all": "corepack up && pnpm update"
   },
   "author": "Jakub Cieślik",
   "license": "UNLICENSED",
+  "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903",
   "dependencies": {
     "@headlessui/react": "^1.7.19",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.7.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.51.5",
+    "react-hook-form": "^7.52.1",
     "react-icons": "^4.12.0",
     "react-password-strength-bar": "^0.4.1",
     "react-redux": "^8.1.3",
-    "react-router-dom": "^6.23.1",
+    "react-router-dom": "^6.25.0",
     "react-scroll": "^1.9.0",
     "redux": "^4.2.1"
   },
@@ -33,17 +35,18 @@
     "@types/react-scroll": "^1.8.10",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "@vitejs/plugin-react": "^4.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.7",
-    "postcss": "^8.4.38",
-    "prettier": "^3.2.5",
-    "tailwindcss": "^3.4.3",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.11"
+    "eslint-plugin-react-refresh": "^0.4.8",
+    "postcss": "^8.4.39",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.6",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4"
   },
   "homepage": "https://privpass.jakubcieslik.com/"
 }

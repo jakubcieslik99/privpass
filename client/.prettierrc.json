@@ -5,5 +5,6 @@
   "tabWidth": 2,
   "printWidth": 125,
   "proseWrap": "always",
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "endOfLine": "lf"
 }

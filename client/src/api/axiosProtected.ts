@@ -10,7 +10,7 @@ export const injectStore = (_store: any) => {
 }
 
 const axiosProtected = axios.create({
-  baseURL: import.meta.env.VITE_APP_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 })
@@ -37,7 +37,7 @@ const reqIntercept = axiosProtected.interceptors.request.use(
   },
   error => {
     return Promise.reject(error)
-  }
+  },
 )
 
 const resIntercept = axiosProtected.interceptors.response.use(
@@ -63,7 +63,7 @@ const resIntercept = axiosProtected.interceptors.response.use(
       }
     }
     return Promise.reject(error)
-  }
+  },
 )
 
 /*const axiosProtectedEject = () => {
