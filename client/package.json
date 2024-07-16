@@ -1,6 +1,6 @@
 {
   "name": "privpass",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "PrivPASS",
   "type": "module",
   "scripts": {
