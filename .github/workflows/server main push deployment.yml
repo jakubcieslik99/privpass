@@ -50,7 +50,7 @@ jobs:
             cd /var/www/javascript/privpass-server/privpass/server
             pm2 stop privpass-server:$PORT
             git pull origin main
-            npm ci
+            npm install
             rm -r dist
             npm run build
             cd dist
@@ -75,5 +75,5 @@ jobs:
               GMAIL_PASSWORD=$GMAIL_PASSWORD\n\
               NOREPLY_ADDRESS=$NOREPLY_ADDRESS\n\
             " > .env
-            pm2 start privpass-server:$PORT
+            npm start privpass-server:$PORT
             exit

@@ -31,7 +31,7 @@ jobs:
           script: |
             cd /var/www/javascript/privpass-client/privpass/client
             git pull origin main
-            npm ci
+            npm install
             echo -e "\
               VITE_API_URL=$VITE_API_URL\n\
             " > .env
