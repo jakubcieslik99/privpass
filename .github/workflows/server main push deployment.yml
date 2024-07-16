@@ -75,5 +75,5 @@ jobs:
               GMAIL_PASSWORD=$GMAIL_PASSWORD\n\
               NOREPLY_ADDRESS=$NOREPLY_ADDRESS\n\
             " > .env
-            npm start privpass-server:$PORT
+            pm2 start privpass-server:$PORT
             exit
