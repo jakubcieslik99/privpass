@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axiosProtected from '../../api/axiosProtected'
 
 interface deleteUserPasswordData {
@@ -13,6 +13,7 @@ const deleteUserPassword = createAsyncThunk(
         `${import.meta.env.VITE_API_URL}/passwords/deleteUserPassword/${sendData.id}`,
       )
       return data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || error.toString()
       return thunkAPI.rejectWithValue(message)
@@ -30,7 +31,7 @@ interface deleteUserPasswordState {
   errorMessage: string
 }
 
-export const deleteUserPasswordSlice = createSlice({
+export const deleteUserPasswordSlice: Slice<deleteUserPasswordState> = createSlice({
   name: 'passwords/deleteUserPassword',
   initialState: {
     loading: false,
@@ -48,7 +49,7 @@ export const deleteUserPasswordSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(deleteUserPassword.pending, (state, _action) => {
+    builder.addCase(deleteUserPassword.pending, state => {
       state.loading = true
       state.success = false
       state.error = false
@@ -58,6 +59,7 @@ export const deleteUserPasswordSlice = createSlice({
       state.success = true
       state.successMessage = action.payload.message
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(deleteUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -69,4 +71,4 @@ export const deleteUserPasswordSlice = createSlice({
 })
 
 export const { successReset, errorReset } = deleteUserPasswordSlice.actions
-export default deleteUserPasswordSlice.reducer
+export const deleteUserPasswordReducer = deleteUserPasswordSlice.reducer

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axiosProtected from '../../api/axiosProtected'
 
 interface createUserPasswordData {
@@ -10,16 +10,17 @@ const createUserPassword = createAsyncThunk(
   'passwords/createUserPassword',
   async (sendData: createUserPasswordData, thunkAPI) => {
     try {
-      const { data } = await axiosProtected.post(`/passwords/createUserPassword`, {
+      const { data } = await axiosProtected.post('/passwords/createUserPassword', {
         name: sendData.name,
         password: sendData.password,
       })
       return data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || error.toString()
       return thunkAPI.rejectWithValue(message)
     }
-  }
+  },
 )
 
 export { createUserPassword }
@@ -32,7 +33,7 @@ interface createUserPasswordState {
   errorMessage: string
 }
 
-export const createUserPasswordSlice = createSlice({
+export const createUserPasswordSlice: Slice<createUserPasswordState> = createSlice({
   name: 'passwords/createUserPassword',
   initialState: {
     loading: false,
@@ -50,7 +51,7 @@ export const createUserPasswordSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(createUserPassword.pending, (state, _action) => {
+    builder.addCase(createUserPassword.pending, state => {
       state.loading = true
       state.success = false
       state.error = false
@@ -60,6 +61,7 @@ export const createUserPasswordSlice = createSlice({
       state.success = true
       state.successMessage = action.payload.message
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(createUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -71,4 +73,4 @@ export const createUserPasswordSlice = createSlice({
 })
 
 export const { successReset, errorReset } = createUserPasswordSlice.actions
-export default createUserPasswordSlice.reducer
+export const createUserPasswordReducer = createUserPasswordSlice.reducer

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axiosPublic from '../../api/axiosPublic'
 import { availableLanguages } from '../../constants/AppSettings'
 
@@ -17,9 +17,10 @@ const registerSendCode = createAsyncThunk('listUser/registerSendCode', async (se
   try {
     const { data } = await axiosPublic.post(
       `/users/registerSendCode?lang=${localStorage.getItem('language') || availableLanguages[0]}`,
-      { email: sendData.email }
+      { email: sendData.email },
     )
     return data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -29,9 +30,10 @@ const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData
   try {
     const { data } = await axiosPublic.post(
       `/users/loginSendCode?lang=${localStorage.getItem('language') || availableLanguages[0]}`,
-      { email: sendData.email }
+      { email: sendData.email },
     )
     return data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -40,18 +42,19 @@ const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData
 const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: confirmCodeData, thunkAPI) => {
   try {
     const { data } = await axiosPublic.post(
-      `/users/confirmCode`,
+      '/users/confirmCode',
       {
         code: sendData.code,
         email: sendData.email,
       },
-      { withCredentials: true }
+      { withCredentials: true },
     )
 
     data?.userInfo && localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
     data?.accessToken && localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
 
     return data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -60,8 +63,9 @@ const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: co
 
 const logoutUser = createAsyncThunk('listUser/logoutUser', async (_, thunkAPI) => {
   try {
-    const { data } = await axiosPublic.get(`/users/logoutUser`, { withCredentials: true })
+    const { data } = await axiosPublic.get('/users/logoutUser', { withCredentials: true })
     return data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -84,7 +88,7 @@ interface listUserState {
 
 const userInfo = localStorage.getItem('userInfo')
 
-export const listUserSlice = createSlice({
+export const listUserSlice: Slice<listUserState> = createSlice({
   name: 'listUser',
   initialState: {
     loading: false,
@@ -123,6 +127,7 @@ export const listUserSlice = createSlice({
       state.success = true
       state.successMessage = action.payload.message
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(registerSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -141,6 +146,7 @@ export const listUserSlice = createSlice({
       state.success = true
       state.successMessage = action.payload.message
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(loginSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -160,6 +166,7 @@ export const listUserSlice = createSlice({
       state.successMessage = action.payload.message
       state.userInfo = action.payload.userInfo
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(confirmCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -177,6 +184,7 @@ export const listUserSlice = createSlice({
     builder.addCase(logoutUser.fulfilled, state => {
       state.loading = false
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(logoutUser.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -188,4 +196,4 @@ export const listUserSlice = createSlice({
 })
 
 export const { successReset, errorReset, messageReset, userInfoReset } = listUserSlice.actions
-export default listUserSlice.reducer
+export const listUserReducer = listUserSlice.reducer

@@ -4,7 +4,7 @@ import { scroller } from 'react-scroll'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../features/store'
 import { changeLanguage } from '../../features/appSlices/appSettings'
-import { availableLanguages } from '../../constants/AppSettings'
+import { AvailableLanguages, availableLanguages } from '../../constants/AppSettings'
 import { tr } from '../../translations/translations'
 import { logoutUser, userInfoReset } from '../../features/userSlices/listUser'
 import { passwordsReset } from '../../features/passwordSlices/getUserPasswords'
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
     dispatch(logoutUser())
   }
 
-  const changeLanguageHandler = (value: any) => {
+  const changeLanguageHandler = (value: AvailableLanguages) => {
     dispatch(changeLanguage(value))
   }
 
@@ -85,9 +85,9 @@ const Header: React.FC = () => {
               <select
                 className="bg-transparent border-none rounded-full cursor-pointer focus:outline-none"
                 value={language}
-                onChange={e => changeLanguageHandler(e.target.value)}
+                onChange={e => changeLanguageHandler(e.target.value as AvailableLanguages)}
               >
-                {availableLanguages.map((languageOption: any) => (
+                {availableLanguages.map((languageOption: string) => (
                   <option
                     key={languageOption}
                     value={languageOption}
@@ -133,9 +133,9 @@ const Header: React.FC = () => {
               <select
                 className="bg-transparent border-none rounded-full cursor-pointer focus:outline-none"
                 value={language}
-                onChange={e => changeLanguageHandler(e.target.value)}
+                onChange={e => changeLanguageHandler(e.target.value as AvailableLanguages)}
               >
-                {availableLanguages.map((languageOption: any) => (
+                {availableLanguages.map((languageOption: string) => (
                   <option
                     key={languageOption}
                     value={languageOption}
@@ -180,9 +180,9 @@ const Header: React.FC = () => {
               <select
                 className="bg-transparent border-none rounded-full cursor-pointer focus:outline-none"
                 value={language}
-                onChange={e => changeLanguageHandler(e.target.value)}
+                onChange={e => changeLanguageHandler(e.target.value as AvailableLanguages)}
               >
-                {availableLanguages.map((languageOption: any) => (
+                {availableLanguages.map((languageOption: string) => (
                   <option
                     key={languageOption}
                     value={languageOption}

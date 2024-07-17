@@ -1,15 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { Store, configureStore } from '@reduxjs/toolkit'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
-import appSettingsReducer from './appSlices/appSettings'
-import listUserReducer from './userSlices/listUser'
-import storeEmailReducer from './userSlices/storeEmail'
-import getUserPasswordsReducer from './passwordSlices/getUserPasswords'
-import getUserPasswordReducer from './passwordSlices/getUserPassword'
-import createUserPasswordReducer from './passwordSlices/createUserPassword'
-import updateUserPasswordReducer from './passwordSlices/updateUserPassword'
-import deleteUserPasswordReducer from './passwordSlices/deleteUserPassword'
+import { appSettingsReducer } from './appSlices/appSettings'
+import { listUserReducer } from './userSlices/listUser'
+import { storeEmailReducer } from './userSlices/storeEmail'
+import { getUserPasswordsReducer } from './passwordSlices/getUserPasswords'
+import { getUserPasswordReducer } from './passwordSlices/getUserPassword'
+import { createUserPasswordReducer } from './passwordSlices/createUserPassword'
+import { updateUserPasswordReducer } from './passwordSlices/updateUserPassword'
+import { deleteUserPasswordReducer } from './passwordSlices/deleteUserPassword'
 
-const store = configureStore({
+const store: Store = configureStore({
   reducer: {
     appSettings: appSettingsReducer,
     listUser: listUserReducer,

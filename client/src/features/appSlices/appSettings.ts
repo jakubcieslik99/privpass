@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AvailableLanguages, availableLanguages } from '../../constants/AppSettings'
 
 let language = localStorage.getItem('language')
@@ -11,7 +11,7 @@ export interface AppSettingsState {
   language: AvailableLanguages
 }
 
-export const appSettingsSlice = createSlice({
+export const appSettingsSlice: Slice<AppSettingsState> = createSlice({
   name: 'appSettings',
   initialState: { language } as AppSettingsState,
   reducers: {
@@ -23,4 +23,4 @@ export const appSettingsSlice = createSlice({
 })
 
 export const { changeLanguage } = appSettingsSlice.actions
-export default appSettingsSlice.reducer
+export const appSettingsReducer = appSettingsSlice.reducer

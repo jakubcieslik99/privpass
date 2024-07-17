@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axiosProtected from '../../api/axiosProtected'
 
 interface updateUserPasswordData {
@@ -16,11 +16,12 @@ const updateUserPassword = createAsyncThunk(
         password: sendData.password,
       })
       return data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || error.toString()
       return thunkAPI.rejectWithValue(message)
     }
-  }
+  },
 )
 
 export { updateUserPassword }
@@ -33,7 +34,7 @@ interface updateUserPasswordState {
   errorMessage: string
 }
 
-export const updateUserPasswordSlice = createSlice({
+export const updateUserPasswordSlice: Slice<updateUserPasswordState> = createSlice({
   name: 'passwords/updateUserPassword',
   initialState: {
     loading: false,
@@ -51,7 +52,7 @@ export const updateUserPasswordSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(updateUserPassword.pending, (state, _action) => {
+    builder.addCase(updateUserPassword.pending, state => {
       state.loading = true
       state.success = false
       state.error = false
@@ -61,6 +62,7 @@ export const updateUserPasswordSlice = createSlice({
       state.success = true
       state.successMessage = action.payload.message
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(updateUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -72,4 +74,4 @@ export const updateUserPasswordSlice = createSlice({
 })
 
 export const { successReset, errorReset } = updateUserPasswordSlice.actions
-export default updateUserPasswordSlice.reducer
+export const updateUserPasswordReducer = updateUserPasswordSlice.reducer

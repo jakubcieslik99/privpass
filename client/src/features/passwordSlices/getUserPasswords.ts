@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
 //import { RootState } from '../store'
 import axiosProtected from '../../api/axiosProtected'
 import { ListedPasswordObject } from '../../components/profileScreen/ListedPassword'
@@ -14,9 +14,10 @@ const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (s
     //const { listUser } = thunkAPI.getState() as RootState
 
     const { data } = await axiosProtected.get(
-      `/passwords/getUserPasswords?searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`
+      `/passwords/getUserPasswords?searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`,
     )
     return data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -33,7 +34,7 @@ interface getUserPasswordsState {
   passwords: [ListedPasswordObject] | []
 }
 
-export const getUserPasswordsSlice = createSlice({
+export const getUserPasswordsSlice: Slice<getUserPasswordsState> = createSlice({
   name: 'passwords/getUserPasswords',
   initialState: {
     loading: false,
@@ -57,6 +58,7 @@ export const getUserPasswordsSlice = createSlice({
       state.aborted = false
       state.passwords = action.payload.passwords
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder.addCase(getUserPasswords.rejected, (state, action: PayloadAction<any>) => {
       if (action.payload) {
         state.loading = false
@@ -68,4 +70,4 @@ export const getUserPasswordsSlice = createSlice({
 })
 
 export const { passwordsReset } = getUserPasswordsSlice.actions
-export default getUserPasswordsSlice.reducer
+export const getUserPasswordsReducer = getUserPasswordsSlice.reducer

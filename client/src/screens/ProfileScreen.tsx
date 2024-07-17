@@ -17,7 +17,7 @@ interface URLStructure {
   sortOrder?: string
 }
 
-let URL: URLStructure = {}
+const URL: URLStructure = {}
 
 const ProfileScreen: React.FC = () => {
   //variables
@@ -58,7 +58,7 @@ const ProfileScreen: React.FC = () => {
       getUserPasswords({
         searchKeyword: searchParams.get('searchKeyword') || '',
         sortOrder: searchParams.get('sortOrder') || 'atoz',
-      })
+      }),
     )
     return () => {
       getUserPasswordsPromise.abort()

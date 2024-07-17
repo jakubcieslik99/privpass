@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { Slice, createSlice } from '@reduxjs/toolkit'
 
 interface storeEmailState {
   email: string
 }
 
-export const storeEmailSlice = createSlice({
+export const storeEmailSlice: Slice<storeEmailState> = createSlice({
   name: 'storeEmail',
   initialState: {
     email: '',
@@ -20,4 +20,4 @@ export const storeEmailSlice = createSlice({
 })
 
 export const { emailSet, emailReset } = storeEmailSlice.actions
-export default storeEmailSlice.reducer
+export const storeEmailReducer = storeEmailSlice.reducer
