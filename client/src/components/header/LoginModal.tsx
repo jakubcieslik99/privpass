@@ -22,11 +22,11 @@ const LoginModal = (props: LoginModalProps) => {
   const closeHandler = () => {
     props.setIsOpen(false)
     setTimeout(() => {
-      success && dispatch(successReset())
-      error && dispatch(errorReset())
-      if (successMessage || errorMessage) dispatch(messageReset())
+      success && dispatch(successReset(null))
+      error && dispatch(errorReset(null))
+      if (successMessage || errorMessage) dispatch(messageReset(null))
 
-      email && dispatch(emailReset())
+      email && dispatch(emailReset(null))
 
       setLoginFormSwitch(true)
     }, 250)

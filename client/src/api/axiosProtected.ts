@@ -57,8 +57,8 @@ const resIntercept = axiosProtected.interceptors.response.use(
         prevRequest.headers['Authorization'] = `Bearer ${payload.accessToken}`
         return axiosProtected(prevRequest)
       } else {
-        store.dispatch(passwordsReset())
-        store.dispatch(userInfoReset())
+        store.dispatch(passwordsReset(null))
+        store.dispatch(userInfoReset(null))
         store.dispatch(logoutUser())
         return Promise.reject(payload)
       }

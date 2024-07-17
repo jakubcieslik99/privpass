@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import { AnyAction } from 'redux'
 import { Transition } from '@headlessui/react'
 import { RiHashtag, RiLockPasswordFill } from 'react-icons/ri'
 import { FaEye, FaEyeSlash, FaEdit, FaTrashAlt } from 'react-icons/fa'
@@ -35,16 +36,17 @@ const ListedPassword = (props: ListedPasswordProps) => {
   //handlers
   const showPasswordHandler = () => {
     if (!passwordVisible) {
-      const getUserPasswordPromise = dispatch(getUserPassword({ id: props.listedPassword._id }))
+      const getUserPasswordPromise = dispatch(getUserPassword({ id: props.listedPassword._id }) as unknown as AnyAction)
       getUserPasswordAbort1.current = getUserPasswordPromise.abort
       getUserPasswordPromise
         .unwrap()
-        .then(payload => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((payload: any) => {
           setPasswordString(payload.password)
           setPasswordVisible(true)
-          dispatch(idPasswordReset())
+          dispatch(idPasswordReset(null))
         })
-        .catch(error => error)
+        .catch((error: unknown) => error)
     } else {
       setPasswordVisible(false)
       setPasswordString('')
@@ -52,16 +54,17 @@ const ListedPassword = (props: ListedPasswordProps) => {
   }
 
   const openEditPasswordModalHandler = () => {
-    const getUserPasswordPromise = dispatch(getUserPassword({ id: props.listedPassword._id }))
+    const getUserPasswordPromise = dispatch(getUserPassword({ id: props.listedPassword._id }) as unknown as AnyAction)
     getUserPasswordAbort2.current = getUserPasswordPromise.abort
     getUserPasswordPromise
       .unwrap()
-      .then(payload => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .then((payload: any) => {
         props.setPasswordToEdit({ id: payload._id, name: props.listedPassword.name, password: payload.password })
         props.setEditPasswordModalIsOpen(true)
-        dispatch(idPasswordReset())
+        dispatch(idPasswordReset(null))
       })
-      .catch(error => error)
+      .catch((error: unknown) => error)
   }
 
   const openConfirmDeleteModalHandler = () => {

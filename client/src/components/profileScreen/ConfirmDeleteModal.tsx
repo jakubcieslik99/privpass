@@ -1,5 +1,6 @@
 import { useRef, useEffect, Fragment } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { AnyAction } from 'redux'
 import { Transition, Dialog } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
@@ -33,14 +34,14 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
     props.setIsOpen(false)
     setTimeout(() => {
       isMounted.current && props.setPasswordToDelete({ id: '', name: '' })
-      success && dispatch(successReset())
-      error && dispatch(errorReset())
+      success && dispatch(successReset(null))
+      error && dispatch(errorReset(null))
     }, 200)
   }
 
   const submitHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     event.preventDefault()
-    dispatch(deleteUserPassword({ id: props.passwordToDelete.id }))
+    dispatch(deleteUserPassword({ id: props.passwordToDelete.id }) as unknown as AnyAction)
       .unwrap()
       .then(() => {
         if (isMounted.current) {
@@ -48,15 +49,15 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
             getUserPasswords({
               searchKeyword: searchParams.get('searchKeyword') || '',
               sortOrder: searchParams.get('sortOrder') || 'atoz',
-            })
+            }) as unknown as AnyAction,
           )
           getUserPasswordsAbort.current = getUserPasswordsPromise.abort
         } else {
-          dispatch(successReset())
-          dispatch(errorReset())
+          dispatch(successReset(null))
+          dispatch(errorReset(null))
         }
       })
-      .catch(error => error)
+      .catch((error: unknown) => error)
   }
 
   //useEffects
@@ -66,8 +67,8 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
       isMounted.current = false
       if (getUserPasswordsAbort.current) {
         getUserPasswordsAbort.current()
-        dispatch(successReset())
-        dispatch(errorReset())
+        dispatch(successReset(null))
+        dispatch(errorReset(null))
       }
     }
   }, [isMounted, getUserPasswordsAbort, dispatch])

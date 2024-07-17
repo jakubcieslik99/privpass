@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { AnyAction } from 'redux'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
@@ -38,7 +39,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
 
   //handlers
   const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
-    dispatch(registerSendCode({ email: data.registerEmail }))
+    dispatch(registerSendCode({ email: data.registerEmail }) as unknown as AnyAction)
       .unwrap()
       .then(() => {
         dispatch(emailSet(data.registerEmail))
@@ -46,7 +47,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
         props.setFormSwitch(false)
         setTimeout(() => reset(), 200)
       })
-      .catch(error => error)
+      .catch((error: unknown) => error)
   }
 
   return (
@@ -158,7 +159,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
 
   //handlers
   const submitHandler: SubmitHandler<RegisterCodeFormValues> = data => {
-    dispatch(confirmCode({ code: data.registerCode, email: email }))
+    dispatch(confirmCode({ code: data.registerCode, email: email }) as unknown as AnyAction)
       .unwrap()
       .then(() => {
         setTimeout(() => {
@@ -169,7 +170,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
           setTimeout(() => reset(), 200)
         }, 3000)
       })
-      .catch(error => error)
+      .catch((error: unknown) => error)
   }
 
   //useEffects

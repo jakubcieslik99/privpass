@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect, Fragment } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { AnyAction } from 'redux'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition, Dialog } from '@headlessui/react'
@@ -60,8 +61,8 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
     setTimeout(() => {
       isMounted.current && setPasswordToShow(false)
       reset()
-      success && dispatch(successReset())
-      error && dispatch(errorReset())
+      success && dispatch(successReset(null))
+      error && dispatch(errorReset(null))
     }, 200)
   }
 
@@ -71,7 +72,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
         id: props.passwordToEdit.id,
         name: data.editName,
         password: data.editPassword,
-      })
+      }) as unknown as AnyAction,
     )
       .unwrap()
       .then(() => {
@@ -80,15 +81,15 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
             getUserPasswords({
               searchKeyword: searchParams.get('searchKeyword') || '',
               sortOrder: searchParams.get('sortOrder') || 'atoz',
-            })
+            }) as unknown as AnyAction,
           )
           getUserPasswordsAbort.current = getUserPasswordsPromise.abort
         } else {
-          dispatch(successReset())
-          dispatch(errorReset())
+          dispatch(successReset(null))
+          dispatch(errorReset(null))
         }
       })
-      .catch(error => error)
+      .catch((error: unknown) => error)
   }
 
   //useEffects
@@ -98,8 +99,8 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
       isMounted.current = false
       if (getUserPasswordsAbort.current) {
         getUserPasswordsAbort.current()
-        dispatch(successReset())
-        dispatch(errorReset())
+        dispatch(successReset(null))
+        dispatch(errorReset(null))
       }
     }
   }, [isMounted, getUserPasswordsAbort, dispatch])

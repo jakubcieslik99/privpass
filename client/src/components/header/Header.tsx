@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { AnyAction } from 'redux'
 import { scroller } from 'react-scroll'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../features/store'
@@ -50,9 +51,9 @@ const Header: React.FC = () => {
     navigate('/', { replace: true })
     menuIsOpen && setMenuIsOpen(false)
 
-    dispatch(passwordsReset())
-    dispatch(userInfoReset())
-    dispatch(logoutUser())
+    dispatch(passwordsReset(null))
+    dispatch(userInfoReset(null))
+    dispatch(logoutUser() as unknown as AnyAction)
   }
 
   const changeLanguageHandler = (value: AvailableLanguages) => {

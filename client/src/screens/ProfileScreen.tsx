@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { AnyAction } from 'redux'
 import { FaTools, FaShareAlt, FaSearch, FaPlus } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../features/store'
 import { getUserPasswords } from '../features/passwordSlices/getUserPasswords'
@@ -58,7 +59,7 @@ const ProfileScreen: React.FC = () => {
       getUserPasswords({
         searchKeyword: searchParams.get('searchKeyword') || '',
         sortOrder: searchParams.get('sortOrder') || 'atoz',
-      }),
+      }) as unknown as AnyAction,
     )
     return () => {
       getUserPasswordsPromise.abort()
@@ -148,7 +149,8 @@ const ProfileScreen: React.FC = () => {
 
             <div className="flex flex-col gap-3">
               {passwords.length > 0
-                ? passwords.map(element => (
+                ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  passwords.map((element: any) => (
                     <ListedPassword
                       key={element._id}
                       listedPassword={element}
