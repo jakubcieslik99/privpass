@@ -136,8 +136,6 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ⚙️ To build client app, you will need to add the following environment variables to your .env file
 
-- `VITE_APP_ENV`
-
 - `VITE_API_URL`
 
 ( ℹ️ - sample .env config file is provided in the client app directory under the name `.env.sample` )
