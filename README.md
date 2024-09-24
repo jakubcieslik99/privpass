@@ -42,14 +42,14 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ```bash
   cd privpass/server
-  npm install
+  pnpm install
 ```
 
 - Run server app in development mode
 
 ```bash
   npm run docker
-  npm run dev
+  pnpm run dev
 ```
 
 ℹ️ Instructions for running client app locally:
@@ -58,13 +58,13 @@ Express.js app as a backend (server) and React app as a frontend (client).
 
 ```bash
   cd privpass/client
-  npm install
+  pnpm install
 ```
 
 - Run client app in development mode
 
 ```bash
-  npm run dev
+  pnpm run dev
 ```
 
 ## Deployment
@@ -74,22 +74,28 @@ Express.js app as a backend (server) and React app as a frontend (client).
 - Transpile to production build
 
 ```bash
-  npm run build
+  pnpm run build
 ```
 
 - Run server app in production mode
 
 ```bash
-  npm install --omit=dev
-  npm run start
+  pnpm install --prod
+  pnpm run start
 ```
 
-ℹ️ Instructions for building client app to production
+ℹ️ Instructions for building and running client app in production
 
 - Create production build
 
 ```bash
-  npm run build
+  pnpm run build
+```
+
+- Run client app in production mode
+
+```bash
+  pnpm run preview
 ```
 
 ## Environment Variables
@@ -97,45 +103,33 @@ Express.js app as a backend (server) and React app as a frontend (client).
 ⚙️ To run server app, you will need to add the following environment variables to your .env file
 
 - `DIR` _(default already set for development)_
-
 - `ENV` _(default already set for development)_
 
 - `MONGO_VER`
 
 - `HOST`
-
 - `PORT`
-
 - `API_URL`
-
 - `APP_URL`
 
 - `MONGO_HOST`
-
 - `MONGO_PORT`
-
 - `MONGO_DB`
-
 - `MONGO_USER`
-
 - `MONGO_PASSWORD`
 
 - `JWT_ACCESS_TOKEN_SECRET`
-
 - `JWT_REFRESH_TOKEN_SECRET`
-
 - `CRYPTO_SECRET`
-
 - `GMAIL_ADDRESS`
-
 - `GMAIL_PASSWORD`
-
 - `NOREPLY_ADDRESS`
 
 ( ℹ️ - sample .env config file is provided in the server directory under the name `.env.sample` )
 
 ⚙️ To build client app, you will need to add the following environment variables to your .env file
 
+- `VITE_PREVIEW_PORT`
 - `VITE_API_URL`
 
 ( ℹ️ - sample .env config file is provided in the client app directory under the name `.env.sample` )

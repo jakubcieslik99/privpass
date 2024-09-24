@@ -1,0 +1,62 @@
+name: Deployment on "main" branch server folder push
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'server/**'
+      - '!.github/**'
+      - '!**/.gitignore'
+      - '!**/.eslintrc.json'
+      - '!**/.prettierrc.json'
+      - '!**/*.md'
+      - '!**/LICENSE'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: CI/CD
+    env:
+      ENV: production
+
+    strategy:
+      matrix:
+        folder: ['server']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Extract repository name
+        run: echo "DIR=$(basename ${{ github.repository }})-${{ matrix.folder }}" >> $GITHUB_ENV
+      - name: Prepare secrets
+        uses: jakubcieslik99/secrets-vars-to-env-file-action@main
+        with:
+          secrets: ${{ toJSON(secrets) }}
+          vars: ${{ toJSON(vars) }}
+          hydrate-env: false
+          exclude: 'VPS_HOST,VPS_USER,VPS_PASSWORD'
+          append-script-envs: 'DIR,ENV'
+      - name: Transfer files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: 22
+          source: 'server/*,.env,!**/node_modules,!.git,!.github,!**/.env.sample'
+          target: '/data/services/${{ env.DIR }}'
+      - name: Build and run service container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: 22
+          envs: DIR
+          script: |
+            cd /data/services/$DIR/server
+            rm -f .env
+            mv ../.env .env
+            docker-compose -f docker-compose.yml -p $DIR up --build -d
+            exit
