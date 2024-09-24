@@ -1,0 +1,19 @@
+# Vite production docker-compose file
+services:
+  service:
+    container_name: ${DIR} # name of your "repository"/"repository"-"monorepo subfolder"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env # attached by the GitHub Actions deployment action (contains DIR aswell)
+    ports:
+      - ${VITE_PREVIEW_PORT}:${VITE_PREVIEW_PORT}
+    expose:
+      - ${VITE_PREVIEW_PORT}
+    networks:
+      - proxy # your custom Docker network in production
+networks:
+  proxy: # your custom Docker network in production
+    external: true
