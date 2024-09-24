@@ -1,24 +1,21 @@
+# Node.js production docker-compose file
 services:
-  mongo:
-    container_name: ${DIR}_mongo_dev
-    image: bitnami/mongodb:${MONGO_VER}
+  service:
+    container_name: ${DIR} # name of your "repository"/"repository"-"monorepo subfolder"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - mongo_dev_data:/bitnami/mongodb
-    environment:
-      MONGODB_DATABASE: ${MONGO_DB}
-      MONGODB_USERNAME: ${MONGO_USER}
-      MONGODB_PASSWORD: ${MONGO_PASSWORD}
-      MONGODB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      - ./logs:/service/logs # optional folder for logs persistence
+    env_file:
+      - .env # attached by the GitHub Actions deployment action (contains DIR & ENV aswell)
     ports:
-      - ${MONGO_PORT}:27017
+      - ${PORT}:${PORT}
     expose:
-      - ${MONGO_PORT}
+      - ${PORT}
     networks:
-      - internalnet
-
-volumes:
-  mongo_dev_data: {}
-
+      - proxy # your custom Docker network in production
 networks:
-  internalnet:
-    driver: bridge
+  proxy: # your custom Docker network in production
+    external: true

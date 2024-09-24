@@ -1,0 +1,21 @@
+# Node.js local development docker-compose file
+services:
+  # https://hub.docker.com/r/bitnami/mongodb
+  mongo:
+    container_name: ${DIR}_mongo_dev
+    image: bitnami/mongodb:${MONGO_VER}
+    volumes:
+      - mongo_dev_data:/bitnami/mongodb
+    env_file:
+      - .env
+    environment:
+      MONGODB_DATABASE: ${MONGO_DB} # database
+      MONGODB_USERNAME: ${MONGO_USER} # root
+      MONGODB_PASSWORD: ${MONGO_PASSWORD} # Passw0rd!
+      MONGODB_ROOT_PASSWORD: ${MONGO_PASSWORD} # Passw0rd!
+    ports:
+      - ${MONGO_PORT}:27017
+    expose:
+      - ${MONGO_PORT}
+volumes:
+  mongo_dev_data: {}
