@@ -79,8 +79,8 @@ importers:
         specifier: ^9.0.7
         version: 9.0.7
       '@types/node':
-        specifier: ^18.19.53
-        version: 18.19.53
+        specifier: ^18.19.54
+        version: 18.19.54
       '@types/nodemailer':
         specifier: ^6.4.16
         version: 6.4.16
@@ -647,8 +647,8 @@ packages:
   '@types/mime@1.3.5':
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
 
-  '@types/node@18.19.53':
-    resolution: {integrity: sha512-GLxgUgHhDKO1Edw9Q0lvMbiO/IQXJwJlMaqxSGBXMpPy8uhkCs2iiPFaB2Q/gmobnFkckD3rqTBMVjXdwq+nKg==}
+  '@types/node@18.19.54':
+    resolution: {integrity: sha512-+BRgt0G5gYjTvdLac9sIeE0iZcJxi4Jc4PV5EUzqi+88jmQLr+fRZdv2tCTV7IHKSGxM6SaLoOXQWWUiLUItMw==}
 
   '@types/nodemailer@6.4.16':
     resolution: {integrity: sha512-uz6hN6Pp0upXMcilM61CoKyjT7sskBoOWpptkjjJp8jIMlTdc3xG01U7proKkXzruMS4hS0zqtHNkNPFB20rKQ==}
@@ -2679,11 +2679,11 @@ snapshots:
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
 
   '@types/cookie-parser@1.4.7':
     dependencies:
@@ -2691,11 +2691,11 @@ snapshots:
 
   '@types/cors@2.8.17':
     dependencies:
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
 
   '@types/express-serve-static-core@4.19.6':
     dependencies:
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
       '@types/qs': 6.9.16
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -2717,17 +2717,17 @@ snapshots:
 
   '@types/jsonwebtoken@9.0.7':
     dependencies:
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
 
   '@types/mime@1.3.5': {}
 
-  '@types/node@18.19.53':
+  '@types/node@18.19.54':
     dependencies:
       undici-types: 5.26.5
 
   '@types/nodemailer@6.4.16':
     dependencies:
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
 
   '@types/qs@6.9.16': {}
 
@@ -2738,12 +2738,12 @@ snapshots:
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
 
   '@types/serve-static@1.15.7':
     dependencies:
       '@types/http-errors': 2.0.4
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
       '@types/send': 0.17.4
 
   '@types/voucher-code-generator@1.1.3': {}
@@ -2752,7 +2752,7 @@ snapshots:
 
   '@types/whatwg-url@8.2.2':
     dependencies:
-      '@types/node': 18.19.53
+      '@types/node': 18.19.54
       '@types/webidl-conversions': 7.0.3
 
   '@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@4.9.5))(eslint@8.57.1)(typescript@4.9.5)':
