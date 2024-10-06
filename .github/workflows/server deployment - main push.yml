@@ -35,7 +35,7 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
           vars: ${{ toJSON(vars) }}
           hydrate-env: false
-          exclude: 'VPS_HOST,VPS_USER,VPS_PASSWORD'
+          exclude: 'VPS_HOST,VPS_USER,VPS_KEY'
           append-script-envs: 'DIR,ENV'
       - name: Transfer files
         uses: appleboy/scp-action@master
