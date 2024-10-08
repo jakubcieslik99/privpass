@@ -30,7 +30,7 @@ jobs:
       - name: Prepare secrets
         uses: jakubcieslik99/secrets-vars-to-env-file-action@main
         with:
-          secrets: ${{ toJSON(secrets) }}
+          secrets: false
           vars: ${{ toJSON(vars) }}
           hydrate-env: false
           include: 'VITE_PREVIEW_PORT,VITE_API_URL'
