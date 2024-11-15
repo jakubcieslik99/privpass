@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.8.9",
+  "version": "1.8.10",
   "description": "PrivPASS",
   "type": "module",
   "main": "index.ts",
@@ -15,13 +15,13 @@
   },
   "author": "Jakub Cieślik",
   "license": "UNLICENSED",
-  "packageManager": "pnpm@9.12.1+sha512.e5a7e52a4183a02d5931057f7a0dbff9d5e9ce3161e33fa68ae392125b79282a8a8a470a51dfc8a0ed86221442eb2fb57019b0990ed24fab519bf0e1bc5ccfc4",
+  "packageManager": "pnpm@9.13.1+sha512.5ac37545851c55ec58521b6c285db6f848f93ca70889beb4145f5b40fe234e4ea4faee4dad12ac5c139e494374c65d9c3a6ec9a25954378fa286a250e68d2f20",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.6",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.21.0",
+    "express": "^4.21.1",
     "express-rate-limit": "^6.11.2",
     "express-slow-down": "^1.6.0",
     "helmet": "^6.2.0",
@@ -29,7 +29,7 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.13.3",
-    "nodemailer": "^6.9.15",
+    "nodemailer": "^6.9.16",
     "pino": "^8.21.0",
     "pino-pretty": "^10.3.1",
     "voucher-code-generator": "^1.3.0"
@@ -42,7 +42,7 @@
     "@types/express-slow-down": "^1.3.5",
     "@types/http-errors": "^2.0.4",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^18.19.54",
+    "@types/node": "^18.19.64",
     "@types/nodemailer": "^6.4.16",
     "@types/voucher-code-generator": "^1.1.3",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -52,7 +52,7 @@
     "eslint-config-prettier": "^9.1.0",
     "nodemon": "^2.0.22",
     "prettier": "^3.3.3",
-    "tsx": "^4.19.1",
+    "tsx": "^4.19.2",
     "typescript": "^4.9.5"
   }
 }
