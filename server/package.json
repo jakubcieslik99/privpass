@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.8.10",
+  "version": "1.8.11",
   "description": "PrivPASS",
   "type": "module",
   "main": "index.ts",
@@ -15,7 +15,7 @@
   },
   "author": "Jakub Cieślik",
   "license": "UNLICENSED",
-  "packageManager": "pnpm@9.13.1+sha512.5ac37545851c55ec58521b6c285db6f848f93ca70889beb4145f5b40fe234e4ea4faee4dad12ac5c139e494374c65d9c3a6ec9a25954378fa286a250e68d2f20",
+  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
