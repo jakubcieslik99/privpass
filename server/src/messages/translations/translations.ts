@@ -1,6 +1,18 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { promises as fs } from 'fs'
 import { AvailableLanguages, availableLanguages } from '../../constants/AvailableLanguages.js'
-import en from './en.json' assert { type: 'json' }
-import pl from './pl.json' assert { type: 'json' }
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const loadJSON = async (filePath: string) => {
+  const data = await fs.readFile(filePath, 'utf-8')
+  return JSON.parse(data)
+}
+
+const en = await loadJSON(path.resolve(__dirname, './en.json'))
+const pl = await loadJSON(path.resolve(__dirname, './pl.json'))
 
 export const tr = (key: string, language: AvailableLanguages): string => {
   let langData: { [key: string]: string } = {}
