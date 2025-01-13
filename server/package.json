@@ -42,7 +42,7 @@
     "@types/express-slow-down": "^1.3.5",
     "@types/http-errors": "^2.0.4",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^18.19.68",
+    "@types/node": "^18.19.70",
     "@types/nodemailer": "^6.4.17",
     "@types/voucher-code-generator": "^1.1.3",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
