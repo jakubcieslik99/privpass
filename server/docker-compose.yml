@@ -16,6 +16,9 @@ services:
       - ${PORT}
     networks:
       - proxy # your custom Docker network in production
+      - vpn # your custom Docker network in production
 networks:
   proxy: # your custom Docker network in production
+    external: true
+  vpn: # your custom Docker network in production
     external: true
