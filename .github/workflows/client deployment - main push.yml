@@ -33,7 +33,7 @@ jobs:
           secrets: false
           vars: ${{ toJSON(vars) }}
           hydrate-env: false
-          include: 'VITE_PREVIEW_PORT,VITE_API_URL'
+          include: 'VITE_PREVIEW_PORT,VITE_API_URL,VITE_APP_URL'
           append-script-envs: 'DIR'
       - name: Transfer files
         uses: appleboy/scp-action@master
