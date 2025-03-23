@@ -15,5 +15,6 @@ export default defineConfig({
   preview: {
     port: process.env.VITE_PREVIEW_PORT ? parseInt(process.env.VITE_PREVIEW_PORT) : 3000,
     strictPort: true,
+    allowedHosts: [process.env.VITE_APP_URL ? process.env.VITE_APP_URL.replace(/https?:\/\//, '') : 'localhost'],
   },
 })
