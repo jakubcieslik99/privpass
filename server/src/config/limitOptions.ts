@@ -9,10 +9,6 @@ const rateLimiter = {
   },
 }
 
-const speedLimiter = {
-  windowMs: 60 * 1000,
-  delayAfter: 5,
-  delayMs: 200,
-}
+const speedLimiter = { windowMs: 60 * 1000, delayAfter: 5, delayMs: () => 200 }
 
 export { rateLimiter, speedLimiter }

@@ -34,10 +34,7 @@ const loadSecrets = async (): Promise<Secrets> => {
 
   await client
     .auth()
-    .universalAuth.login({
-      clientId: infisicalCredentials.clientId,
-      clientSecret: infisicalCredentials.clientSecret,
-    })
+    .universalAuth.login({ clientId: infisicalCredentials.clientId, clientSecret: infisicalCredentials.clientSecret })
     .catch((error: unknown) => {
       throw new Error(`Failed to log in to Infisical: ${error}`)
     })
@@ -81,13 +78,7 @@ const config = {
 }
 
 const log = logger.default({
-  transport: {
-    target: 'pino-pretty',
-    options: {
-      translateTime: 'SYS:yyyy/mm/dd HH:MM:ss',
-      ignore: 'pid,hostname',
-    },
-  },
+  transport: { target: 'pino-pretty', options: { translateTime: 'SYS:yyyy/mm/dd HH:MM:ss', ignore: 'pid,hostname' } },
 })
 
 export { config, log }

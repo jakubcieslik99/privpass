@@ -35,10 +35,7 @@ const registerSendCode = async (req: Request, res: Response) => {
   const salt = await bcrypt.genSalt(10)
   const hashedCode = await bcrypt.hash(code, salt)
 
-  const createUser = new User({
-    email: validationResult.email.toLowerCase(),
-    code: hashedCode,
-  })
+  const createUser = new User({ email: validationResult.email.toLowerCase(), code: hashedCode })
   await createUser.save()
 
   await sendEmail(
@@ -115,14 +112,7 @@ const confirmCode = async (req: Request, res: Response) => {
       maxAge: 900 * 1000,
     })
     .status(200)
-    .send({
-      message: CONFIRMED,
-      userInfo: {
-        id: checkedUser.id,
-        email: checkedUser.email,
-      },
-      accessToken: accessToken,
-    })
+    .send({ message: CONFIRMED, userInfo: { id: checkedUser.id, email: checkedUser.email }, accessToken: accessToken })
 }
 
 // GET - /users/refreshAccessToken

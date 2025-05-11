@@ -17,9 +17,7 @@ const passwordSchema = new Schema<Password>(
     encryptedPassword: { type: String, required: true },
     iv: { type: String, required: true },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true },
 )
 
 const passwordModel = model('Password', passwordSchema)

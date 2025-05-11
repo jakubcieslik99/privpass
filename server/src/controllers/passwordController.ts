@@ -12,10 +12,7 @@ const getUserPasswords = async (req: Request, res: Response) => {
 
   let query = {}
   if (req.query.searchKeyword) {
-    query = {
-      addedBy: authenticatedUser.id,
-      name: { $regex: req.query.searchKeyword, $options: 'i' },
-    }
+    query = { addedBy: authenticatedUser.id, name: { $regex: req.query.searchKeyword, $options: 'i' } }
   } else query = { addedBy: authenticatedUser.id }
 
   let sortOrder = {}

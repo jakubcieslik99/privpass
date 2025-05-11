@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { ErrorRequestHandler } from 'express'
 import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 import cors from 'cors'
@@ -30,9 +30,9 @@ app.use(slowDown(speedLimiter))
 app.use('/users', userRoute)
 app.use('/passwords', passwordRoute)
 // 404 error
-app.all('*', (_req, _res, next) => next(createError(404, RESOURCE_DOES_NOT_EXIST)))
+app.all('/{*splat}', (_req, _res, next) => next(createError(404, RESOURCE_DOES_NOT_EXIST)))
 // errors handling middleware
-app.use(isError)
+app.use(isError as ErrorRequestHandler)
 
 app.on('ready', () => {
   app.listen(config.PORT, () => log.info(`Server started on port ${config.PORT}`))
