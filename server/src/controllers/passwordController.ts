@@ -88,7 +88,7 @@ const deleteUserPassword = async (req: Request, res: Response) => {
   const deletePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
   if (!deletePassword) throw createError(404, PASSWORD_DOES_NOT_EXIST)
 
-  await deletePassword.remove()
+  await deletePassword.deleteOne(deletePassword._id)
 
   return res.status(200).send({ message: PASSWORD_DELETED })
 }
