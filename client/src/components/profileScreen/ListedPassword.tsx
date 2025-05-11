@@ -21,9 +21,9 @@ interface ListedPasswordProps {
 }
 
 const ListedPassword = (props: ListedPasswordProps) => {
-  //variables
-  const getUserPasswordAbort1 = useRef<(reason?: string | undefined) => void>()
-  const getUserPasswordAbort2 = useRef<(reason?: string | undefined) => void>()
+  // variables
+  const getUserPasswordAbort1 = useRef<(reason?: string | undefined) => void>(undefined)
+  const getUserPasswordAbort2 = useRef<(reason?: string | undefined) => void>(undefined)
 
   const { language } = useAppSelector(state => state.appSettings)
   const { loading } = useAppSelector(state => state.getUserPasswords)
@@ -33,14 +33,14 @@ const ListedPassword = (props: ListedPasswordProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordString, setPasswordString] = useState('')
 
-  //handlers
+  // handlers
   const showPasswordHandler = () => {
     if (!passwordVisible) {
       const getUserPasswordPromise = dispatch(getUserPassword({ id: props.listedPassword._id }) as unknown as AnyAction)
       getUserPasswordAbort1.current = getUserPasswordPromise.abort
       getUserPasswordPromise
         .unwrap()
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         .then((payload: any) => {
           setPasswordString(payload.password)
           setPasswordVisible(true)
@@ -58,7 +58,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
     getUserPasswordAbort2.current = getUserPasswordPromise.abort
     getUserPasswordPromise
       .unwrap()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       .then((payload: any) => {
         props.setPasswordToEdit({ id: payload._id, name: props.listedPassword.name, password: payload.password })
         props.setEditPasswordModalIsOpen(true)
@@ -72,11 +72,11 @@ const ListedPassword = (props: ListedPasswordProps) => {
     props.setConfirmDeleteModalIsOpen(true)
   }
 
-  //useEffects
+  // useEffects
   useEffect(() => {
     return () => {
-      getUserPasswordAbort1.current && getUserPasswordAbort1.current()
-      getUserPasswordAbort2.current && getUserPasswordAbort2.current()
+      if (getUserPasswordAbort1.current) getUserPasswordAbort1.current()
+      if (getUserPasswordAbort2.current) getUserPasswordAbort2.current()
     }
   }, [getUserPasswordAbort1, getUserPasswordAbort2])
 

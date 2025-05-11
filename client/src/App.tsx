@@ -12,10 +12,7 @@ import ScrollTop from './components/universal/ScrollTop'
 
 export interface LocationProps {
   pathname: string
-  state: {
-    from: string
-    loginModalIsOpen?: boolean
-  } | null
+  state: { from: string; loginModalIsOpen?: boolean } | null
 }
 
 const App: React.FC = () => {

@@ -6,9 +6,7 @@ interface storeEmailState {
 
 export const storeEmailSlice: Slice<storeEmailState> = createSlice({
   name: 'storeEmail',
-  initialState: {
-    email: '',
-  } as storeEmailState,
+  initialState: { email: '' } as storeEmailState,
   reducers: {
     emailSet: (state, action) => {
       state.email = action.payload

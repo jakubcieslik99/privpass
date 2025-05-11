@@ -25,9 +25,9 @@ interface AddPasswordFormValues {
 }
 
 const AddPasswordModal = (props: AddPasswordModalProps) => {
-  //variables
+  // variables
   const isMounted = useRef(true)
-  const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>()
+  const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>(undefined)
 
   const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.createUserPassword)
@@ -43,32 +43,22 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<AddPasswordFormValues>({
-    defaultValues: {
-      addName: '',
-      addPassword: '',
-    },
-  })
+  } = useForm<AddPasswordFormValues>({ defaultValues: { addName: '', addPassword: '' } })
   const watchAddPassword = watch('addPassword')
 
-  //handlers
+  // handlers
   const closeHandler = () => {
     props.setIsOpen(false)
     setTimeout(() => {
-      isMounted.current && setPasswordToShow(false)
+      if (isMounted.current) setPasswordToShow(false)
       reset()
-      success && dispatch(successReset(null))
-      error && dispatch(errorReset(null))
+      if (success) dispatch(successReset(null))
+      if (error) dispatch(errorReset(null))
     }, 200)
   }
 
   const submitHandler: SubmitHandler<AddPasswordFormValues> = data => {
-    dispatch(
-      createUserPassword({
-        name: data.addName,
-        password: data.addPassword,
-      }) as unknown as AnyAction,
-    )
+    dispatch(createUserPassword({ name: data.addName, password: data.addPassword }) as unknown as AnyAction)
       .unwrap()
       .then(() => {
         if (isMounted.current) {
@@ -87,7 +77,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
       .catch((error: unknown) => error)
   }
 
-  //useEffects
+  // useEffects
   useEffect(() => {
     isMounted.current = true
     return () => {
@@ -131,7 +121,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                 className="flex flex-col w-full max-w-md px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
                 onSubmit={handleSubmit(submitHandler)}
               >
-                {/*modal header*/}
+                {/* modal header*/}
                 <Dialog.Title className="flex items-center justify-between w-full text-2xl text-gray-800">
                   <div className="flex items-center">
                     <h2 className="font-semibold">{tr('addPassModalHeader', language)}</h2>
@@ -144,7 +134,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                   />
                 </Dialog.Title>
 
-                {/*modal body*/}
+                {/* modal body*/}
                 <div className="flex flex-col w-full mt-4 mb-5 overflow-y-auto">
                   <Success
                     isOpen={success && successMessage !== '' ? true : false}
@@ -238,7 +228,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                   </div>
                 </div>
 
-                {/*modal footer*/}
+                {/* modal footer*/}
                 <div className="flex justify-center w-full mb-1">
                   <button
                     disabled={loading}

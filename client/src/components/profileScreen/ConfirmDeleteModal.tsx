@@ -19,9 +19,9 @@ interface ConfirmDeleteModalProps {
 }
 
 const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
-  //variables
+  // variables
   const isMounted = useRef(true)
-  const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>()
+  const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>(undefined)
 
   const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.deleteUserPassword)
@@ -29,13 +29,13 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
 
   const [searchParams] = useSearchParams()
 
-  //handlers
+  // handlers
   const closeHandler = () => {
     props.setIsOpen(false)
     setTimeout(() => {
-      isMounted.current && props.setPasswordToDelete({ id: '', name: '' })
-      success && dispatch(successReset(null))
-      error && dispatch(errorReset(null))
+      if (isMounted.current) props.setPasswordToDelete({ id: '', name: '' })
+      if (success) dispatch(successReset(null))
+      if (error) dispatch(errorReset(null))
     }, 200)
   }
 
@@ -60,7 +60,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
       .catch((error: unknown) => error)
   }
 
-  //useEffects
+  // useEffects
   useEffect(() => {
     isMounted.current = true
     return () => {
@@ -104,7 +104,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                 className="flex flex-col w-full max-w-md px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
                 onSubmit={submitHandler}
               >
-                {/*modal header*/}
+                {/* modal header*/}
                 <Dialog.Title className="flex items-center justify-between w-full text-2xl text-gray-800">
                   <div className="flex items-center">
                     <h2 className="font-semibold">{tr('confirmDelModalHeader', language)}</h2>
@@ -117,7 +117,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                   />
                 </Dialog.Title>
 
-                {/*modal body*/}
+                {/* modal body*/}
                 <div className="flex flex-col w-full my-4">
                   <Success
                     isOpen={success && successMessage !== '' ? true : false}
@@ -136,7 +136,7 @@ const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => {
                   </p>
                 </div>
 
-                {/*modal footer*/}
+                {/* modal footer*/}
                 <div className="relative flex justify-center w-full h-10 mb-1">
                   <Transition
                     className="absolute flex"

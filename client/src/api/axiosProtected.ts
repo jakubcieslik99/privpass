@@ -5,7 +5,6 @@ import { logoutUser, userInfoReset } from '../features/userSlices/listUser'
 import { passwordsReset } from '../features/passwordSlices/getUserPasswords'
 
 let store: AnyAction
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const injectStore = (_store: any) => {
   store = _store
 }
@@ -19,7 +18,7 @@ const axiosProtected = axios.create({
 const refreshAccessToken = async () => {
   try {
     const { data } = await axiosPublic.get('/users/refreshAccessToken', { withCredentials: true })
-    data?.accessToken && localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
+    if (data?.accessToken) localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
     return { type: 'data', payload: data }
   } catch (error: unknown) {
     return { type: 'error', payload: error }
@@ -67,7 +66,7 @@ const resIntercept = axiosProtected.interceptors.response.use(
   },
 )
 
-/*const axiosProtectedEject = () => {
+/* const axiosProtectedEject = () => {
   axiosProtected.interceptors.request.eject(reqIntercept)
   axiosProtected.interceptors.response.eject(resIntercept)
 }*/

@@ -14,7 +14,7 @@ import RegisterModal from './RegisterModal'
 import { LocationProps } from '../../App'
 
 const Header: React.FC = () => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
   const { userInfo } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
@@ -27,29 +27,20 @@ const Header: React.FC = () => {
   const { pathname, state } = useLocation() as LocationProps
   const locationLoginModalIsOpen = state?.loginModalIsOpen || false
 
-  //handlers
+  // handlers
   const scrollToTopHandler = () => {
-    menuIsOpen && setMenuIsOpen(false)
-    scroller.scrollTo('hero-section', {
-      spy: true,
-      smooth: 'easeInOutCubic',
-      duration: 500,
-    })
+    if (menuIsOpen) setMenuIsOpen(false)
+    scroller.scrollTo('hero-section', { spy: true, smooth: 'easeInOutCubic', duration: 500 })
   }
 
   const scrollToHandler = (to: string, offset: number) => {
-    menuIsOpen && setMenuIsOpen(false)
-    scroller.scrollTo(to, {
-      spy: true,
-      smooth: 'easeInOutCubic',
-      offset,
-      duration: 500,
-    })
+    if (menuIsOpen) setMenuIsOpen(false)
+    scroller.scrollTo(to, { spy: true, smooth: 'easeInOutCubic', offset, duration: 500 })
   }
 
   const logoutHandler = () => {
     navigate('/', { replace: true })
-    menuIsOpen && setMenuIsOpen(false)
+    if (menuIsOpen) setMenuIsOpen(false)
 
     dispatch(passwordsReset(null))
     dispatch(userInfoReset(null))
@@ -60,12 +51,12 @@ const Header: React.FC = () => {
     dispatch(changeLanguage(value))
   }
 
-  //useEffects
+  // useEffects
   useEffect(() => {
     if (locationLoginModalIsOpen) {
       setLoginModalIsOpen(true)
       navigate(pathname, { replace: true })
-      menuIsOpen && setMenuIsOpen(false)
+      if (menuIsOpen) setMenuIsOpen(false)
     }
   }, [pathname, locationLoginModalIsOpen, menuIsOpen, navigate])
 

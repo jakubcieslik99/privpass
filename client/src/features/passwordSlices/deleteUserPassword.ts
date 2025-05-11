@@ -13,7 +13,6 @@ const deleteUserPassword = createAsyncThunk(
         `${import.meta.env.VITE_API_URL}/passwords/deleteUserPassword/${sendData.id}`,
       )
       return data
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || error.toString()
       return thunkAPI.rejectWithValue(message)
@@ -59,7 +58,7 @@ export const deleteUserPasswordSlice: Slice<deleteUserPasswordState> = createSli
       state.success = true
       state.successMessage = action.payload.message
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     builder.addCase(deleteUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {

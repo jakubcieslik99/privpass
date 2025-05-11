@@ -9,7 +9,6 @@ const getUserPassword = createAsyncThunk('passwords/getUserPassword', async (sen
   try {
     const { data } = await axiosProtected.get(`/passwords/getUserPassword/${sendData.id}`)
     return data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -28,13 +27,7 @@ interface getUserPasswordState {
 
 export const getUserPasswordSlice: Slice<getUserPasswordState> = createSlice({
   name: 'passwords/getUserPassword',
-  initialState: {
-    loading: false,
-    error: false,
-    errorMessage: '',
-    id: '',
-    password: '',
-  } as getUserPasswordState,
+  initialState: { loading: false, error: false, errorMessage: '', id: '', password: '' } as getUserPasswordState,
   reducers: {
     idPasswordReset: state => {
       state.id = ''
@@ -51,7 +44,7 @@ export const getUserPasswordSlice: Slice<getUserPasswordState> = createSlice({
       state.id = action.payload._id
       state.password = action.payload.password
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     builder.addCase(getUserPassword.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {

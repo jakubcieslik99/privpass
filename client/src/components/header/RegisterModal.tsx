@@ -11,22 +11,22 @@ interface RegisterModalProps {
 }
 
 const RegisterModal = (props: RegisterModalProps) => {
-  //variables
+  // variables
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.listUser)
   const { email } = useAppSelector(state => state.storeEmail)
   const dispatch = useAppDispatch()
 
   const [registerFormSwitch, setRegisterFormSwitch] = useState(true)
 
-  //handlers
+  // handlers
   const closeHandler = () => {
     props.setIsOpen(false)
     setTimeout(() => {
-      success && dispatch(successReset(null))
-      error && dispatch(errorReset(null))
+      if (success) dispatch(successReset(null))
+      if (error) dispatch(errorReset(null))
       if (successMessage || errorMessage) dispatch(messageReset(null))
 
-      email && dispatch(emailReset(null))
+      if (email) dispatch(emailReset(null))
 
       setRegisterFormSwitch(true)
     }, 250)

@@ -27,10 +27,10 @@ interface EditPasswordFormValues {
 }
 
 const EditPasswordModal = (props: EditPasswordModalProps) => {
-  //variables
+  // variables
   const { isOpen, passwordToEdit } = props
   const isMounted = useRef(true)
-  const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>()
+  const getUserPasswordsAbort = useRef<(reason?: string | undefined) => void>(undefined)
 
   const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, successMessage, error, errorMessage } = useAppSelector(state => state.updateUserPassword)
@@ -47,22 +47,17 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<EditPasswordFormValues>({
-    defaultValues: {
-      editName: '',
-      editPassword: '',
-    },
-  })
+  } = useForm<EditPasswordFormValues>({ defaultValues: { editName: '', editPassword: '' } })
   const watchEditPassword = watch('editPassword')
 
-  //handlers
+  // handlers
   const closeHandler = () => {
     props.setIsOpen(false)
     setTimeout(() => {
-      isMounted.current && setPasswordToShow(false)
+      if (isMounted.current) setPasswordToShow(false)
       reset()
-      success && dispatch(successReset(null))
-      error && dispatch(errorReset(null))
+      if (success) dispatch(successReset(null))
+      if (error) dispatch(errorReset(null))
     }, 200)
   }
 
@@ -92,7 +87,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
       .catch((error: unknown) => error)
   }
 
-  //useEffects
+  // useEffects
   useEffect(() => {
     isMounted.current = true
     return () => {
@@ -143,7 +138,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                 className="flex flex-col w-full max-w-md px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
                 onSubmit={handleSubmit(submitHandler)}
               >
-                {/*modal header*/}
+                {/* modal header*/}
                 <Dialog.Title className="flex items-center justify-between w-full text-2xl text-gray-800">
                   <div className="flex items-center">
                     <h2 className="font-semibold">{tr('editPassModalHeader', language)}</h2>
@@ -156,7 +151,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                   />
                 </Dialog.Title>
 
-                {/*modal body*/}
+                {/* modal body*/}
                 <div className="flex flex-col w-full mt-4 mb-5 overflow-y-auto">
                   <Success
                     isOpen={success && successMessage !== '' ? true : false}
@@ -250,7 +245,7 @@ const EditPasswordModal = (props: EditPasswordModalProps) => {
                   </div>
                 </div>
 
-                {/*modal footer*/}
+                {/* modal footer*/}
                 <div className="flex justify-center w-full mb-1">
                   <button
                     disabled={loading}

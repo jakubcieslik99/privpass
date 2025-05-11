@@ -3,7 +3,7 @@ import Notfound from '../../assets/notfound.png'
 import { tr } from '../../translations/translations'
 
 const NotFound = () => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
 
   return (

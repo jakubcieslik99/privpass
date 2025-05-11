@@ -9,7 +9,7 @@ interface ErrorProps {
 }
 
 const Error = (props: ErrorProps) => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
 
   return (

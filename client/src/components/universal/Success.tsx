@@ -9,7 +9,7 @@ interface SuccessProps {
 }
 
 const Success = (props: SuccessProps) => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
 
   return (

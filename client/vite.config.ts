@@ -7,11 +7,7 @@ dotenv.config()
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    host: true,
-    port: 3000,
-    strictPort: true,
-  },
+  server: { host: true, port: 3000, strictPort: true },
   preview: {
     port: process.env.VITE_PREVIEW_PORT ? parseInt(process.env.VITE_PREVIEW_PORT) : 3000,
     strictPort: true,

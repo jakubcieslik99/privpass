@@ -3,7 +3,7 @@ import { useAppSelector } from '../../features/store'
 import { tr } from '../../translations/translations'
 
 const Footer: React.FC = () => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
 
   return (

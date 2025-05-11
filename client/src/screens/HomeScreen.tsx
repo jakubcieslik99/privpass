@@ -9,16 +9,11 @@ import Jakubcieslik from '../assets/jakubcieslik.png'
 import { tr } from '../translations/translations'
 
 const HomeScreen: React.FC = () => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
 
   const scrollToHandler = (offset: number) => {
-    scroller.scrollTo('product-section', {
-      spy: true,
-      smooth: 'easeInOutCubic',
-      offset,
-      duration: 500,
-    })
+    scroller.scrollTo('product-section', { spy: true, smooth: 'easeInOutCubic', offset, duration: 500 })
   }
 
   return (

@@ -21,7 +21,7 @@ interface URLStructure {
 const URL: URLStructure = {}
 
 const ProfileScreen: React.FC = () => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
   const { loading, error, errorMessage, passwords } = useAppSelector(state => state.getUserPasswords)
   const { loading: loading2, error: error2, errorMessage: errorMessage2 } = useAppSelector(state => state.getUserPassword)
@@ -37,7 +37,7 @@ const ProfileScreen: React.FC = () => {
   const [confirmDeleteModalIsOpen, setConfirmDeleteModalIsOpen] = useState(false)
   const [passwordToDelete, setPasswordToDelete] = useState({ id: '', name: '' })
 
-  //handlers
+  // handlers
   const filterURL = (searchKeywordFilter: string, sortOrderFilter: string) => {
     if (searchKeywordFilter !== '') URL.searchKeyword = searchKeywordFilter
     else if (URL.searchKeyword) delete URL.searchKeyword
@@ -53,7 +53,7 @@ const ProfileScreen: React.FC = () => {
     filterURL(searchKeyword, value)
   }
 
-  //useEffects
+  // useEffects
   useEffect(() => {
     const getUserPasswordsPromise = dispatch(
       getUserPasswords({
@@ -149,8 +149,7 @@ const ProfileScreen: React.FC = () => {
 
             <div className="flex flex-col gap-3">
               {passwords.length > 0
-                ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  passwords.map((element: any) => (
+                ? passwords.map((element: any) => (
                     <ListedPassword
                       key={element._id}
                       listedPassword={element}

@@ -25,7 +25,7 @@ interface RegisterEmailFormValues {
 }
 
 const RegisterEmailForm = (props: RegisterEmailFormProps) => {
-  //variables
+  // variables
   const { language } = useAppSelector(state => state.appSettings)
   const { loading, success, error, errorMessage } = useAppSelector(state => state.listUser)
   const dispatch = useAppDispatch()
@@ -37,7 +37,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
     formState: { errors },
   } = useForm<RegisterEmailFormValues>({ defaultValues: { registerEmail: '' } })
 
-  //handlers
+  // handlers
   const submitHandler: SubmitHandler<RegisterEmailFormValues> = data => {
     dispatch(registerSendCode({ email: data.registerEmail }) as unknown as AnyAction)
       .unwrap()
@@ -63,7 +63,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      {/*modal header*/}
+      {/* modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
         <div className="flex items-center">
           <h2 className="font-semibold">{tr('registerFormsHeader', language)}</h2>
@@ -76,7 +76,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
         />
       </div>
 
-      {/*modal body*/}
+      {/* modal body*/}
       <div className="flex flex-col w-full my-4 overflow-y-auto">
         <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
@@ -112,7 +112,7 @@ const RegisterEmailForm = (props: RegisterEmailFormProps) => {
         </div>
       </div>
 
-      {/*modal footer*/}
+      {/* modal footer*/}
       <div className="flex justify-center w-full mb-1">
         <button
           disabled={loading || success}
@@ -138,7 +138,7 @@ interface RegisterCodeFormValues {
 }
 
 const RegisterCodeForm = (props: RegisterCodeFormProps) => {
-  //variables
+  // variables
   const isMounted = useRef(true)
 
   const { language } = useAppSelector(state => state.appSettings)
@@ -157,7 +157,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
   const { state } = useLocation() as LocationProps
   const locationFrom = state?.from || '/profile'
 
-  //handlers
+  // handlers
   const submitHandler: SubmitHandler<RegisterCodeFormValues> = data => {
     dispatch(confirmCode({ code: data.registerCode, email: email }) as unknown as AnyAction)
       .unwrap()
@@ -173,7 +173,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
       .catch((error: unknown) => error)
   }
 
-  //useEffects
+  // useEffects
   useEffect(() => {
     isMounted.current = true
     return () => {
@@ -194,7 +194,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      {/*modal header*/}
+      {/* modal header*/}
       <div className="flex items-center justify-between w-full text-2xl text-gray-800">
         <div className="flex items-center">
           <h2 className="font-semibold">{tr('registerFormsHeader', language)}</h2>
@@ -207,7 +207,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
         />
       </div>
 
-      {/*modal body*/}
+      {/* modal body*/}
       <div className="flex flex-col w-full my-4 overflow-y-auto">
         <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mx-1 mb-4" />
         <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
@@ -246,7 +246,7 @@ const RegisterCodeForm = (props: RegisterCodeFormProps) => {
         </div>
       </div>
 
-      {/*modal footer*/}
+      {/* modal footer*/}
       <div className="flex justify-center w-full mb-1">
         <button
           disabled={

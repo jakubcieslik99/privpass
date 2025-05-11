@@ -20,7 +20,6 @@ const registerSendCode = createAsyncThunk('listUser/registerSendCode', async (se
       { email: sendData.email },
     )
     return data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -33,7 +32,6 @@ const loginSendCode = createAsyncThunk('listUser/loginSendCode', async (sendData
       { email: sendData.email },
     )
     return data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -43,18 +41,14 @@ const confirmCode = createAsyncThunk('listUser/confirmCode', async (sendData: co
   try {
     const { data } = await axiosPublic.post(
       '/users/confirmCode',
-      {
-        code: sendData.code,
-        email: sendData.email,
-      },
+      { code: sendData.code, email: sendData.email },
       { withCredentials: true },
     )
 
-    data?.userInfo && localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
-    data?.accessToken && localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
+    if (data?.userInfo) localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
+    if (data?.accessToken) localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
 
     return data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -65,7 +59,6 @@ const logoutUser = createAsyncThunk('listUser/logoutUser', async (_, thunkAPI) =
   try {
     const { data } = await axiosPublic.get('/users/logoutUser', { withCredentials: true })
     return data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = error?.response?.data?.message || error?.message || error.toString()
     return thunkAPI.rejectWithValue(message)
@@ -80,10 +73,7 @@ interface listUserState {
   successMessage: string
   error: boolean
   errorMessage: string
-  userInfo: {
-    id: string
-    email: string
-  } | null
+  userInfo: { id: string; email: string } | null
 }
 
 const userInfo = localStorage.getItem('userInfo')
@@ -116,7 +106,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
     },
   },
   extraReducers: builder => {
-    //registerSendCode
+    // registerSendCode
     builder.addCase(registerSendCode.pending, state => {
       state.loading = true
       state.success = false
@@ -127,7 +117,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
       state.success = true
       state.successMessage = action.payload.message
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     builder.addCase(registerSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -135,7 +125,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
         state.errorMessage = action.payload
       }
     })
-    //loginSendCode
+    // loginSendCode
     builder.addCase(loginSendCode.pending, state => {
       state.loading = true
       state.success = false
@@ -146,7 +136,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
       state.success = true
       state.successMessage = action.payload.message
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     builder.addCase(loginSendCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -154,7 +144,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
         state.errorMessage = action.payload
       }
     })
-    //confirmCode
+    // confirmCode
     builder.addCase(confirmCode.pending, state => {
       state.loading = true
       state.success = false
@@ -166,7 +156,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
       state.successMessage = action.payload.message
       state.userInfo = action.payload.userInfo
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     builder.addCase(confirmCode.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
@@ -175,7 +165,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
       }
       state.userInfo = null
     })
-    //logoutUser
+    // logoutUser
     builder.addCase(logoutUser.pending, state => {
       state.loading = true
       state.success = false
@@ -184,7 +174,7 @@ export const listUserSlice: Slice<listUserState> = createSlice({
     builder.addCase(logoutUser.fulfilled, state => {
       state.loading = false
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     builder.addCase(logoutUser.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false
       if (action.payload) {
