@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "description": "PrivPASS",
   "type": "module",
   "main": "index.ts",
@@ -58,6 +58,6 @@
     "prettier": "^3.5.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.0"
+    "typescript-eslint": "^8.32.1"
   }
 }
