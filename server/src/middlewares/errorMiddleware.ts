@@ -7,7 +7,7 @@ import { SERVER_ERROR, UNPROCESSABLE_ENTITY } from '../constants/ErrorMessages.j
 const errorHandler = (controller: Function) => (req: Request, res: Response, next: NextFunction) =>
   Promise.resolve(controller(req, res, next)).catch(next)
 
-const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunction): void => {
+const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunction) => {
   // internal error handling
   if (!error.status && !error.isJoi) {
     log.error(`INTERNAL - ${error.stack || error.message || 'Internal error.'}`)
