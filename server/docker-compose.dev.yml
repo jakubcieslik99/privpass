@@ -1,18 +1,19 @@
 # Node.js local development docker-compose file
 services:
-  # https://hub.docker.com/r/bitnami/mongodb
+  # https://hub.docker.com/_/mongo
   mongo:
     container_name: ${DIR}_mongo_dev
-    image: bitnami/mongodb:${MONGO_VER}
+    image: mongo:${MONGO_VER}
     volumes:
-      - mongo_dev_data:/bitnami/mongodb
+      - mongo_dev_data:/data/db
+    tmpfs:
+      - /data/configdb
     env_file:
       - .env
     environment:
-      MONGODB_DATABASE: ${MONGO_DB} # database
-      MONGODB_USERNAME: ${MONGO_USER} # root
-      MONGODB_PASSWORD: ${MONGO_PASSWORD} # Passw0rd!
-      MONGODB_ROOT_PASSWORD: ${MONGO_PASSWORD} # Passw0rd!
+      MONGO_INITDB_DATABASE: ${MONGO_DB} # database
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER} # root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD} # Passw0rd!
     ports:
       - ${MONGO_PORT}:27017
     expose:
