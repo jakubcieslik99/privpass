@@ -5,7 +5,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import slowDown from 'express-slow-down'
 import createError from 'http-errors'
-import { config, log } from './config/utilities.js'
+import { config } from './config/utilities.js'
 import databaseConnect from './config/databaseConnect.js'
 import corsOptions from './config/corsOptions.js'
 import { rateLimiter, speedLimiter } from './config/limitOptions.js'
@@ -16,7 +16,6 @@ import { RESOURCE_DOES_NOT_EXIST } from './constants/ErrorMessages.js'
 
 const app = express()
 app.set('trust proxy', `loopback, ${config.HOST === 'localhost' ? '127.0.0.1' : config.HOST}`)
-databaseConnect(app)
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json({ limit: '1mb' }))
@@ -34,6 +33,4 @@ app.all('/{*splat}', (_req, _res, next) => next(createError(404, RESOURCE_DOES_N
 // errors handling middleware
 app.use(isError as ErrorRequestHandler)
 
-app.on('ready', () => {
-  app.listen(config.PORT, () => log.info(`Server started on port ${config.PORT}`))
-})
+databaseConnect(app)
