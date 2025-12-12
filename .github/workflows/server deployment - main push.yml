@@ -58,5 +58,5 @@ jobs:
             cd /data/services/$DIR/server
             rm -f .env
             mv ../.env .env
-            docker-compose -f docker-compose.yml -p $DIR up --build -d
+            docker compose -f docker-compose.yml -p $DIR up --build -d
             exit
