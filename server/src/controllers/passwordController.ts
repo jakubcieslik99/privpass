@@ -10,11 +10,13 @@ import { PASSWORD_DOES_NOT_EXIST, PASSWORD_NAME_ALREADY_EXISTS } from '../consta
 const getUserPasswords = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
+  // eslint-disable-next-line no-useless-assignment
   let query = {}
   if (req.query.searchKeyword) {
     query = { addedBy: authenticatedUser.id, name: { $regex: req.query.searchKeyword, $options: 'i' } }
   } else query = { addedBy: authenticatedUser.id }
 
+  // eslint-disable-next-line no-useless-assignment
   let sortOrder = {}
   if (req.query.sortOrder && req.query.sortOrder === 'oldest') sortOrder = { createdAt: 1 }
   else if (req.query.sortOrder && req.query.sortOrder === 'newest') sortOrder = { createdAt: -1 }

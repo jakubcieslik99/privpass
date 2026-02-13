@@ -15,6 +15,7 @@ const en = await loadJSON(path.resolve(__dirname, './en.json'))
 const pl = await loadJSON(path.resolve(__dirname, './pl.json'))
 
 export const tr = (key: string, language: AvailableLanguages): string => {
+  // eslint-disable-next-line no-useless-assignment
   let langData: { [key: string]: string } = {}
 
   switch (language) {
