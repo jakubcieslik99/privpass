@@ -5,6 +5,7 @@ import pl from './pl.json'
 export const tr = (key: string, language?: AvailableLanguages): string => {
   if (!language) language = (localStorage.getItem('language') as AvailableLanguages) || availableLanguages[0]
 
+  // eslint-disable-next-line no-useless-assignment
   let langData: { [key: string]: string } = {}
 
   switch (language) {

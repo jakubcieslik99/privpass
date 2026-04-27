@@ -9,5 +9,6 @@
   "trailingComma": "all",
   "objectWrap": "collapse",
   "bracketSpacing": true,
+  "bracketSameLine": false,
   "endOfLine": "lf"
 }
