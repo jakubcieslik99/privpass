@@ -10,7 +10,6 @@ import stylistic from '@stylistic/eslint-plugin'
 const gitignorePath = fileURLToPath(new URL('../.gitignore', import.meta.url))
 
 export default defineConfig([
-  { files: ['**/*.{js,mjs,cjs,ts}'] },
   { files: ['**/*.{js,mjs,cjs,ts}'], languageOptions: { globals: globals.node } },
   js.configs.recommended,
   tseslint.configs.recommended,
