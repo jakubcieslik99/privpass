@@ -1,5 +1,5 @@
-import { Store, configureStore } from '@reduxjs/toolkit'
-import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
+import { type Store, configureStore } from '@reduxjs/toolkit'
+import { useDispatch, type TypedUseSelectorHook, useSelector } from 'react-redux'
 import { appSettingsReducer } from './appSlices/appSettings'
 import { listUserReducer } from './userSlices/listUser'
 import { storeEmailReducer } from './userSlices/storeEmail'

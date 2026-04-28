@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { AnyAction } from 'redux'
+import type { AnyAction } from 'redux'
 import { FaTools, FaShareAlt, FaSearch, FaPlus } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../features/store'
 import { getUserPasswords } from '../features/passwordSlices/getUserPasswords'

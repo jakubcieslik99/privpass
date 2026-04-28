@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, Fragment } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { AnyAction } from 'redux'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import type { AnyAction } from 'redux'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition, Dialog } from '@headlessui/react'
 import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'
@@ -44,6 +44,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
     reset,
     formState: { errors },
   } = useForm<AddPasswordFormValues>({ defaultValues: { addName: '', addPassword: '' } })
+  // eslint-disable-next-line react-hooks/incompatible-library
   const watchAddPassword = watch('addPassword')
 
   // handlers

@@ -1,4 +1,4 @@
-import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, type Slice, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import axiosProtected from '../../api/axiosProtected'
 
 interface deleteUserPasswordData {

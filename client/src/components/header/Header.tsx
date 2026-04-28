@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { AnyAction } from 'redux'
+import type { AnyAction } from 'redux'
 import { scroller } from 'react-scroll'
 import { FaUserShield, FaBars, FaUser } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../features/store'
 import { changeLanguage } from '../../features/appSlices/appSettings'
-import { AvailableLanguages, availableLanguages } from '../../constants/AppSettings'
+import { type AvailableLanguages, availableLanguages } from '../../constants/AppSettings'
 import { tr } from '../../translations/translations'
 import { logoutUser, userInfoReset } from '../../features/userSlices/listUser'
 import { passwordsReset } from '../../features/passwordSlices/getUserPasswords'
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
-import { LocationProps } from '../../App'
+import type { LocationProps } from '../../App'
 
 const Header: React.FC = () => {
   // variables

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { AnyAction } from 'redux'
+import type { AnyAction } from 'redux'
 import { Transition } from '@headlessui/react'
 import { RiHashtag, RiLockPasswordFill } from 'react-icons/ri'
 import { FaEye, FaEyeSlash, FaEdit, FaTrashAlt } from 'react-icons/fa'

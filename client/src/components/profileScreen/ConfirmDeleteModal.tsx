@@ -1,6 +1,6 @@
 import { useRef, useEffect, Fragment } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { AnyAction } from 'redux'
+import type { AnyAction } from 'redux'
 import { Transition, Dialog } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'

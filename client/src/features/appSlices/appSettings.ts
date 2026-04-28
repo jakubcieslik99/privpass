@@ -1,5 +1,5 @@
-import { Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AvailableLanguages, availableLanguages } from '../../constants/AppSettings'
+import { type Slice, createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { type AvailableLanguages, availableLanguages } from '../../constants/AppSettings'
 
 let language = localStorage.getItem('language')
 if (!language || (language && !availableLanguages.includes(language))) {

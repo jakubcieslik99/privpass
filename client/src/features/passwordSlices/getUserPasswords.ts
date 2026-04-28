@@ -1,7 +1,7 @@
-import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, type Slice, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 // import { RootState } from '../store'
 import axiosProtected from '../../api/axiosProtected'
-import { ListedPasswordObject } from '../../components/profileScreen/ListedPassword'
+import type { ListedPasswordObject } from '../../components/profileScreen/ListedPassword'
 
 interface getUserPasswordsData {
   searchKeyword: string

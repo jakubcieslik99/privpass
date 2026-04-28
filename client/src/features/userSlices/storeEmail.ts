@@ -1,4 +1,4 @@
-import { Slice, createSlice } from '@reduxjs/toolkit'
+import { type Slice, createSlice } from '@reduxjs/toolkit'
 
 interface storeEmailState {
   email: string

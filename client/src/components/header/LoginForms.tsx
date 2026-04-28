@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { AnyAction } from 'redux'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import type { AnyAction } from 'redux'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { FaTimes } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
@@ -11,7 +11,7 @@ import { loginErrors } from '../../validations/signinValidations'
 import Error from '../universal/Error'
 import Success from '../universal/Success'
 import Loader from '../universal/Loader'
-import { LocationProps } from '../../App'
+import type { LocationProps } from '../../App'
 import { tr } from '../../translations/translations'
 
 interface LoginEmailFormProps {

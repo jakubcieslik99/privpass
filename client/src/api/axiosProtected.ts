@@ -1,5 +1,5 @@
-import { AnyAction } from '@reduxjs/toolkit'
-import axios, { InternalAxiosRequestConfig, AxiosRequestHeaders } from 'axios'
+import type { AnyAction } from '@reduxjs/toolkit'
+import axios, { type InternalAxiosRequestConfig, type AxiosRequestHeaders } from 'axios'
 import axiosPublic from '../api/axiosPublic'
 import { logoutUser, userInfoReset } from '../features/userSlices/listUser'
 import { passwordsReset } from '../features/passwordSlices/getUserPasswords'

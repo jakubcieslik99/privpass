@@ -1,4 +1,4 @@
-import { createAsyncThunk, Slice, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, type Slice, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import axiosPublic from '../../api/axiosPublic'
 import { availableLanguages } from '../../constants/AppSettings'
 

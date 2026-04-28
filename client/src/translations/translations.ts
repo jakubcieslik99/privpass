@@ -1,4 +1,4 @@
-import { AvailableLanguages, availableLanguages } from '../constants/AppSettings'
+import { type AvailableLanguages, availableLanguages } from '../constants/AppSettings'
 import en from './en.json'
 import pl from './pl.json'
 
