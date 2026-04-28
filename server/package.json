@@ -1,6 +1,6 @@
 {
   "name": "privpass-server",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "description": "PrivPASS",
   "type": "module",
   "main": "index.ts",
@@ -29,7 +29,7 @@
     "http-errors": "^2.0.1",
     "joi": "^18.1.2",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.5.0",
+    "mongoose": "^9.6.0",
     "nodemailer": "^8.0.7",
     "pino": "^10.3.1",
     "pino-pretty": "^13.1.3",
