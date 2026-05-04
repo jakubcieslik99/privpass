@@ -1,9 +1,14 @@
 :{$VITE_PREVIEW_PORT} {
   root * /usr/share/caddy
   encode gzip zstd
-  try_files {path} /index.html
-  file_server
 
   @assets path /assets/*
-  header @assets Cache-Control "public, max-age=31536000, immutable"
+  handle @assets {
+    header Cache-Control "public, max-age=31536000, immutable"
+    file_server
+  }
+  handle {
+    try_files {path} /index.html
+    file_server
+  }
 }
