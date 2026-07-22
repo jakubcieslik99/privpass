@@ -1,0 +1,16 @@
+{
+  "automock": false,
+  "clearMocks": true,
+  "collectCoverageFrom": ["src/**/*.ts", "!src/index.ts"],
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
+  "extensionsToTreatAsEsm": [".ts"],
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "testMatch": ["**/*.test.ts"],
+  "transform": {
+    "^.+\\.(mt|t|cj|j)s$": ["ts-jest", { "useESM": true, "diagnostics": { "ignoreCodes": [151002] } }]
+  },
+  "verbose": false
+}

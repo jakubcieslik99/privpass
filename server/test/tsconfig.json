@@ -1,0 +1,9 @@
+{
+  /* ts-jest transpiles without type checking, so `pnpm test` cannot catch type errors in the tests.
+     This config type checks them with the same compiler options as src, which the root tsconfig.json
+     deliberately excludes from the build. It lives inside test/ so editors pick it up automatically. */
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "noEmit": true, "incremental": false, "rootDir": ".." },
+  "include": ["**/*"],
+  "exclude": []
+}
