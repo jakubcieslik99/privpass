@@ -46,6 +46,7 @@ jobs:
           pnpm run test:ci
 
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     environment: production
     env:
