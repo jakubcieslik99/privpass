@@ -10,17 +10,15 @@ import { PASSWORD_DOES_NOT_EXIST, PASSWORD_NAME_ALREADY_EXISTS } from '../consta
 const getUserPasswords = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
-  // eslint-disable-next-line no-useless-assignment
-  let query = {}
+  let query: object
   if (req.query.searchKeyword) {
     query = { addedBy: authenticatedUser.id, name: { $regex: req.query.searchKeyword, $options: 'i' } }
   } else query = { addedBy: authenticatedUser.id }
 
-  // eslint-disable-next-line no-useless-assignment
-  let sortOrder = {}
-  if (req.query.sortOrder && req.query.sortOrder === 'oldest') sortOrder = { createdAt: 1 }
-  else if (req.query.sortOrder && req.query.sortOrder === 'newest') sortOrder = { createdAt: -1 }
-  else if (req.query.sortOrder && req.query.sortOrder === 'ztoa') sortOrder = { name: -1 }
+  let sortOrder: { [key: string]: 1 | -1 }
+  if (req.query.sortOrder === 'oldest') sortOrder = { createdAt: 1 }
+  else if (req.query.sortOrder === 'newest') sortOrder = { createdAt: -1 }
+  else if (req.query.sortOrder === 'ztoa') sortOrder = { name: -1 }
   else sortOrder = { name: 1 }
 
   const userPasswords = await Password.find(query, 'name').sort(sortOrder).exec()
@@ -68,8 +66,12 @@ const updateUserPassword = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
   const validationResult = await updatePasswordValidation.validateAsync(req.body)
 
-  const possibleDuplicates = await Password.find({ addedBy: authenticatedUser.id, name: validationResult.name }).exec()
-  if (possibleDuplicates.length > 1) throw createError(409, PASSWORD_NAME_ALREADY_EXISTS)
+  const possibleDuplicate = await Password.findOne({
+    addedBy: authenticatedUser.id,
+    name: validationResult.name,
+    _id: { $ne: req.params.id },
+  }).exec()
+  if (possibleDuplicate) throw createError(409, PASSWORD_NAME_ALREADY_EXISTS)
 
   const updatePassword = await Password.findOne({ _id: req.params.id, addedBy: authenticatedUser.id }).exec()
   if (!updatePassword) throw createError(404, PASSWORD_DOES_NOT_EXIST)

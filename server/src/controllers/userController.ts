@@ -38,13 +38,18 @@ const registerSendCode = async (req: Request, res: Response) => {
   const createUser = new User({ email: validationResult.email.toLowerCase(), code: hashedCode })
   await createUser.save()
 
-  await sendEmail(
-    registerSendCodeMessage(
-      validationResult.email.toLowerCase(),
-      code,
-      (req.params.language as AvailableLanguages) || availableLanguages[0],
-    ),
-  )
+  try {
+    await sendEmail(
+      registerSendCodeMessage(
+        validationResult.email.toLowerCase(),
+        code,
+        (req.params.language as AvailableLanguages) || availableLanguages[0],
+      ),
+    )
+  } catch (error) {
+    await createUser.deleteOne()
+    throw error
+  }
 
   return res.status(201).send({ message: CONFIRM_REGISTRATION })
 }
@@ -97,12 +102,14 @@ const confirmCode = async (req: Request, res: Response) => {
   const refreshToken = await getRefreshToken(checkedUser.id, checkedUser.email)
   if (!refreshToken) throw createError(500, SERVER_ERROR)
 
-  checkedUser.code = null
-  checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
-    (element: { refreshToken: string; expirationDate: number }) => element.expirationDate > Date.now(),
-  )
-  checkedUser.refreshTokens.push({ refreshToken, expirationDate: Date.now() + 900 * 1000 })
-  await checkedUser.save()
+  await User.updateOne(
+    { _id: checkedUser.id },
+    { $set: { code: null }, $pull: { refreshTokens: { expirationDate: { $lte: new Date() } } } },
+  ).exec()
+  await User.updateOne(
+    { _id: checkedUser.id },
+    { $push: { refreshTokens: { refreshToken, expirationDate: Date.now() + 900 * 1000 } } },
+  ).exec()
 
   return res
     .cookie('refreshToken', refreshToken, {
@@ -141,10 +148,10 @@ const logoutUser = async (req: Request, res: Response) => {
       .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'production' ? true : false })
       .sendStatus(204)
 
-  checkedUser.refreshTokens = checkedUser.refreshTokens.filter(
-    (element: { refreshToken: string; expirationDate: number }) => element.refreshToken !== req.cookies.refreshToken,
-  )
-  await checkedUser.save()
+  await User.updateOne(
+    { _id: checkedUser.id },
+    { $pull: { refreshTokens: { refreshToken: req.cookies.refreshToken } } },
+  ).exec()
 
   return res
     .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'production' ? true : false })

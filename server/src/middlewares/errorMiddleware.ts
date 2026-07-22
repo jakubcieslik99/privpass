@@ -3,8 +3,9 @@ import { HttpError } from 'http-errors'
 import { config, log } from '../config/utilities.js'
 import { SERVER_ERROR, UNPROCESSABLE_ENTITY } from '../constants/ErrorMessages.js'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-const errorHandler = (controller: Function) => (req: Request, res: Response, next: NextFunction) =>
+type Controller = (req: Request, res: Response, next: NextFunction) => unknown
+
+const errorHandler = (controller: Controller) => (req: Request, res: Response, next: NextFunction) =>
   Promise.resolve(controller(req, res, next)).catch(next)
 
 const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunction) => {

@@ -12,6 +12,7 @@ const CODE = 'A1B2'
 const save = jest.fn()
 const User: any = jest.fn((document: any) => ({ ...document, save }))
 User.findOne = jest.fn()
+User.updateOne = jest.fn()
 const sendEmail: any = jest.fn()
 
 jest.unstable_mockModule('../../src/config/utilities.js', () => ({
@@ -31,6 +32,7 @@ const { registerSendCode, confirmCode } = await import('../../src/controllers/us
 // Nobody registered by default - each test overrides only what it cares about.
 beforeEach(() => {
   User.findOne.mockReturnValue(mockQuery(null))
+  User.updateOne.mockReturnValue(mockQuery({ modifiedCount: 1 }))
 })
 
 describe('registerSendCode', () => {
