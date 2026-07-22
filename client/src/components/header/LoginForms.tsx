@@ -53,7 +53,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
   return (
     <Transition
       as="form"
-      className="flex flex-col w-full col-start-1 row-start-1 px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
+      className="flex flex-col col-start-1 row-start-1 bg-gray-100 shadow-md px-5 py-4 rounded-lg w-full overflow-hidden"
       onSubmit={handleSubmit(submitHandler)}
       show={props.formSwitch}
       enter="ease-out duration-300"
@@ -64,23 +64,23 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
       leaveTo="opacity-0"
     >
       {/* modal header*/}
-      <div className="flex items-center justify-between w-full text-2xl text-gray-800">
+      <div className="flex justify-between items-center w-full text-gray-800 text-2xl">
         <div className="flex items-center">
           <h2 className="font-semibold">{tr('loginFormsHeader', language)}</h2>
           <Loader isLoading={loading} styling="ml-2" />
         </div>
 
         <FaTimes
-          className="transition cursor-pointer hover:text-gray-700 active:scale-95"
+          className="hover:text-gray-700 active:scale-95 transition cursor-pointer"
           onClick={() => !loading && props.closeHandler()}
         />
       </div>
 
       {/* modal body*/}
-      <div className="flex flex-col w-full my-4 overflow-y-auto">
+      <div className="flex flex-col my-4 w-full overflow-y-auto">
         <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
-        <div className="flex flex-col text-gray-800 md:mx-6">
+        <div className="flex flex-col md:mx-6 text-gray-800">
           <label htmlFor="loginEmail" className="mx-1 text-left">
             Email:
           </label>
@@ -89,7 +89,7 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
             id="loginEmail"
             type="text"
             placeholder={tr('loginFormsEmailPlaceholder', language)}
-            className="px-3 py-2 m-1 border rounded-lg border-privpass-400 focus:outline-privpass-400"
+            className="m-1 px-3 py-2 border border-privpass-400 rounded-lg focus:outline-privpass-400"
           />
 
           <div className="grid mx-1">
@@ -113,11 +113,11 @@ const LoginEmailForm = (props: LoginEmailFormProps) => {
       </div>
 
       {/* modal footer*/}
-      <div className="flex justify-center w-full mb-1">
+      <div className="flex justify-center mb-1 w-full">
         <button
           disabled={loading || success}
           type="submit"
-          className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          className="bg-privpass-500 hover:opacity-80 disabled:opacity-70 px-4 py-2 rounded-full text-white active:scale-95 disabled:active:scale-100 transition disabled:transition-opacity disabled:cursor-default"
         >
           {tr('loginFormsSubmit', language)}
         </button>
@@ -184,7 +184,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
   return (
     <Transition
       as="form"
-      className="flex flex-col w-full col-start-1 row-start-1 px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
+      className="flex flex-col col-start-1 row-start-1 bg-gray-100 shadow-md px-5 py-4 rounded-lg w-full overflow-hidden"
       onSubmit={handleSubmit(submitHandler)}
       show={!props.formSwitch}
       enter="ease-out duration-300"
@@ -195,24 +195,24 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
       leaveTo="opacity-0"
     >
       {/* modal header*/}
-      <div className="flex items-center justify-between w-full text-2xl text-gray-800">
+      <div className="flex justify-between items-center w-full text-gray-800 text-2xl">
         <div className="flex items-center">
           <h2 className="font-semibold">{tr('loginFormsHeader', language)}</h2>
           <Loader isLoading={loading} styling="ml-2" />
         </div>
 
         <FaTimes
-          className="transition cursor-pointer hover:text-gray-700 active:scale-95"
+          className="hover:text-gray-700 active:scale-95 transition cursor-pointer"
           onClick={() => !loading && props.closeHandler()}
         />
       </div>
 
       {/* modal body*/}
-      <div className="flex flex-col w-full my-4 overflow-y-auto">
+      <div className="flex flex-col my-4 w-full overflow-y-auto">
         <Success isOpen={success && successMessage !== '' ? true : false} message={successMessage} styling="mx-1 mb-4" />
         <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
-        <div className="flex flex-col items-center text-gray-800 md:mx-6">
+        <div className="flex flex-col items-center md:mx-6 text-gray-800">
           <label htmlFor="loginCode" className="mx-1 mb-1 w-36">
             {tr('loginFormsCode', language)}
           </label>
@@ -222,7 +222,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
             type="text"
             autoComplete="off"
             placeholder="0000"
-            className="pl-[1.37rem] pr-1 py-2 m-1 text-3xl tracking-[.4em] border rounded-lg w-36 border-privpass-400 focus:outline-privpass-400 monospace-font"
+            className="m-1 py-2 pr-1 pl-[1.37rem] border border-privpass-400 rounded-lg focus:outline-privpass-400 w-36 text-3xl tracking-[.4em] monospace-font"
           />
 
           <div className="grid mx-1">
@@ -238,7 +238,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
             />
           </div>
 
-          <div className="mt-4 text-xs text-center text-gray-700">
+          <div className="mt-4 text-gray-700 text-xs text-center">
             {tr('loginFormsHint1', language)}
             <span className="font-semibold">{tr('loginFormsHint2', language)}</span>
             {tr('loginFormsHint3', language)}
@@ -247,14 +247,14 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
       </div>
 
       {/* modal footer*/}
-      <div className="flex justify-center w-full mb-1">
+      <div className="flex justify-center mb-1 w-full">
         <button
           disabled={
             loading ||
             (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.')
           }
           type="submit"
-          className="px-4 py-2 text-white transition rounded-full bg-privpass-500 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+          className="bg-privpass-500 hover:opacity-80 disabled:opacity-70 px-4 py-2 rounded-full text-white active:scale-95 disabled:active:scale-100 transition disabled:transition-opacity disabled:cursor-default"
         >
           {tr('loginFormsSubmitConfirm', language)}
         </button>

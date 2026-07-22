@@ -68,9 +68,9 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <main className="pt-16 md:pt-24 gradient-primary app-screen">
-      <div className="grid gap-3 px-3 py-9 app-container md:grid-cols-3 lg:grid-cols-4">
+      <div className="gap-3 grid md:grid-cols-3 lg:grid-cols-4 px-3 py-9 app-container">
         <div className="md:order-2">
-          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-privpass-500">
+          <div className="bg-privpass-500 shadow-lg px-4 pt-3 pb-5 rounded-xl">
             <h2 className="flex items-center mb-4 text-xl">
               <FaTools className="mr-2 text-2xl" />
               {tr('profileScreenHeading', language)}
@@ -82,7 +82,7 @@ const ProfileScreen: React.FC = () => {
                 <input
                   type="text"
                   placeholder={tr('profileScreenSearchingPlaceholder', language)}
-                  className="w-full px-4 py-2 mr-2 text-gray-800 transition border-none rounded-full focus:outline-none"
+                  className="mr-2 px-4 py-2 border-none rounded-full focus:outline-none w-full text-gray-800 transition"
                   value={searchKeyword}
                   onChange={e => setSearchKeyword(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && !loading && !loading2 && searchHandler()}
@@ -90,7 +90,7 @@ const ProfileScreen: React.FC = () => {
                 <button
                   disabled={loading || loading2}
                   type="button"
-                  className="px-3 py-2 transition border rounded-full text-md border-privpass-200 text-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 disabled:hover:border-privpass-200 disabled:hover:text-privpass-200 disabled:cursor-default disabled:active:scale-100"
+                  className="px-3 py-2 border border-privpass-200 hover:border-privpass-100 disabled:hover:border-privpass-200 rounded-full text-md text-privpass-200 hover:text-privpass-100 disabled:hover:text-privpass-200 active:scale-95 disabled:active:scale-100 transition disabled:cursor-default"
                   onClick={searchHandler}
                 >
                   <FaSearch />
@@ -101,10 +101,10 @@ const ProfileScreen: React.FC = () => {
             <div className="mb-4">
               <div className="mb-1 ml-3 text-xs">{tr('profileScreenSorting', language)}</div>
 
-              <div className="w-full h-[40px] bg-white rounded-full px-2">
+              <div className="bg-white px-2 rounded-full w-full h-[40px]">
                 <select
                   disabled={loading || loading2}
-                  className="w-full h-[40px] pr-2 py-2 text-gray-800 transition border-none rounded-full cursor-pointer focus:outline-none"
+                  className="py-2 pr-2 border-none rounded-full focus:outline-none w-full h-[40px] text-gray-800 transition cursor-pointer"
                   value={sortOrder}
                   onChange={e => sortHandler(e.target.value)}
                 >
@@ -120,7 +120,7 @@ const ProfileScreen: React.FC = () => {
               <div className="mb-1 ml-3 text-xs">{tr('profileScreenAdding', language)}</div>
               <button
                 disabled={loading || loading2}
-                className="flex items-center px-3 py-2 transition border rounded-full text-md border-privpass-200 text-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 disabled:hover:border-privpass-200 disabled:hover:text-privpass-200 disabled:cursor-default disabled:active:scale-100"
+                className="flex items-center px-3 py-2 border border-privpass-200 hover:border-privpass-100 disabled:hover:border-privpass-200 rounded-full text-md text-privpass-200 hover:text-privpass-100 disabled:hover:text-privpass-200 active:scale-95 disabled:active:scale-100 transition disabled:cursor-default"
                 onClick={() => setAddPasswordModalIsOpen(true)}
               >
                 <FaPlus className="mr-2" />
@@ -130,15 +130,15 @@ const ProfileScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className="block overflow-hidden md:col-span-2 lg:col-span-3 md:order-1">
-          <div className="px-4 pt-3 pb-5 shadow-lg rounded-xl bg-privpass-500">
-            <h2 className="flex items-center justify-between mb-5 text-xl">
+        <div className="block md:order-1 md:col-span-2 lg:col-span-3 overflow-hidden">
+          <div className="bg-privpass-500 shadow-lg px-4 pt-3 pb-5 rounded-xl">
+            <h2 className="flex justify-between items-center mb-5 text-xl">
               <div className="flex items-center">
                 <FaShareAlt className="mr-2 text-2xl" />
                 {tr('profileScreenYourPasswords', language)}
               </div>
 
-              <div className="relative text-2xl w-7 h-7">
+              <div className="relative w-7 h-7 text-2xl">
                 <Loader isLoading={loading} styling="absolute top-[2px] right-[2px]" />
                 <Loader isLoading={!loading && loading2} styling="absolute top-[2px] right-[2px]" />
               </div>
@@ -161,7 +161,7 @@ const ProfileScreen: React.FC = () => {
                     />
                   ))
                 : !loading && (
-                    <div className="flex flex-col items-center py-3 text-sm font-light">
+                    <div className="flex flex-col items-center py-3 font-light text-sm">
                       <div className="mb-5">{tr('profileScreenYourPasswordsEmpty', language)}</div>
                       <div className="w-48 md:w-56 lg:w-64">
                         <img src={Empty} alt="" />

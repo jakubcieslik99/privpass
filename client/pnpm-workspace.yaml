@@ -1,2 +1,7 @@
+minimumReleaseAgeExclude:
+  - '@vitejs/plugin-react@6.0.4'
+  - postcss@8.5.22
+  - react-dom@19.2.8
+  - react@19.2.8
 onlyBuiltDependencies:
   - esbuild

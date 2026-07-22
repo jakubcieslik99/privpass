@@ -7,7 +7,7 @@ const NotFound = () => {
   const { language } = useAppSelector(state => state.appSettings)
 
   return (
-    <main className="flex flex-col items-center justify-center gradient-primary app-screen">
+    <main className="flex flex-col justify-center items-center gradient-primary app-screen">
       <img src={Notfound} alt="404" />
       <div className="my-5 text-xl">{tr('notFoundMessage', language)}</div>
     </main>

@@ -34,7 +34,7 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   return (
     <Transition as={Fragment} appear show={props.isOpen}>
-      <Dialog as="div" className="relative z-30" onClose={() => registerFormSwitch && !loading && closeHandler()}>
+      <Dialog as="div" className="z-30 relative" onClose={() => registerFormSwitch && !loading && closeHandler()}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -48,7 +48,7 @@ const RegisterModal = (props: RegisterModalProps) => {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-full px-4 py-6 text-center md:pt-16 md:pb-32">
+          <div className="flex justify-center items-center px-4 py-6 md:pt-16 md:pb-32 min-h-full text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -58,7 +58,7 @@ const RegisterModal = (props: RegisterModalProps) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="grid items-center w-full max-w-md">
+              <Dialog.Panel className="items-center grid w-full max-w-md">
                 <RegisterEmailForm
                   formSwitch={registerFormSwitch}
                   setFormSwitch={setRegisterFormSwitch}

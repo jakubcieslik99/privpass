@@ -81,18 +81,18 @@ const ListedPassword = (props: ListedPasswordProps) => {
   }, [getUserPasswordAbort1, getUserPasswordAbort2])
 
   return (
-    <div className="flex flex-col justify-between px-3 pt-2 pb-3 shadow-md md:pb-2 rounded-2xl bg-privpass-400 md:flex-row">
-      <div className="flex-1 min-w-0 mb-2 md:mr-4 md:mb-0">
+    <div className="flex md:flex-row flex-col justify-between bg-privpass-400 shadow-md px-3 pt-2 pb-3 md:pb-2 rounded-2xl">
+      <div className="flex-1 md:mr-4 mb-2 md:mb-0 min-w-0">
         <div className="mb-2">
           <div className="flex items-center text-xs">
             <RiHashtag className="mr-[2px]" />
             {tr('listedPassNameLabel', language)}
           </div>
-          <div className="text-xl font-semibold truncate">{props.listedPassword.name}</div>
+          <div className="font-semibold text-xl truncate">{props.listedPassword.name}</div>
         </div>
 
         <div className="md:mb-[-8px]">
-          <div className="text-xs mb-[-7px] flex items-center">
+          <div className="flex items-center mb-[-7px] text-xs">
             <RiLockPasswordFill className="mr-[2px]" />
             {tr('listedPassPasswordLabel', language)}
           </div>
@@ -100,7 +100,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
           <div className="flex items-center text-lg">
             <button
               disabled={loading || loading2}
-              className="relative flex-none w-8 h-8 p-2 mr-2 transition border rounded-full text-privpass-200 border-privpass-200 hover:border-privpass-100 hover:text-privpass-100 active:scale-95 disabled:hover:border-privpass-200 disabled:hover:text-privpass-200 disabled:cursor-default disabled:active:scale-100"
+              className="relative flex-none mr-2 p-2 border border-privpass-200 hover:border-privpass-100 disabled:hover:border-privpass-200 rounded-full w-8 h-8 text-privpass-200 hover:text-privpass-100 disabled:hover:text-privpass-200 active:scale-95 disabled:active:scale-100 transition disabled:cursor-default"
               onClick={showPasswordHandler}
             >
               <FaEye
@@ -114,9 +114,9 @@ const ListedPassword = (props: ListedPasswordProps) => {
                 }`}
               />
             </button>
-            <div className="relative w-full overflow-x-scroll overflow-y-hidden h-14">
+            <div className="relative w-full h-14 overflow-x-scroll overflow-y-hidden">
               <Transition
-                className="absolute top-0 left-0 pt-[17px] text-2xl h-14"
+                className="top-0 left-0 absolute pt-[17px] h-14 text-2xl"
                 show={!passwordVisible}
                 enter="ease-out duration-200"
                 enterFrom="opacity-0"
@@ -128,7 +128,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
                 {'****************'}
               </Transition>
               <Transition
-                className="absolute top-0 left-0 h-14 pt-[14px] pb-[6px] select-all tracking-widest monospace-font"
+                className="top-0 left-0 absolute pt-[14px] pb-[6px] h-14 tracking-widest select-all monospace-font"
                 show={passwordVisible}
                 enter="ease-out duration-200"
                 enterFrom="opacity-0"
@@ -147,7 +147,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
       <div className="flex md:flex-col md:justify-center md:mr-3">
         <button
           disabled={loading || loading2}
-          className="flex items-center justify-center w-24 px-4 py-2 mr-2 text-sm transition rounded-full md:mr-0 md:mb-2 bg-cyan-500 hover:bg-cyan-400 active:scale-95 disabled:hover:bg-cyan-500 disabled:cursor-default disabled:active:scale-100"
+          className="flex justify-center items-center bg-cyan-500 hover:bg-cyan-400 disabled:hover:bg-cyan-500 mr-2 md:mr-0 md:mb-2 px-4 py-2 rounded-full w-24 text-sm active:scale-95 disabled:active:scale-100 transition disabled:cursor-default"
           onClick={openEditPasswordModalHandler}
         >
           <FaEdit className="mr-2" />
@@ -156,7 +156,7 @@ const ListedPassword = (props: ListedPasswordProps) => {
 
         <button
           disabled={loading || loading2}
-          className="flex items-center justify-center w-24 px-4 py-2 text-sm transition bg-red-400 rounded-full hover:bg-red-300 active:scale-95 disabled:hover:bg-red-400 disabled:cursor-default disabled:active:scale-100"
+          className="flex justify-center items-center bg-red-400 hover:bg-red-300 disabled:hover:bg-red-400 px-4 py-2 rounded-full w-24 text-sm active:scale-95 disabled:active:scale-100 transition disabled:cursor-default"
           onClick={openConfirmDeleteModalHandler}
         >
           <FaTrashAlt className="mr-2" />

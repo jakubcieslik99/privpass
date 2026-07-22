@@ -2,13 +2,13 @@ import { useRef, useState, useEffect, Fragment } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import type { AnyAction } from 'redux'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import PasswordStrengthBar from 'react-password-strength-bar'
 import { Transition, Dialog } from '@headlessui/react'
 import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useAppSelector, useAppDispatch } from '../../features/store'
 import { createUserPassword, successReset, errorReset } from '../../features/passwordSlices/createUserPassword'
 import { getUserPasswords } from '../../features/passwordSlices/getUserPasswords'
 import { addPasswordErrors } from '../../validations/passwordValidations'
+import PasswordStrengthBar from '../universal/PasswordStrengthBar'
 import Success from '../universal/Success'
 import Error from '../universal/Error'
 import Loader from '../universal/Loader'
@@ -93,7 +93,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
 
   return (
     <Transition as={Fragment} appear show={props.isOpen}>
-      <Dialog as="div" className="relative z-30" onClose={() => !loading && closeHandler()}>
+      <Dialog as="div" className="z-30 relative" onClose={() => !loading && closeHandler()}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -107,7 +107,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-full px-4 py-6 text-center md:pt-16 md:pb-32">
+          <div className="flex justify-center items-center px-4 py-6 md:pt-16 md:pb-32 min-h-full text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -119,24 +119,24 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
             >
               <Dialog.Panel
                 as="form"
-                className="flex flex-col w-full max-w-md px-5 py-4 overflow-hidden bg-gray-100 rounded-lg shadow-md"
+                className="flex flex-col bg-gray-100 shadow-md px-5 py-4 rounded-lg w-full max-w-md overflow-hidden"
                 onSubmit={handleSubmit(submitHandler)}
               >
                 {/* modal header*/}
-                <Dialog.Title className="flex items-center justify-between w-full text-2xl text-gray-800">
+                <Dialog.Title className="flex justify-between items-center w-full text-gray-800 text-2xl">
                   <div className="flex items-center">
                     <h2 className="font-semibold">{tr('addPassModalHeader', language)}</h2>
                     <Loader isLoading={loading} styling="ml-2" />
                   </div>
 
                   <FaTimes
-                    className="transition cursor-pointer hover:text-gray-700 active:scale-95"
+                    className="hover:text-gray-700 active:scale-95 transition cursor-pointer"
                     onClick={() => !loading && closeHandler()}
                   />
                 </Dialog.Title>
 
                 {/* modal body*/}
-                <div className="flex flex-col w-full mt-4 mb-5 overflow-y-auto">
+                <div className="flex flex-col mt-4 mb-5 w-full overflow-y-auto">
                   <Success
                     isOpen={success && successMessage !== '' ? true : false}
                     message={successMessage}
@@ -144,7 +144,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                   />
                   <Error isOpen={error && errorMessage !== '' ? true : false} message={errorMessage} styling="mx-1 mb-4" />
 
-                  <div className="flex flex-col text-gray-800 md:mx-6">
+                  <div className="flex flex-col md:mx-6 text-gray-800">
                     <label htmlFor="addName" className="mx-1 text-left">
                       {tr('addPassModalName', language)}
                     </label>
@@ -153,7 +153,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                       id="addName"
                       type="text"
                       placeholder={tr('addPassModalNamePlaceholder', language)}
-                      className="px-3 py-2 m-1 border rounded-lg border-privpass-400 focus:outline-privpass-400"
+                      className="m-1 px-3 py-2 border border-privpass-400 rounded-lg focus:outline-privpass-400"
                     />
 
                     <div className="grid mx-1">
@@ -170,7 +170,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                     </div>
                   </div>
 
-                  <div className="relative flex flex-col mt-3 text-gray-800 md:mx-6">
+                  <div className="relative flex flex-col md:mx-6 mt-3 text-gray-800">
                     <label htmlFor="addPassword" className="mx-1 text-left">
                       {tr('addPassModalPassword', language)}
                     </label>
@@ -180,11 +180,11 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                         id="addPassword"
                         type={passwordToShow ? 'text' : 'password'}
                         placeholder={tr('addPassModalPasswordPlaceholder', language)}
-                        className="w-full px-3 py-2 my-1 ml-1 mr-2 border rounded-lg border-privpass-400 focus:outline-privpass-400"
+                        className="my-1 mr-2 ml-1 px-3 py-2 border border-privpass-400 rounded-lg focus:outline-privpass-400 w-full"
                       />
                       <button
                         type="button"
-                        className="relative flex-none p-2 mr-1 text-xl transition bg-white border rounded-full w-9 h-9 text-privpass-400 border-privpass-400 hover:border-privpass-400/80 hover:text-privpass-400/80 active:scale-95"
+                        className="relative flex-none bg-white mr-1 p-2 border border-privpass-400 hover:border-privpass-400/80 rounded-full w-9 h-9 text-privpass-400 hover:text-privpass-400/80 text-xl active:scale-95 transition"
                         onClick={() => setPasswordToShow(!passwordToShow)}
                       >
                         <FaEye
@@ -201,7 +201,7 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                     </div>
 
                     <PasswordStrengthBar
-                      className="mt-[3px] ml-1 mr-12"
+                      className="mt-[3px] mr-12 ml-1"
                       password={watchAddPassword}
                       minLength={1}
                       scoreWords={[
@@ -230,18 +230,18 @@ const AddPasswordModal = (props: AddPasswordModalProps) => {
                 </div>
 
                 {/* modal footer*/}
-                <div className="flex justify-center w-full mb-1">
+                <div className="flex justify-center mb-1 w-full">
                   <button
                     disabled={loading}
                     type="submit"
-                    className="px-4 py-2 mr-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+                    className="bg-privpass-400 hover:opacity-80 disabled:opacity-70 mr-2 px-4 py-2 rounded-full text-white active:scale-95 disabled:active:scale-100 transition disabled:transition-opacity disabled:cursor-default"
                   >
                     {tr('addPassModalSubmit', language)}
                   </button>
                   <button
                     disabled={loading}
                     type="button"
-                    className="px-4 py-2 text-white transition rounded-full bg-privpass-400 hover:opacity-80 active:scale-95 disabled:transition-opacity disabled:opacity-70 disabled:cursor-default disabled:active:scale-100"
+                    className="bg-privpass-400 hover:opacity-80 disabled:opacity-70 px-4 py-2 rounded-full text-white active:scale-95 disabled:active:scale-100 transition disabled:transition-opacity disabled:cursor-default"
                     onClick={closeHandler}
                   >
                     {success ? tr('addPassModalClose', language) : tr('addPassModalCancel', language)}
