@@ -1,12 +1,18 @@
 import { Request, Response } from 'express'
 import createError from 'http-errors'
-import jwt, { VerifyErrors } from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import voucher_codes from 'voucher-code-generator'
 import User from '../models/userModel.js'
-import { config } from '../config/utilities.js'
+import { config, log } from '../config/utilities.js'
 import { registerEmailValidation, loginEmailValidation, confirmCodeValidation } from '../validations/userValidation.js'
-import { getAccessToken, getRefreshToken } from '../functions/generateTokens.js'
+import {
+  getAccessToken,
+  getRefreshToken,
+  hashRefreshToken,
+  REFRESH_TOKEN_LIFETIME,
+  REFRESH_TOKEN_GRACE_PERIOD,
+} from '../functions/generateTokens.js'
 import sendEmail from '../functions/sendEmail.js'
 import { registerSendCodeMessage } from '../messages/registerMessages.js'
 import { loginSendCodeMessage } from '../messages/loginMessages.js'
@@ -108,7 +114,14 @@ const confirmCode = async (req: Request, res: Response) => {
   ).exec()
   await User.updateOne(
     { _id: checkedUser.id },
-    { $push: { refreshTokens: { refreshToken, expirationDate: Date.now() + 900 * 1000 } } },
+    {
+      $push: {
+        refreshTokens: {
+          refreshToken: hashRefreshToken(refreshToken),
+          expirationDate: new Date(Date.now() + REFRESH_TOKEN_LIFETIME * 1000),
+        },
+      },
+    },
   ).exec()
 
   return res
@@ -116,7 +129,7 @@ const confirmCode = async (req: Request, res: Response) => {
       httpOnly: true,
       sameSite: 'none',
       secure: config.ENV === 'production' ? true : false,
-      maxAge: 900 * 1000,
+      maxAge: REFRESH_TOKEN_LIFETIME * 1000,
     })
     .status(200)
     .send({ message: CONFIRMED, userInfo: { id: checkedUser.id, email: checkedUser.email }, accessToken: accessToken })
@@ -126,32 +139,89 @@ const confirmCode = async (req: Request, res: Response) => {
 const refreshAccessToken = async (req: Request, res: Response) => {
   if (!req.cookies?.refreshToken) throw createError(401, UNAUTHORIZED)
 
-  const checkedUser = await User.findOne({ 'refreshTokens.refreshToken': req.cookies.refreshToken }).exec()
+  let decode: string | JwtPayload
+  try {
+    decode = jwt.verify(req.cookies.refreshToken, config.JWT_REFRESH_TOKEN_SECRET)
+  } catch {
+    throw createError(401, UNAUTHORIZED)
+  }
+  if (typeof decode === 'string') throw createError(401, UNAUTHORIZED)
+
+  // the signature already says whose token this is, so the session is looked up by the primary key
+  const checkedUser = await User.findById(decode.id).exec()
   if (!checkedUser) throw createError(401, UNAUTHORIZED)
 
-  jwt.verify(req.cookies.refreshToken, config.JWT_REFRESH_TOKEN_SECRET, async (error: VerifyErrors | null, decode: any) => {
-    if (error || checkedUser.id !== decode.id) throw createError(401, UNAUTHORIZED)
+  const hashedToken = hashRefreshToken(req.cookies.refreshToken)
+  const session = checkedUser.refreshTokens.find(element => element.refreshToken === hashedToken)
 
-    const accessToken = await getAccessToken(decode.id, decode.email)
+  if (!session) {
+    const rotatedSession = checkedUser.refreshTokens.find(element => element.previousRefreshToken === hashedToken)
+    const withinGracePeriod =
+      rotatedSession?.rotatedAt && Date.now() - rotatedSession.rotatedAt.getTime() <= REFRESH_TOKEN_GRACE_PERIOD * 1000
+
+    // a token that verifies but is no longer stored was either logged out or stolen - every session of that user goes
+    if (!withinGracePeriod) {
+      log.warn(`SECURITY - refresh token reuse detected for user ${checkedUser.id}, all of its sessions revoked.`)
+      await User.updateOne({ _id: checkedUser.id }, { $set: { refreshTokens: [] } }).exec()
+      throw createError(401, UNAUTHORIZED)
+    }
+
+    // rotated out a moment ago: parallel requests of one browser, not a theft - serve them without rotating again
+    const accessToken = await getAccessToken(checkedUser.id, checkedUser.email)
     if (!accessToken) throw createError(500, SERVER_ERROR)
 
     return res.status(201).send({ accessToken })
-  })
+  }
+
+  // rotation carries the original expiration over, so a session never outlives the window opened at login
+  const remainingLifetime = Math.floor((session.expirationDate.getTime() - Date.now()) / 1000)
+  if (remainingLifetime <= 0) {
+    await User.updateOne({ _id: checkedUser.id }, { $pull: { refreshTokens: { refreshToken: hashedToken } } }).exec()
+    throw createError(401, UNAUTHORIZED)
+  }
+
+  const accessToken = await getAccessToken(checkedUser.id, checkedUser.email)
+  if (!accessToken) throw createError(500, SERVER_ERROR)
+  const rotatedToken = await getRefreshToken(checkedUser.id, checkedUser.email, remainingLifetime)
+  if (!rotatedToken) throw createError(500, SERVER_ERROR)
+
+  // conditional on the old hash still being there, so two parallel rotations cannot both win
+  const { matchedCount } = await User.updateOne(
+    { '_id': checkedUser.id, 'refreshTokens.refreshToken': hashedToken },
+    {
+      $set: {
+        'refreshTokens.$.refreshToken': hashRefreshToken(rotatedToken),
+        'refreshTokens.$.previousRefreshToken': hashedToken,
+        'refreshTokens.$.rotatedAt': new Date(),
+      },
+    },
+  ).exec()
+  // somebody rotated the very same token first - their cookie is the valid one now, leave it alone
+  if (!matchedCount) return res.status(201).send({ accessToken })
+
+  return res
+    .cookie('refreshToken', rotatedToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: config.ENV === 'production' ? true : false,
+      maxAge: remainingLifetime * 1000,
+    })
+    .status(201)
+    .send({ accessToken })
 }
 // GET - /users/logoutUser
 const logoutUser = async (req: Request, res: Response) => {
   if (!req.cookies?.refreshToken) return res.sendStatus(204)
 
-  const checkedUser = await User.findOne({ 'refreshTokens.refreshToken': req.cookies.refreshToken }).exec()
+  const hashedToken = hashRefreshToken(req.cookies.refreshToken)
+
+  const checkedUser = await User.findOne({ 'refreshTokens.refreshToken': hashedToken }).exec()
   if (!checkedUser)
     return res
       .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'production' ? true : false })
       .sendStatus(204)
 
-  await User.updateOne(
-    { _id: checkedUser.id },
-    { $pull: { refreshTokens: { refreshToken: req.cookies.refreshToken } } },
-  ).exec()
+  await User.updateOne({ _id: checkedUser.id }, { $pull: { refreshTokens: { refreshToken: hashedToken } } }).exec()
 
   return res
     .clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', secure: config.ENV === 'production' ? true : false })

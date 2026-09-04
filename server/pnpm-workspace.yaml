@@ -1,8 +1,10 @@
 allowBuilds:
+  '@parcel/watcher': true
   esbuild: true
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - ts-jest@29.4.12
+  - '@eslint/compat@2.1.1'
 onlyBuiltDependencies:
   - esbuild
   - unrs-resolver

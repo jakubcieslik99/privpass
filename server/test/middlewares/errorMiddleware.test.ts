@@ -47,8 +47,9 @@ describe('isError', () => {
 
     isError(leaky, mockRequest(), res, mockNext())
 
-    expect(res.status).toHaveBeenNthCalledWith(1, 500)
-    expect(res.send).toHaveBeenNthCalledWith(1, { message: SERVER_ERROR })
+    expect(res.status).toHaveBeenCalledWith(500)
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send).toHaveBeenCalledWith({ message: SERVER_ERROR })
   })
 
   it('turns a Joi validation error into 422', async () => {
@@ -57,7 +58,8 @@ describe('isError', () => {
 
     isError(joiError, mockRequest(), res, mockNext())
 
-    expect(res.status).toHaveBeenNthCalledWith(1, 422)
-    expect(res.send).toHaveBeenNthCalledWith(1, { message: UNPROCESSABLE_ENTITY })
+    expect(res.status).toHaveBeenCalledWith(422)
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send).toHaveBeenCalledWith({ message: UNPROCESSABLE_ENTITY })
   })
 })

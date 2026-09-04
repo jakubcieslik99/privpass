@@ -12,25 +12,25 @@ const isError = (error: HttpError, _req: Request, res: Response, _next: NextFunc
   // internal error handling
   if (!error.status && !error.isJoi) {
     log.error(`INTERNAL - ${error.stack || error.message || 'Internal error.'}`)
-    res.status(500).send({ message: SERVER_ERROR })
+    return res.status(500).send({ message: SERVER_ERROR })
   }
   // server error handling
   if (error.status >= 500) {
     log.error(`SERVER - ${error.status}: ${error.stack || error.message || SERVER_ERROR.split(':')[1].trim()}`)
-    res.status(500).send({ message: SERVER_ERROR })
+    return res.status(500).send({ message: SERVER_ERROR })
   }
   // client validation error handling
   if (error.isJoi) {
     if (config.ENV !== 'production') {
       log.error(`CLIENT - ${UNPROCESSABLE_ENTITY}`)
     }
-    res.status(422).send({ message: UNPROCESSABLE_ENTITY })
+    return res.status(422).send({ message: UNPROCESSABLE_ENTITY })
   }
   // any other client error handling
   if (config.ENV !== 'production') {
     log.error(`CLIENT - ${error.message || SERVER_ERROR}`)
   }
-  res.status(error.status).send({ message: error.message || SERVER_ERROR })
+  return res.status(error.status).send({ message: error.message || SERVER_ERROR })
 }
 
 export { errorHandler, isError }

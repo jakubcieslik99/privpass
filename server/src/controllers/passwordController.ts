@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import createError from 'http-errors'
 import Password from '../models/passwordModel.js'
 import { createPasswordValidation, updatePasswordValidation } from '../validations/passwordValidation.js'
+import { escapeRegExp } from '../functions/escapeRegExp.js'
 import { encryptPassword, decryptPassword } from '../functions/encryptDecrypt.js'
 import { NEW_PASSWORD_ADDED, PASSWORD_UPDATED, PASSWORD_DELETED } from '../constants/SuccessMessages.js'
 import { PASSWORD_DOES_NOT_EXIST, PASSWORD_NAME_ALREADY_EXISTS } from '../constants/ErrorMessages.js'
@@ -11,8 +12,8 @@ const getUserPasswords = async (req: Request, res: Response) => {
   const { authenticatedUser } = res.locals
 
   let query: object
-  if (req.query.searchKeyword) {
-    query = { addedBy: authenticatedUser.id, name: { $regex: req.query.searchKeyword, $options: 'i' } }
+  if (typeof req.query.searchKeyword === 'string' && req.query.searchKeyword) {
+    query = { addedBy: authenticatedUser.id, name: { $regex: escapeRegExp(req.query.searchKeyword), $options: 'i' } }
   } else query = { addedBy: authenticatedUser.id }
 
   let sortOrder: { [key: string]: 1 | -1 }

@@ -1,5 +1,5 @@
 export const SERVER_ERROR = '500_1: Server error.'
-export const UNAUTHORIZED = '401_1: Authorization error.'
+export const UNAUTHORIZED = '401_1: Authentication failed.'
 export const SESSION_EXPIRED = '403_1: Authorization error, session has expired.'
 export const RESOURCE_DOES_NOT_EXIST = '404_1: Resource does not exist.'
 export const USER_DOES_NOT_EXIST = '404_2: User does not exist or has been deleted.'

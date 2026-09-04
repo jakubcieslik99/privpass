@@ -16,6 +16,7 @@ const databaseConnect = async (app: Application) => {
     app.listen(config.PORT, () => log.info(`Server started on port ${config.PORT}`))
   } catch (error) {
     log.error(error)
+    process.exit(1)
   }
 }
 
