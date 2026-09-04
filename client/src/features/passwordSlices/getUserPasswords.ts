@@ -14,7 +14,7 @@ const getUserPasswords = createAsyncThunk('passwords/getUserPasswords', async (s
     // const { listUser } = thunkAPI.getState() as RootState
 
     const { data } = await axiosProtected.get(
-      `/passwords/getUserPasswords?searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`,
+      `/passwords/getUserPasswords?searchKeyword=${encodeURIComponent(searchKeyword)}&sortOrder=${sortOrder}`,
     )
     return data
   } catch (error: any) {

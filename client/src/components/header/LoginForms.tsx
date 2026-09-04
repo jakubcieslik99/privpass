@@ -249,10 +249,7 @@ const LoginCodeForm = (props: LoginCodeFormProps) => {
       {/* modal footer*/}
       <div className="flex justify-center mb-1 w-full">
         <button
-          disabled={
-            loading ||
-            (success && successMessage === 'Potwierdzenie kodem przebiegło pomyślnie. Nastąpi przekierowanie do profilu.')
-          }
+          disabled={loading || (success && successMessage.split(':')[0] === '200_2')}
           type="submit"
           className="bg-privpass-500 hover:opacity-80 disabled:opacity-70 px-4 py-2 rounded-full text-white active:scale-95 disabled:active:scale-100 transition disabled:transition-opacity disabled:cursor-default"
         >
